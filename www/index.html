@@ -1,0 +1,34 @@
+<head>
+  <title>Network Information Database</title>
+  <link rel="stylesheet" href="cnrg.css">
+</head>
+<script language="JavaScript">
+  function setInnerHTML(id, textinput){
+    var element=document.getElementById(id);
+    element.innerHTML=textinput;
+  }
+</script>
+<body>
+<center>
+<div class="mainbox">
+  <span class="sidebar">
+    <div class="item">&nbsp</div>
+    <div class="item">&nbsp</div>
+    <div class="item" onclick="setInnerHTML('main','<iframe frameborder=0 scrolling=yes src=iplookup.php></iframe>')">Search Address</div>
+    <div class="item" onclick="setInnerHTML('main','<iframe frameborder=0 scrolling=yes src=iplookup.php?ip=128.174.12%&aname=spare&submit=submit></iframe>')">Find IGB Spares</div>
+    <div class="item" onclick="setInnerHTML('main','<iframe frameborder=0 scrolling=yes src=iplookup.php?ip=128.174.50.%&aname=spare&submit=submit></iframe>')">Find ICYT Spares</div>
+    <div class="item" onclick="setInnerHTML('main','<iframe frameborder=0 scrolling=yes src=backupinfo.php></iframe>')">Backup Info</div>
+    <div class="item" onclick="setInnerHTML('main','<iframe frameborder=0 scrolling=yes src=macwatch.php></iframe>')">Mac Finder</div>
+  </span>
+  <span class="rightside">
+    <div class="header">
+      <div class="title">Network Information Database</div>
+    </div>
+    <div id="main" class="main">
+      <iframe frameborder=0 scrolling="yes" src="iplookup.php"></iframe>
+    </div>
+
+  </span>
+</div>
+</center>
+</body>
