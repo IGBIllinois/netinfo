@@ -21,6 +21,7 @@ class device {
 	private $vendor;
 	private $switch;
 	private $port;
+	private $domain = "igb.illinois.edu";
 
         ////////////////Public Functions///////////
 
@@ -49,7 +50,7 @@ class device {
 	public function get_vendor() { return $this->vendor; }
 	public function get_switch() { return $this->switch; }
 	public function get_port() { return $this->port; }
-
+	public function get_domain() { return $this->domain; }
 	public function delete() {
 		$sql = "UPDATE namespace ";
 		$sql .= "SET aname='spare',";
@@ -66,72 +67,86 @@ class device {
 		$sql .= "LIMIT 1";
 		$this->db->non_select_query($sql);
 		$this->get_device($this->get_ipnumber());
+		return array('RESULT'=>true);
 	}
 
 	public function get_locations() {
 		$sql = "SELECT macwatch.date,macwatch.mac, ";
-		$sql .= "macwatch.switch, macwatch.port, ";
-		$sql .= "a.jack, a.room, ";
-		$sql .= "a.building ";
+		$sql .= "macwatch.switch, macwatch.port ";
 		$sql .= "FROM macwatch ";
-		$sql .= "LEFT JOIN ( ";
-		$sql .= "SELECT switches.name as switch_name,locations.port,locations.jack, ";
-		$sql .= "locations.room, locations.building ";
-		$sql .= "FROM locations ";
-		$sql .= "LEFT JOIN switches ON switches.id=locations.switch_id) as a ";
-		$sql .= "ON (a.port=macwatch.port AND a.switch_name=macwatch.switch) ";
 		$sql .= "WHERE LOWER(mac)='" . $this->get_hardware() . "' ";
 		$sql .= "ORDER BY date DESC";
+		
 		return $this->db->query($sql);
 
 
 	}
 	
 	public function update($aname,$hardware,$user,$email,$room,$description,$retropass,$property_tag,$os,$modified_by) {
-		$aname = strtolower($aname);
-		$hardware = strtolower($hardware);
 		$message = "";
 		$error = 0;
-		if (!$this->verify_hostname($aname)) {
-			$message .= "<div class='alert alert-error'>Invalid hostname</div>";
+		if (($aname == $this->get_aname()) && ($hardware == $this->get_hardware()) && ($user == $this->get_user()) &&
+			($email == $this->get_email()) && ($room == $this->get_room()) && ($description == $this->get_description()) &&
+			($retropass == $this->get_retrospect()) && ($property_tag == $this->get_property_tag()) &&
+			($os == $this->get_os())) 
+		{
 			$error = 1;
+			$message .= "<div class='alert'>No changes were made</div>";	
+
 		}
-		elseif (!$this->unique_aname($aname)) {
-			$message .= "<div class='alert alert-error'>Hostname " . $aname . " already exists in database</div>";
-			$error = 1;
+		else {
+			if (!$this->verify_hostname($aname)) {
+				$message .= "<div class='alert alert-error'>Invalid hostname. ";
+				$message .= "Hostname can contain only lowercase letters, numbers, and hyphens. ";
+				$message .= "Maximum length is 20 characters.</div>";
+				$error = 1;
+			}
+			elseif (!$this->unique_aname($aname)) {
+				$message .= "<div class='alert alert-error'>Hostname " . $aname . " already exists in database</div>";
+				$error = 1;
 		
+			}
+			if (!$this->verify_hardware($hardware)) {
+				$message .= "<div class='alert alert-error'>Invalid Hardware Address. ";
+				$message .= "Hardware address can contain only numbers and lowercase letters from a-f. ";
+				$message .= "Must contain 12 characters.</div>";	
+				$error = 1;
+			}
+			elseif (!$this->unique_hardware($hardware)) {
+				$message .= "<div class='alert alert-error'>Hardware Address ";
+				$message .= $hardware . " already exists in database</div";
+				$error = 1;
+			}
+			if (!$this->verify_user($user)) {
+				$message .= "<div class='alert alert-error'>Please enter the user's full name</div>";
+				$error = 1;
+			}
+			if (!$this->verify_email($email)) {
+				$message .= "<div class='alert alert-error'>Please enter the user's email address</div>";
+				$error = 1;
+			}
+			if (!$this->verify_description($description)) {
+				$message .= "<div class='alert alert-error'>Please enter a description</div>";
+				$error = 1;
+			}
+			if (!$this->verify_room($room)) {
+				$message .= "<div class='alert alert-error'>Please enter a room number</div>";
+				$error = 1;
+			}
 		}
-		if (!$this->verify_hardware($hardware)) {
-			$message .= "<div class='alert alert-error'>Invalid Hardware Address</div>";	
-			$error = 1;
-		}
-		elseif (!$this->unique_hardware($hardware)) {
-			$message .= "<div class='alert alert-error'>Hardware Address ";
-			$message .= $hardware . " already exists in database</div";
-			$error = 1;
-		}
-		if ($user == "") {
-			$message .= "<div class='alert alert-error'>Invalid User</div>";
-			$error = 1;
-		}
-		if (!$this->verify_email($email)) {
-			$message .= "<div class='alert alert-error'>Invalid Email Address</div>";
-			$error = 1;
-		}
-	
 		if ($error == 0) {
 			$sql = "UPDATE namespace SET ";
 			$sql .= "aname='" . $aname . "',";
-	                $sql .= "hardware='" . $hardware . "',";
+			$sql .= "hardware='" . $hardware . "',";
         	        $sql .= "name='" . $user . "',";
                 	$sql .= "email='" . $email . "',";
-	                $sql .= "room='" . $room . "',";
-        	        $sql .= "os='" . $os . "',";
+		        $sql .= "room='" . $room . "',";
+        		$sql .= "os='" . $os . "',";
                 	$sql .= "description='" . $description . "',";
 	                $sql .= "backpass='" . $retropass . "',";
-                	$sql .= "property_tag='" . $property_tag . "', ";
+	                $sql .= "property_tag='" . $property_tag . "', ";
 			$sql .= "modifiedby='" . $modified_by . "' ";
-	                $sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
+	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
         	        $sql .= "LIMIT 1";
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
@@ -149,7 +164,8 @@ class device {
 		$error = 0;
 		if (!$this->verify_hostname($alias)) {
 			$error = 1;
-			$message = "<div class='alert alert-error'>Invalid Alias Name</div>";
+			$message = "<div class='alert alert-error'>Invalid Alias Name. ";
+			$message .= "Alias can contain only lowercase letters, numbers, and hyphens.</div>";
 			$result = false;
 		}
 		elseif (!$this->unique_alias($alias)) {
@@ -241,7 +257,6 @@ class device {
 	}
 
 	private function verify_hostname($hostname) {
-		$hostname = strtolower($hostname);
 		$valid = 1;
 		if (!preg_match('/^[a-z0-9-]+$/',$hostname)) {
 			$valid = 0;
@@ -249,10 +264,12 @@ class device {
 		elseif (preg_match('/spare/',$hostname)) {
 			$valid = 0;
 		}
+		elseif (strlen($hostname) > 20) {
+			$valid = 0;
+		}
 		return $valid;
 	}
 	private function verify_hardware($hardware) {
-		$hardware = strtolower($hardware);
 		$valid = 1;
 		if (!preg_match('/^[a-f0-9]{12}$/',$hardware)) {
 			$valid = 0;
@@ -267,7 +284,7 @@ class device {
 		if (!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/",$email)) {
 			$valid = 0;	
 		}
-		if (!checkdnsrr($hostname,"MX")) {
+		if (($hostname != "") && (!checkdnsrr($hostname,"MX"))) {
 			$valid = 0;
 		}
 		return $valid;
@@ -275,7 +292,6 @@ class device {
 	}
 
 	private function unique_aname($aname) {
-		$aname = strtolower($aname);
 		$sql = "SELECT count(1) as count FROM namespace ";
 		$sql .= "WHERE (aname='" . $aname . "' AND ";
 		$sql .= "ipnumber<>'" . $this->get_ipnumber() . "') ";
@@ -318,6 +334,35 @@ class device {
 				return true;
 			}
 		}
+	}
+
+	private function verify_user($user) {
+		$user = trim(rtrim($user));
+		$valid = 1;	
+		if ($user == "") {
+			$valid = 0;
+		}
+		return $valid;
+	}
+	
+	private function verify_description($description) {
+		$description = trim(rtrim($description));
+		$valid = 1;
+		if ($description == "") {
+			$valid = 0;
+
+		}
+		return $valid;
+	}
+
+	private function verify_room($room) {
+		$room = trim(rtrim($room));
+		$valid = 1;
+		if ($room == "") {
+			$valid = 0;
+		}
+		return $valid;
+
 	}
 }
 

@@ -17,11 +17,14 @@ $search = "";
 if (isset($_GET['search'])) {
 	$search = $_GET['search'];
 }
+
 $count = 30;
 $devices = get_devices($db,$network,$search,$start,$count);
 $num_devices = get_num_devices($db,$network,$search);
 $pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
-//$pages_html = get_pages_html($pages_url,$num_devices,$start,$count);
+if ($network != "") {
+$pages_url .= "&network=" . $network;
+}
 $pages_html = get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
@@ -65,9 +68,11 @@ foreach ($devices as $device) {
         $devices_html .= "</tr>";
 }
 ?>
-<h3>Devices</h3>
-<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'] . "?count=" . $count; ?>'>
+<h3>Devices <?php if ($network != "") { echo " - " . $network; } ?></h3>
+<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
 	<div class='input-append'>
+		<input type='hidden' name='network' value='<?php echo $network; ?>'>
+		<input type='hidden' name='count' value='<?php echo $count; ?>'>
 		<input type='text' name='search' class='input-long search-query' value='<?php echo $search; ?>'>
 		<button type='submit' class='btn'>Search</button>
 	</div>

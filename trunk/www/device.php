@@ -3,54 +3,82 @@ include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
 include_once 'functions.inc.php';
 
-if (isset($_GET['ipnumber'])) {
+if (isset($_POST['ipnumber'])) {
+        foreach ($_POST as $var) {
+                $var = trim(rtrim($var));
+        }
+
+	$ipnumber = $_POST['ipnumber'];
+	$device = new device($db,$ipnumber);
+        $aname = $_POST['aname'];
+        $hardware = $_POST['hardware'];
+        $user = $_POST['user'];
+        $email = $_POST['email'];
+        $room = $_POST['room'];
+        $description = $_POST['description'];
+        $retropass = $_POST['retrospect'];
+        $property_tag = $_POST['property_tag'];
+        $device_os = $_POST['os'];
+	$domain = $_POST['domain'];
+}
+
+if (isset($_POST['delete'])) {
+        $result = $device->delete();
+	if ($result['RESULT']) {
+		unset($_POST);
+	}
+}
+elseif (isset($_POST['cancel'])) {
+        unset($_POST);
+        $result['MESSAGE'] = "<div class='alert'>Device update was canceled.</div>";
+}
+elseif (isset($_POST['add_alias'])) {
+        $result = $device->add_alias($_POST['new_alias'],$_SESSION['username']);
+        if ($result['RESULT']) {
+                unset($_POST);
+        }
+}
+elseif (isset($_POST['delete_alias'])) {
+        $result = $device->delete_alias($_POST['alias'],$_SESSION['username']);
+        if ($result['RESULT']) {
+                unset($_POST);
+        }
+
+}
+elseif (isset($_POST['update'])) {
+        foreach ($_POST as $var) {
+                $var = trim(rtrim($var));
+        }
+        $result = $device->update($aname,$hardware,$user,
+                        $email,$room,$description,
+                        $retropass,$property_tag,$device_os,$_SESSION['username']);
+	if ($result['RESULT']) {
+	        unset($_POST);
+	}
+}
+
+if (isset($_GET['ipnumber']) && !isset($_POST['ipnumber'])) {
 	$ipnumber = $_GET['ipnumber'];
-	$device = new device($db,$ipnumber);	
+	$device = new device($db,$ipnumber);
+	$aname = $device->get_aname();
+        $hardware = $device->get_hardware();
+        $user = $device->get_user();
+        $email = $device->get_email();
+        $room = $device->get_room();
+        $description = $device->get_description();
+        $retropass = $device->get_retrospect();
+        $property_tag = $device->get_property_tag();
+        $domain = $device->get_domain();
+        $device_os = $device->get_os();
+
 }
 else {
 	end;
 }
 
-if (isset($_POST['delete'])) {
-	$device->delete();
-}
-
-elseif (isset($_POST['cancel'])) {
 
 
-}
-
-elseif (isset($_POST['update'])) {
-	foreach ($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
-	$result = $device->update($_POST['aname'],$_POST['hardware'],$_POST['user'],
-			$_POST['email'],$_POST['room'],$_POST['description'],
-			$_POST['retropass'],$_POST['property_tag'],$_POST['os'],$_SESSION['username']);
-	unset($_POST); 
-}
-
-elseif (isset($_POST['add_alias'])) {
-	$result = $device->add_alias($_POST['new_alias'],$_SESSION['username']);
-	if ($result['RESULT']) {
-		unset($_POST['add_alias']);
-		unset($_POST['new_alias']);
-	}
-}
-elseif (isset($_POST['delete_alias'])) {
-	$result = $device->delete_alias($_POST['alias'],$_SESSION['username']);
 	
-}
-
-$aname = $device->get_aname();
-$hardware = $device->get_hardware();
-$user = $device->get_user();
-$email = $device->get_email();
-$room = $device->get_room();
-$description = $device->get_description();
-$retropass = $device->get_retrospect();
-$property_tag = $device->get_property_tag();
-
 $locations = $device->get_locations();
 $locations_html = "";
 foreach ($locations as $location) {
@@ -58,9 +86,6 @@ foreach ($locations as $location) {
 	$locations_html .= "<td>" . $location['date'] . "</td>";
 	$locations_html .= "<td>" . $location['switch'] . "</td>";
 	$locations_html .= "<td>" . $location['port'] . "</td>";
-	$locations_html .= "<td>" . $location['jack'] . "</td>";
-	$locations_html .= "<td>" . $location['room'] . "</td>";
-	$locations_html .= "<td>" . $location['building'] . "</td>";
 	$locations_html .= "</tr>";
 }
 
@@ -73,7 +98,8 @@ if (count($aliases)) {
 		$alias_html .= "<td>";
 		$alias_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?ipnumber=" . $device->get_ipnumber() . "'>";
 		$alias_html .= "<input type='hidden' name='alias' value='" . $alias . "'>";		
-		$alias_html .= "<button class='btn btn-danger btn-mini' name='delete_alias' onClick='return confirm_remove_alias()'><i class='icon-remove'></i></button>";
+		$alias_html .= "<button class='btn btn-danger btn-mini' name='delete_alias' ";
+		$alias_html .= "onClick='return confirm_remove_alias()'><i class='icon-remove'></i></button>";
 		$alias_html .= "</form></td>";
 		$alias_html .= "</tr>";
 	
@@ -86,7 +112,7 @@ $os = get_operating_systems($db);
 $os_html = "<select name='os'>";
 $os_exist = false;
 foreach ($os as $var) {
-	if ($device->get_os() == $var['os']) {
+	if ($device_os == $var['os']) {
 		$os_html .= "<option selected='selected' value='" . $var['os'] . "'>" . $var['os'] . "</option>";
 		$os_exist = true;
 	}
@@ -106,12 +132,13 @@ $os_html .= "</select>";
 <h4>Device Information</h4>
 <table class='table table-condensed table-striped table-bordered'>
 <tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
-<tr><td>Name</td><td><input class='input' type='text' name='aname' value='<?php echo $aname; ?>'></td></tr>
-<tr><td>Hardware</td><td><input type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
+<tr><td>Name (ANAME)</td><td><input class='input' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
+<tr><td>Domain</td><td><input class='input' type='text' readonly='readonly' name='domain' value='<?php echo $domain; ?>'></td></tr>
+<tr><td>Hardware (MAC) Address</td><td><input type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
 <tr><td>User</td><td><input type='text' name='user' value='<?php echo $user; ?>'></td></tr>
 <tr><td>Email</td><td><input type='text' name='email' value='<?php echo $email; ?>'></td></tr>
 <tr><td>Room</td><td><input type='text' name='room' value='<?php echo $room; ?>'></td></tr>
-<tr><td>OS</td><td><?php echo $os_html; ?></td></tr>
+<tr><td>Device Type/OS</td><td><?php echo $os_html; ?></td></tr>
 <tr><td>Description</td><td><input type='text' name='description' value='<?php echo $description; ?>'></td></tr>
 <tr><td>Retrospect Password</td><td><input type='text' name='retropass' value='<?php echo $retropass; ?>'></td></tr>
 <tr><td>Property Tag</td><td><input type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
@@ -120,25 +147,22 @@ $os_html .= "</select>";
 <tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>
 </table>
 </div>
-<div class='span5'>
+<div class='span6'>
 <h4>Location</h4>
 <table class='table table-condensed table-striped table-bordered'>
 	<thead>
 		<th>Last Seen</th>
 		<th>Switch</th>
 		<th>Port</th>
-		<th>Jack</th>
-		<th>Room</th>
-		<th>Building</th>
 	</thead>
 	<?php echo $locations_html; ?>
 </table>
 </div>
-<div class='span5'>
+<div class='span6'>
 <h4>Aliases</h4>
 <table class='table table-condensed table-striped table-bordered'>
 	<thead>
-		<th colspan='2'>Alias</th>
+		<th colspan='2'>Alias (CNAME)</th>
 	</thead>
 <?php 
 	echo $alias_html;

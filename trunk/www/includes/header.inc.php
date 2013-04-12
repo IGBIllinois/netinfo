@@ -17,10 +17,10 @@
 	<div class='navbar navbar-inverse'>
 		<div class='navbar-inner'>
 			<div class='container'>
-				<div class='span8 brand'>
+				<div class='span6 brand'>
 					<?php echo __TITLE__; ?>
 				</div>
-				<div class='span2 offset7'>
+				<div class='span2 pull-right'>
 					<p class='navbar-text pull-right'>
 					<small>Version <?php echo __VERSION__; ?></small>
 					</p>
@@ -35,13 +35,10 @@
 				<div class='sidebar-nav'>
 					<ul class='nav nav-tabs nav-stacked'>
 
-						<li><a href='index.php'>Main</a></li>
-						<li><a href='index.php?network=128.174.124.0/22'>128.174.124.0/22</a></li>
-						<li><a href='index.php?network=128.174.50.0/24'>128.174.50.0/24</a></li>
-						<li><a href='index.php?network=172.22.87.0/24'>172.22.87.0/22</a></li>
-						<li><a href='locations.php'>Locations</a></li>
-						<li><a href='add_locations.php'>Add Locations</a></li>
-						<li><a href='switches.php'>Network Switches</a></li>
+						<li><a href='index.php'>All Networks</a></li>
+						<li><a href='index.php?network=128.174.124.0/22'>IGB Public - 128.174.124.0/22</a></li>
+						<li><a href='index.php?network=128.174.50.0/24'>ICYT Public - 128.174.50.0/24</a></li>
+						<li><a href='index.php?network=172.22.87.0/24'>IGB Switches - 172.22.87.0/22</a></li>
 						<li><a href='logout.php'>Logout</a></li>
 					</ul>
 					
