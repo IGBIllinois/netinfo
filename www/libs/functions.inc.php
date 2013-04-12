@@ -122,7 +122,7 @@ function get_pages_html($url,$num_records,$start,$count) {
 		$pages_html .= "<li class='disabled'><a href='#'>&laquo;</a></li>";
 	}
 		
-	for ($i=1; $i<$num_pages; $i++) {
+	for ($i=0; $i<$num_pages; $i++) {
 		$start_record = $count * $i;
 		if ($i == $current_page - 1) {
 			$pages_html .= "<li class='disabled'>";
@@ -130,7 +130,8 @@ function get_pages_html($url,$num_records,$start,$count) {
 		else {
 			$pages_html .= "<li>";
 		}
-		$pages_html .= "<a href='" . $url . $start_record . "'>$i</a></li>";
+		$page_number = $i + 1;
+		$pages_html .= "<a href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
 	}
 
 	if ($current_page < $num_pages) {
@@ -177,15 +178,16 @@ function get_buildings() {
 function get_locations($db,$search= "",$start = 0,$count = 0) {
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
-	$sql = "SELECT locations.*, ";
+	$sql = "SELECT locations.*, ports.port as port, ";
 	$sql .= "switches.name as switch_name ";
 	$sql .= "FROM locations ";
-	$sql .= "LEFT JOIN switches ON switches.id=locations.switch_id ";
+	$sql .= "LEFT JOIN ports ON locations.id=ports.location_id ";	
+	$sql .= "LEFT JOIN switches ON switches.id=ports.switch_id ";
 
 	if ($search != "" ) {
                 $terms = explode(" ",$search);
                 foreach ($terms as $term) {
-                        $search_sql = "(LOWER(locations.port) LIKE '%" . $term . "%' OR ";
+                        $search_sql = "(LOWER(ports.port) LIKE '%" . $term . "%' OR ";
                         $search_sql .= "LOWER(locations.jack) LIKE '%" . $term . "%' OR ";
                         $search_sql .= "LOWER(locations.room) LIKE '%" . $term . "%' OR ";
                         $search_sql .= "LOWER(locations.building) LIKE '%" . $term . "%' OR ";
@@ -207,7 +209,7 @@ function get_locations($db,$search= "",$start = 0,$count = 0) {
                 }
 
         }
-	
+	$sql .= "ORDER BY locations.room ASC ";	
 	if ($count != 0) {
                 $sql .= "LIMIT " . $start . "," . $count;
         }
@@ -220,4 +222,19 @@ function get_num_locations($db,$search = "") {
 
 }
 
+function get_ports($db,$switch_id) {
+	$sql = "SELECT ports.port as port, ports.id as id ";
+	$sql .= "FROM ports ";
+	$sql .= "WHERE ports.switch_id='" . $switch_id . "'";
+	return $db->query($sql);
+}
+
+function get_unused_ports($db,$switch_id) {
+        $sql = "SELECT ports.id as id, ports.port as port ";
+        $sql .= "FROM ports ";
+        $sql .= "WHERE ports.switch_id='" . $switch_id . "' ";
+	$sql .= "AND ports.location_id=0 ";
+        return $db->query($sql);
+
+}
 ?>
