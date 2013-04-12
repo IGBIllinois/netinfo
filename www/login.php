@@ -59,7 +59,7 @@ if (isset($_POST['login'])) {
 			header("Location: " . $location);
 		}
 		else {
-			$message .= "<div class='alert'>Invalid username or password.  Please try again. </div>";
+			$message .= "<div class='alert alert-error'>Invalid username or password.  Please try again. </div>";
 		}
 	}
 }
@@ -83,8 +83,7 @@ if (isset($_POST['login'])) {
 		<div class='navbar-inner'>
 			<div class='container'>
 				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"></a> <a class="brand" href="#"><?php echo __TITLE__; ?>
-				</a>
+					data-target=".nav-collapse"></a> <a class="brand" href="#"><?php echo __TITLE__; ?></a>
 			</div>
 		</div>
 	</div>
@@ -93,8 +92,7 @@ if (isset($_POST['login'])) {
 	
 	<div class='container-fluid'>
 		<div class='row'>
-			<div class='span6 offset4'>
-
+			<div class='span4 offset6'>
 				<form action='login.php' method='post' name='login'
 					class='form-vertical'>
 					<label>Username:</label> <input class='span3' type='text'
@@ -105,7 +103,6 @@ if (isset($_POST['login'])) {
 					<button type='submit' name='login' class='btn btn-primary'>Login</button>
 
 				</form>
-
 
 				<?php if (isset($message)) { 
 					echo $message;

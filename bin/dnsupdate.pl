@@ -179,6 +179,7 @@ $aliasesheader=<<END;
 ;
 ;Aliases
 ;
+sysbio	IN CNAME	www.cepbrowser.org.
 END
 
 $addressheader=<<END;

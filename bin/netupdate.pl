@@ -32,6 +32,11 @@ if($time eq ${$row}{modified}){
   close TIME;
   print "Running DHCP Update\n";
   system("$filepath/dhcpupdate.pl");
+  print "Check DHCP conifg\n";
+  $test=`/etc/init.d/dhcpd configtest 2>&1`;
+  unless($test=~/^Syntax: OK/){
+     die "$test\n";
+  }
   system("/etc/init.d/dhcpd restart");
   print "Running DNS Update\n";
   system("$filepath/dnsupdate.pl");
