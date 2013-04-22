@@ -11,8 +11,9 @@
 ////////////////////////////////////
 
 define("__VERSION__","2.0Beta");
-define("__TITLE__","Network Information Database");
+define("__TITLE__","Institute for Genomic Biology - Network Information Database");
 define("__BUILDINGS__","IGB,ERML");
+define("__COUNT__",30);
 //////////Mysql Settings//////////////
 define("__MYSQL_HOST__","127.0.0.1");
 define("__MYSQL_USER__","netinfo_user");
