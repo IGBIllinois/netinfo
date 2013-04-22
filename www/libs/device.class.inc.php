@@ -98,7 +98,7 @@ class device {
 			if (!$this->verify_hostname($aname)) {
 				$message .= "<div class='alert alert-error'>Invalid hostname. ";
 				$message .= "Hostname can contain only lowercase letters, numbers, and hyphens. ";
-				$message .= "Maximum length is 20 characters.</div>";
+				$message .= "Maximum length is 20 characters. It can not contain the word 'spare'.</div>";
 				$error = 1;
 			}
 			elseif (!$this->unique_aname($aname)) {
@@ -265,6 +265,9 @@ class device {
 			$valid = 0;
 		}
 		elseif (strlen($hostname) > 20) {
+			$valid = 0;
+		}
+		elseif (strpos($hostname,"spare")) {
 			$valid = 0;
 		}
 		return $valid;

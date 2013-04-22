@@ -1,6 +1,6 @@
 <?php
 
-function get_devices($db,$network = "",$search = "",$start = 0 ,$count = 0) {
+function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",$end_date = "") {
 	$search = strtolower(trim(rtrim($search)));
 	$where_sql = array();
 	$sql = "SELECT namespace.aname, namespace.ipnumber, ";
@@ -15,11 +15,31 @@ function get_devices($db,$network = "",$search = "",$start = 0 ,$count = 0) {
 	$sql .= "macwatch.port as port,LOWER(macwatch.mac) as mac FROM macwatch GROUP BY mac) as a ";
 	$sql .= "ON a.mac=LOWER(namespace.hardware) ";
 	if ($network != "") {
-		list($low,$high) = get_ip_range($network);
+		if (strpos($network,"/")) {  //Use network/subnet format, 128.174.124.0/22
+			list($low,$high) = get_ip_range($network);
+		}
+		elseif (strpos($network,"-")) { //Use startip-endip format, 128.174.124.1-128.174.124.100
+			list($low,$high) = explode("-",$network);
+			$low = ip2long($low);
+			$high = ip2long($high);
+		}
 		$network_sql = "((INET_ATON(ipnumber) >='" . $low . "') AND (INET_ATON(ipnumber) <='" . $high . "')) ";
 		array_push($where_sql,$network_sql);
 	}
-	if ($search != "" ) {
+	if (($start_date != "") && ($end_date != "")) {
+		if (($start_date == 0) && ($end_date == 0)) {
+			$last_seen_sql = "(a.last_seen IS NULL) ";
+		}
+		elseif ($end_date == 0) {
+			$last_seen_sql = "(DATE(a.last_seen) <= DATE('" . $start_date . "')) ";
+		}
+		else {
+			$last_seen_sql = "((DATE(a.last_seen) < DATE('" . $start_date . "')) AND (DATE(a.last_seen) > DATE('" . $end_date . "'))) ";
+		}
+		array_push($where_sql,$last_seen_sql);
+
+	}
+	if (($search != "" )  && ($exact == 0)){
 		$terms = explode(" ",$search);
 		foreach ($terms as $term) {
 			$search_sql = "(LOWER(namespace.aname) LIKE '%" . $term . "%' OR ";
@@ -36,6 +56,25 @@ function get_devices($db,$network = "",$search = "",$start = 0 ,$count = 0) {
 		}
 	
 	}
+	elseif (($search != "") && ($exact == 1)) {
+		$terms = explode(" ",$search);
+                foreach ($terms as $term) {
+                        $search_sql = "(LOWER(namespace.aname)='" . $term . "' OR ";
+                        $search_sql .= "namespace.ipnumber='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.hardware)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.name)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.email)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.room)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.os)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.description)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.property_tag)='" . $term . "' OR ";
+                        $search_sql .= "LOWER(namespace.alias)='" . $term . "') ";
+                        array_push($where_sql,$search_sql);
+                }
+
+	}
+
+
 	$num_where = count($where_sql);
 	if ($num_where) {
 		$sql .= "WHERE ";
@@ -50,9 +89,6 @@ function get_devices($db,$network = "",$search = "",$start = 0 ,$count = 0) {
 
 	}
 	$sql .= "ORDER BY INET_ATON(ipnumber) ASC ";
-	if ($count != 0) {
-                $sql .= "LIMIT " . $start . "," . $count;
-        }
 	$result = $db->query($sql);
 	return $result;
 
@@ -60,12 +96,10 @@ function get_devices($db,$network = "",$search = "",$start = 0 ,$count = 0) {
 
 }
 
-function get_num_devices($db,$network="", $search = "") {
-	$devices = get_devices($db,$network,$search);
-	return count($devices);
 
-}
-
+//get_operating_systems()
+//$db - database object
+//returns list of operating systems in database table operating_systems
 function get_operating_systems($db) {
 	$sql = "SELECT * FROM operating_systems ";
 	$sql .= "ORDER BY os ASC";
@@ -73,6 +107,15 @@ function get_operating_systems($db) {
 
 
 }
+
+//get_last_seen()
+//$last_seen - date/time in human readable format ie (YYYY-MM-DD HH-MM-SS)
+//returns integer
+//1 if seen in last day
+//2 if seen in last month, greater than 1 day
+//3 if seen in last 6 months, greater than 1 month
+//4 if seen greater than 6 months
+//5 if never seen
 function get_last_seen($last_seen) {
 
 	$one_day = strtotime('-1 day',time());
@@ -93,13 +136,18 @@ function get_last_seen($last_seen) {
 	elseif (($last_seen > 0) && ($last_seen < $six_months)) {
 		return 4;
 	}
-	else {
+	else { //Never seen
 		return 5;
 	}
 
 }
 
-
+//get_pages_html()
+//$url - url of page
+//$num_records - number of items
+//$start - start index of items
+//$count - number of items per page
+//returns pagenation to navigate between pages of devices
 function get_pages_html($url,$num_records,$start,$count) {
 	
 	$num_pages = ceil($num_records/$count);
@@ -146,6 +194,10 @@ function get_pages_html($url,$num_records,$start,$count) {
 
 }
 
+//get_ip_range()
+//$cidr - network in format network/subnet, ie 128.174.124.0/22
+//returns array size 2, first index is start ip, second index is end ip
+//calcuates the start and end range of ips from given cidr
 function get_ip_range($cidr) {
 
 	list($ip, $mask) = explode('/', $cidr);
@@ -165,16 +217,27 @@ function get_ip_range($cidr) {
 
 }
 
+//get_switches()
+//$db - database object
+//returns array of switches in database
 function get_switches($db) {
 	$sql = "SELECT * FROM switches";
 	return $db->query($sql);
 }
 
+//get_buildings()
+//returns array of buildings from __BUILDINGS__ in settings.inc.php
 function get_buildings() {
 	return explode(",",__BUILDINGS__);
 
 }
 
+//get_locations()
+//$db - database object
+//$search - search term - optional
+//$start - start index - optional
+//$count - amount to return - optional
+//returns array of locations
 function get_locations($db,$search= "",$start = 0,$count = 0) {
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
@@ -222,6 +285,10 @@ function get_num_locations($db,$search = "") {
 
 }
 
+//get_ports()
+//$db - database object
+//$switch_id - database id of switch
+//returns array of ports on the given switch
 function get_ports($db,$switch_id) {
 	$sql = "SELECT ports.port as port, ports.id as id ";
 	$sql .= "FROM ports ";
@@ -229,6 +296,10 @@ function get_ports($db,$switch_id) {
 	return $db->query($sql);
 }
 
+//get_unused_ports()
+//$db - database object
+//$switch_id - database id of switch
+//returns array of ports that are not connected to a jack
 function get_unused_ports($db,$switch_id) {
         $sql = "SELECT ports.id as id, ports.port as port ";
         $sql .= "FROM ports ";
