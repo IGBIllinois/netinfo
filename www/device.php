@@ -23,7 +23,7 @@ if (isset($_POST['ipnumber'])) {
 }
 
 if (isset($_POST['delete'])) {
-        $result = $device->delete();
+        $result = $device->delete($_SESSION['username']);
 	if ($result['RESULT']) {
 		unset($_POST);
 	}

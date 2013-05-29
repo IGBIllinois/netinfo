@@ -51,7 +51,7 @@ class device {
 	public function get_switch() { return $this->switch; }
 	public function get_port() { return $this->port; }
 	public function get_domain() { return $this->domain; }
-	public function delete() {
+	public function delete($modified_by) {
 		$sql = "UPDATE namespace ";
 		$sql .= "SET aname='spare',";
 		$sql .= "hardware='',";
@@ -62,7 +62,8 @@ class device {
 		$sql .= "description='',";
 		$sql .= "backpass='',";
 		$sql .= "alias='',";
-		$sql .= "property_tag='' ";
+		$sql .= "property_tag='', ";
+		$sql .= "modifiedby='" . $modified_by . "' ";
 		$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
 		$sql .= "LIMIT 1";
 		$this->db->non_select_query($sql);
