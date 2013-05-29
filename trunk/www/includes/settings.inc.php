@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","2.0Beta");
+define("__VERSION__","2.0");
 define("__TITLE__","Institute for Genomic Biology - Network Information Database");
 define("__BUILDINGS__","IGB,ERML");
 define("__COUNT__",30);
