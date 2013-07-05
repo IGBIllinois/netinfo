@@ -283,12 +283,18 @@ class device {
 
 	private function verify_email($email) {
 		$email = strtolower($email);
-		list($prefix,$hostname) = explode("@",$email);
 		$valid = 1;
-		if (!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/",$email)) {
-			$valid = 0;	
+		if (strpos($email,"@")) {
+			list($prefix,$hostname) = explode("@",$email);
+			if (!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/",
+				$email)) {
+                        	$valid = 0;     
+                	}
+                	if (($hostname != "") && (!checkdnsrr($hostname,"MX"))) {
+                        	$valid = 0;
+                	}
 		}
-		if (($hostname != "") && (!checkdnsrr($hostname,"MX"))) {
+		else {
 			$valid = 0;
 		}
 		return $valid;

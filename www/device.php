@@ -23,7 +23,7 @@ if (isset($_POST['ipnumber'])) {
 }
 
 if (isset($_POST['delete'])) {
-        $result = $device->delete($_SESSION['username']);
+        $result = $device->delete($session->get_var('username'));
 	if ($result['RESULT']) {
 		unset($_POST);
 	}
@@ -33,13 +33,13 @@ elseif (isset($_POST['cancel'])) {
         $result['MESSAGE'] = "<div class='alert'>Device update was canceled.</div>";
 }
 elseif (isset($_POST['add_alias'])) {
-        $result = $device->add_alias($_POST['new_alias'],$_SESSION['username']);
+        $result = $device->add_alias($_POST['new_alias'],$session->get_var('username'));
         if ($result['RESULT']) {
                 unset($_POST);
         }
 }
 elseif (isset($_POST['delete_alias'])) {
-        $result = $device->delete_alias($_POST['alias'],$_SESSION['username']);
+        $result = $device->delete_alias($_POST['alias'],$session->get_var('username'));
         if ($result['RESULT']) {
                 unset($_POST);
         }
@@ -51,13 +51,13 @@ elseif (isset($_POST['update'])) {
         }
         $result = $device->update($aname,$hardware,$user,
                         $email,$room,$description,
-                        $retropass,$property_tag,$device_os,$_SESSION['username']);
+                        $retropass,$property_tag,$device_os,$session->get_var('username'));
 	if ($result['RESULT']) {
 	        unset($_POST);
 	}
 }
 
-if (isset($_GET['ipnumber']) && !isset($_POST['ipnumber'])) {
+if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
 	$ipnumber = $_GET['ipnumber'];
 	$device = new device($db,$ipnumber);
 	$aname = $device->get_aname();
@@ -72,11 +72,6 @@ if (isset($_GET['ipnumber']) && !isset($_POST['ipnumber'])) {
         $device_os = $device->get_os();
 
 }
-else {
-	end;
-}
-
-
 
 	
 $locations = $device->get_locations();
