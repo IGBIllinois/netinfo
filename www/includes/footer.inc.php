@@ -1,10 +1,13 @@
-</div>
-</div>
-<div class='container-fluid'>
-	<div class='span4 offset6'>
-		<em>&copy 2012 University of Illinois Board of Trustees</em>
 	</div>
 </div>
+<div class='navbar navbar-fixed-bottom'>
+        <div style='text-align: center'>
+                <em>&copy 2013 University of Illinois Board of Trustees</em>
+        </div>
+</div>
+
 </body>
 </html>
+
+
 

@@ -6,21 +6,17 @@
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
 	href="includes/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="includes/bootstrap/css/bootstrap-responsive.min.css">
 <title><?php echo __TITLE__; ?></title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 	<div class='navbar navbar-inverse'>
 		<div class='navbar-inner'>
 			<div class='container'>
-				<div class='span6 brand'>
+				<div class='span9 brand'>
 					<?php echo __TITLE__; ?>
 				</div>
-				<div class='span2 pull-right'>
+				<div class='span3 pull-right'>
 					<p class='navbar-text pull-right'>
 					<small>Version <?php echo __VERSION__; ?></small>
 					</p>
