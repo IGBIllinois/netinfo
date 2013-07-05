@@ -11,26 +11,29 @@
 //
 //////////////////////////////////////////
 
-session_start();
+include_once 'includes/main.inc.php';
+include_once 'authenticate.inc.php';
 
-set_include_path('libs');
-include_once 'settings.inc.php';
-include_once 'db.class.inc.php';
-include_once 'session.class.inc.php';
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-$session = new session($db,$username,$password);
+$session = new session(__SESSION_NAME__);
+if (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
+	unset($_POST);
+	header('Location: logout.php');
 
-if (($session->authenticate(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_PEOPLE_OU__)) {
-
-	define(login_user,$_SESSION['username']);
-	define(login_pass,$_SESSION['password']);
 }
+elseif (!$session->get_var('login')) {
+	unset($_POST);
+	header('Location:logout.php');	
+
+}
+
 else {
-	session_start();
-	$_SESSION['webpage'] = $_SERVER['REQUEST_URI'];
-	header('Location: login.php');
-	exit;
-
+	//Reset timeout
+	$session_vars = array('timeout'=>time());
+	$session->set_session($session_vars);	
 }
+
+
+
+
 
 ?>

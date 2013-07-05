@@ -10,8 +10,10 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","2.01");
+define("__VERSION__","2.02");
 define("__TITLE__","Institute for Genomic Biology - Network Information Database");
+define("__SESSION_NAME__","netinfo");
+define("__SESSION_TIMEOUT__",3600);
 define("__BUILDINGS__","IGB,ERML");
 define("__COUNT__",30);
 //////////Mysql Settings//////////////

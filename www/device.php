@@ -1,7 +1,7 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
-include_once 'functions.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
+require_once 'includes/header.inc.php';
 
 if (isset($_POST['ipnumber'])) {
         foreach ($_POST as $var) {
@@ -16,7 +16,7 @@ if (isset($_POST['ipnumber'])) {
         $email = $_POST['email'];
         $room = $_POST['room'];
         $description = $_POST['description'];
-        $retropass = $_POST['retrospect'];
+        $retropass = $_POST['retropass'];
         $property_tag = $_POST['property_tag'];
         $device_os = $_POST['os'];
 	$domain = $_POST['domain'];
@@ -147,7 +147,7 @@ $os_html .= "</select>";
 <tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>
 </table>
 </div>
-<div class='span6'>
+<div class='span5'>
 <h4>Location</h4>
 <table class='table table-condensed table-striped table-bordered'>
 	<thead>
@@ -158,7 +158,7 @@ $os_html .= "</select>";
 	<?php echo $locations_html; ?>
 </table>
 </div>
-<div class='span6'>
+<div class='span5'>
 <h4>Aliases</h4>
 <table class='table table-condensed table-striped table-bordered'>
 	<thead>
