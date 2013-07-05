@@ -1,7 +1,8 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
-include_once 'functions.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
+require_once 'includes/header.inc.php';
+
 
 $start = 0;
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
