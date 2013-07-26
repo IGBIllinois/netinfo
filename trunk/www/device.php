@@ -92,7 +92,8 @@ if (count($aliases)) {
 		$alias_html .= "<td>" . $alias . "</td>";
 		$alias_html .= "<td>";
 		$alias_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?ipnumber=" . $device->get_ipnumber() . "'>";
-		$alias_html .= "<input type='hidden' name='alias' value='" . $alias . "'>";		
+		$alias_html .= "<input type='hidden' name='alias' value='" . $alias . "'>";
+		$alias_html .= "<input type='hidden' name='ipnumber' value='" . $device->get_ipnumber() . "'>";
 		$alias_html .= "<button class='btn btn-danger btn-mini' name='delete_alias' ";
 		$alias_html .= "onClick='return confirm_remove_alias()'><i class='icon-remove'></i></button>";
 		$alias_html .= "</form></td>";
