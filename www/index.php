@@ -78,12 +78,6 @@ for ($i=$start;$i<$start+$count;$i++) {
 		$devices_html .= "<td>" . $devices[$i]['room'] . "</td>";
 		$devices_html .= "<td>" . $devices[$i]['os'] . "</td>";
 		$devices_html .= "<td>" . $devices[$i]['description'] . "</td>";
-		if ($devices[$i]['backpass']) {
-			$devices_html .= "<td><i class='icon-ok'></i></td>";
-		}
-		else {
-			$devices_html .= "<td><i class='icon-remove'></i></td>";
-		}
 	        $devices_html .= "</tr>";
 	}
 }
@@ -120,7 +114,6 @@ for ($i=$start;$i<$start+$count;$i++) {
 			<th>Room</th>
 			<th>OS</th>
 			<th>Description</th>
-			<th>Retrospect</th>
                 </tr>
         </thead>
         <tbody>

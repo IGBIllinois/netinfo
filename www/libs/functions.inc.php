@@ -6,7 +6,7 @@ function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",
 	$sql = "SELECT namespace.aname, namespace.ipnumber, ";
 	$sql .= "LOWER(namespace.hardware) as hardware, namespace.name as user, ";
 	$sql .= "namespace.email, namespace.room, namespace.os, ";
-	$sql .= "namespace.description, namespace.backpass, namespace.alias, ";
+	$sql .= "namespace.description, namespace.serial_number, namespace.alias, ";
 	$sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
 	$sql .= "a.switch, a.port, a.last_seen ";
 	$sql .= "FROM namespace ";
@@ -51,6 +51,7 @@ function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",
 			$search_sql .= "LOWER(namespace.os) LIKE '%" . $term . "%' OR ";
 			$search_sql .= "LOWER(namespace.description) LIKE '%" . $term . "%' OR ";
 			$search_sql .= "LOWER(namespace.property_tag) LIKE '%" . $term . "%' OR ";
+			$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
 			$search_sql .= "LOWER(namespace.alias) LIKE '%" . $term . "%') ";
 			array_push($where_sql,$search_sql);
 		}
@@ -68,6 +69,7 @@ function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",
                         $search_sql .= "LOWER(namespace.os)='" . $term . "' OR ";
                         $search_sql .= "LOWER(namespace.description)='" . $term . "' OR ";
                         $search_sql .= "LOWER(namespace.property_tag)='" . $term . "' OR ";
+			$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
                         $search_sql .= "LOWER(namespace.alias)='" . $term . "') ";
                         array_push($where_sql,$search_sql);
                 }
@@ -306,6 +308,47 @@ function get_unused_ports($db,$switch_id) {
         $sql .= "WHERE ports.switch_id='" . $switch_id . "' ";
 	$sql .= "AND ports.location_id=0 ";
         return $db->query($sql);
+
+}
+
+function get_hardware_addresses($db,$search = "") {
+	$search = strtolower(trim(rtrim($search)));
+	$where_sql = array();
+	$sql = "SELECT macwatch.switch as switch, macwatch.port as port, ";
+	$sql .= "macwatch.mac as mac, macwatch.vendor as vendor, ";
+	$sql .= "MAX(macwatch.date) as last_seen, namespace.ipnumber as ipnumber ";
+	$sql .= "FROM macwatch ";
+	$sql .= "LEFT JOIN namespace ON namespace.hardware=macwatch.mac ";
+	
+	array_push($where_sql,"macwatch.port IS NOT NULL ");
+
+        if ($search != "" ){
+		$terms = explode(" ",$search);
+                foreach ($terms as $term) {
+                        $search_sql = "(LOWER(macwatch.switch) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(macwatch.port) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(macwatch.mac) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(macwatch.vendor) LIKE '%" . $term . "%') ";
+                        array_push($where_sql,$search_sql);
+                }
+	}
+	$num_where = count($where_sql);
+        if ($num_where) {
+                $sql .= "WHERE ";
+                $i = 0;
+                foreach ($where_sql as $where) {
+                        $sql .= $where;
+                        if ($i<$num_where-1) {
+                                $sql .= "AND ";
+                        }
+                        $i++;   
+                }
+
+        }
+	$sql .= "GROUP BY macwatch.mac ";
+        $sql .= "ORDER BY last_seen DESC ";
+        $result = $db->query($sql);
+        return $result;
 
 }
 ?>

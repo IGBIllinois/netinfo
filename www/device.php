@@ -16,7 +16,7 @@ if (isset($_POST['ipnumber'])) {
         $email = $_POST['email'];
         $room = $_POST['room'];
         $description = $_POST['description'];
-        $retropass = $_POST['retropass'];
+        $serial_number = $_POST['serial_number'];
         $property_tag = $_POST['property_tag'];
         $device_os = $_POST['os'];
 	$domain = $_POST['domain'];
@@ -51,7 +51,7 @@ elseif (isset($_POST['update'])) {
         }
         $result = $device->update($aname,$hardware,$user,
                         $email,$room,$description,
-                        $retropass,$property_tag,$device_os,$session->get_var('username'));
+                        $serial_number,$property_tag,$device_os,$session->get_var('username'));
 	if ($result['RESULT']) {
 	        unset($_POST);
 	}
@@ -66,7 +66,7 @@ if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
         $email = $device->get_email();
         $room = $device->get_room();
         $description = $device->get_description();
-        $retropass = $device->get_retrospect();
+        $serial_number = $device->get_serial_number();
         $property_tag = $device->get_property_tag();
         $domain = $device->get_domain();
         $device_os = $device->get_os();
@@ -136,7 +136,7 @@ $os_html .= "</select>";
 <tr><td>Room</td><td><input type='text' name='room' value='<?php echo $room; ?>'></td></tr>
 <tr><td>Device Type/OS</td><td><?php echo $os_html; ?></td></tr>
 <tr><td>Description</td><td><input type='text' name='description' value='<?php echo $description; ?>'></td></tr>
-<tr><td>Retrospect Password</td><td><input type='text' name='retropass' value='<?php echo $retropass; ?>'></td></tr>
+<tr><td>Serial Number</td><td><input type='text' name='serial_number' value='<?php echo $serial_number; ?>'></td></tr>
 <tr><td>Property Tag</td><td><input type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
 <tr><td>Last Modified By</td><td><?php echo $device->get_modifiedby(); ?></td></tr>
 <tr><td>Last Modified</td><td><?php echo $device->get_modified(); ?></td></tr>
@@ -181,13 +181,14 @@ echo "<input class='btn btn-danger' type='submit' value='Delete' name='delete' o
 ?>
 </div>
 </form>
-<br>
 <div class='span10'>
+<p>
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
 ?>
+</p>
 </div>
 <?php
 
