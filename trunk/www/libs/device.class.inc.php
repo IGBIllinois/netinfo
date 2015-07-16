@@ -13,7 +13,7 @@ class device {
 	private $room;
 	private $os;
 	private $description;
-	private $backpass;
+	private $serial_number;
 	private $alias = array();
 	private $modifiedby;
 	private $modified;
@@ -42,7 +42,7 @@ class device {
 	public function get_room() { return $this->room; }
 	public function get_os() { return $this->os; }
 	public function get_description() { return $this->description; }
-	public function get_retrospect() { return $this->backpass; }
+	public function get_serial_number() { return $this->serial_number; }
 	public function get_alias() { return $this->alias; }
 	public function get_modifiedby() { return $this->modifiedby; }
 	public function get_modified() { return $this->modified; }
@@ -60,7 +60,7 @@ class device {
 		$sql .= "room='',";
 		$sql .= "os='',";
 		$sql .= "description='',";
-		$sql .= "backpass='',";
+		$sql .= "serial_number='',";
 		$sql .= "alias='',";
 		$sql .= "property_tag='', ";
 		$sql .= "modifiedby='" . $modified_by . "' ";
@@ -83,12 +83,12 @@ class device {
 
 	}
 	
-	public function update($aname,$hardware,$user,$email,$room,$description,$retropass,$property_tag,$os,$modified_by) {
+	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$modified_by) {
 		$message = "";
 		$error = 0;
 		if (($aname == $this->get_aname()) && ($hardware == $this->get_hardware()) && ($user == $this->get_user()) &&
 			($email == $this->get_email()) && ($room == $this->get_room()) && ($description == $this->get_description()) &&
-			($retropass == $this->get_retrospect()) && ($property_tag == $this->get_property_tag()) &&
+			($serial_number == $this->get_serial_number()) && ($property_tag == $this->get_property_tag()) &&
 			($os == $this->get_os())) 
 		{
 			$error = 1;
@@ -131,7 +131,7 @@ class device {
 				$error = 1;
 			}
 			if (!$this->verify_room($room)) {
-				$message .= "<div class='alert alert-error'>Please enter a room number</div>";
+				$message .= "<div class='alert alert-error'>Please enter a room number.  Maximum of 5 characters (ie 2414a)</div>";
 				$error = 1;
 			}
 		}
@@ -144,7 +144,7 @@ class device {
 		        $sql .= "room='" . $room . "',";
         		$sql .= "os='" . $os . "',";
                 	$sql .= "description='" . $description . "',";
-	                $sql .= "backpass='" . $retropass . "',";
+	                $sql .= "serial_number='" . $serial_number . "',";
 	                $sql .= "property_tag='" . $property_tag . "', ";
 			$sql .= "modifiedby='" . $modified_by . "' ";
 	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
@@ -221,7 +221,7 @@ class device {
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
 		$sql .= "LOWER(namespace.hardware) as hardware , namespace.name, ";
 		$sql .= "namespace.email, namespace.room, namespace.os, namespace.description, ";
-		$sql .= "namespace.backpass, namespace.alias, namespace.modifiedby, namespace.modified, ";
+		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, namespace.modified, ";
 		$sql .= "namespace.property_tag, ";
 		$sql .= "a.switch, a.port, a.vendor ";
 		$sql .= "FROM namespace ";
@@ -240,7 +240,7 @@ class device {
 			$this->room = $result[0]['room'];
 			$this->os = $result[0]['os'];
 			$this->description = $result[0]['description'];
-			$this->backpass = $result[0]['backpass'];
+			$this->serial_number = $result[0]['serial_number'];
 			if (strlen($result[0]['alias']) > 0) {
 				$this->alias = explode(",",$result[0]['alias']);
 			}
@@ -369,6 +369,9 @@ class device {
 		$room = trim(rtrim($room));
 		$valid = 1;
 		if ($room == "") {
+			$valid = 0;
+		}
+		elseif (strlen($room) > 5) {
 			$valid = 0;
 		}
 		return $valid;
