@@ -46,6 +46,11 @@
 						<li><a href='index.php?network=128.174.50.0/24'>All Devices</a></li>
 					<li class='nav-header'>IGB Switches - 172.22.87.0/22</a></li>
 						<li><a href='index.php?network=172.22.87.0/24'>All Devices</a></li>
+				<li class='nav-header'>Biotech Private - 192.168.128.0/22</a></li>
+                                                <li><a href='index.php?network=192.168.128.0/22'>All Devices</a></li>
+
+						<li class='divider'></li>
+						<li><a href='hardware.php'>Mac Addresses</a></li>
 						<li class='divider'></li>
 						<li><a href='logout.php'>Logout</a></li>
 					</ul>
