@@ -35,10 +35,10 @@
 						<li class='divider'></li>
 					<li class='nav-header'>IGB Public - 128.174.124.0/22</li>
 						<li><a href='index.php?network=128.174.124.0/22'>All Devices</a></li>
-						<li><a href='index.php?network=128.174.124.1-128.174.124.100'>Servers</a></li>
-						<li><a href='index.php?network=128.174.124.1-128.174.124.100&search=spare&exact=1'>Server Spares</a></li>
-						<li><a href='index.php?network=128.174.124.101-128.174.127.255'>All User Devices</a></li>
-						<li><a href='index.php?network=128.174.124.101-128.174.127.255&search=spare&exact=1'>User Spares</a></li>
+						<li><a href='index.php?network=128.174.124.1-128.174.124.125'>Servers</a></li>
+						<li><a href='index.php?network=128.174.124.1-128.174.124.125&search=spare&exact=1'>Server Spares</a></li>
+						<li><a href='index.php?network=128.174.124.126-128.174.127.255'>All User Devices</a></li>
+						<li><a href='index.php?network=128.174.124.126-128.174.127.255&search=spare&exact=1'>User Spares</a></li>
 						<li><a href='index.php?network=128.174.124.0/22&start_date=<?php echo date('Y:m:d',strtotime("-6 month",time())); ?>
 								&end_date=0'>Older Than 6 Months Devices</a></li>
 						<li><a href='index.php?network=128.174.124.0/22&start_date=0&end_date=0'>Never Seen Devices</a></li>
