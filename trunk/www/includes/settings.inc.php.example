@@ -17,17 +17,17 @@ define("__SESSION_TIMEOUT__",3600);
 define("__BUILDINGS__","IGB,ERML");
 define("__COUNT__",30);
 //////////Mysql Settings//////////////
-define("__MYSQL_HOST__","127.0.0.1");
-define("__MYSQL_USER__","netinfo_user");
-define("__MYSQL_PASSWORD__","ruSPE6utrAK67r");
-define("__MYSQL_DATABASE__","netinfo");
+define("__MYSQL_HOST__","");
+define("__MYSQL_USER__","");
+define("__MYSQL_PASSWORD__","");
+define("__MYSQL_DATABASE__","");
 
 //////////Authentication Settings///////////////
-define("__LDAP_HOST__","authen.igb.uiuc.edu");
-define("__LDAP_BASE_DN__","dc=igb,dc=uiuc,dc=edu");
-define("__LDAP_PEOPLE_OU__","ou=people,dc=igb,dc=uiuc,dc=edu");
-define("__LDAP_GROUP_OU__","ou=group,dc=igb,dc=uiuc,dc=edu");
-define("__LDAP_GROUP__","cnrg");
+define("__LDAP_HOST__","");
+define("__LDAP_BASE_DN__","");
+define("__LDAP_PEOPLE_OU__","");
+define("__LDAP_GROUP_OU__","");
+define("__LDAP_GROUP__","");
 define("__LDAP_BIND_USER__","");
 define("__LDAP_BIND_PASS__","");
 define("__LDAP_SSL__",FALSE);
