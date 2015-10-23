@@ -3,12 +3,12 @@
 Netinfo keeps track of dhcp reservations for multiple networks and can then autogenerate the dhcpd and bind configuration files
 
 #Requirements
-*Mysql
-*PHP
-*Apache
-*DHCPD
-*Bind Name Server
-*LDAP to login
+* Mysql
+* PHP
+* Apache
+* DHCPD
+* Bind Name Server
+* LDAP to login
 
 #Installation
 * git clone https://github.com/IGB-UIUC/netinfo
