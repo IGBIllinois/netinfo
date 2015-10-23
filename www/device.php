@@ -51,7 +51,7 @@ elseif (isset($_POST['update'])) {
         }
         $result = $device->update($aname,$hardware,$user,
                         $email,$room,$description,
-                        $serial_number,$property_tag,$device_os,$session->get_var('username'));
+                        $serial_number,$property_tag,$device_os,$domain,$session->get_var('username'));
 	if ($result['RESULT']) {
 	        unset($_POST);
 	}
@@ -73,7 +73,7 @@ if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
 
 }
 
-	
+
 $locations = $device->get_locations();
 $locations_html = "";
 foreach ($locations as $location) {
@@ -129,7 +129,7 @@ $os_html .= "</select>";
 <table class='table table-condensed table-striped table-bordered'>
 <tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
 <tr><td>Name (ANAME)</td><td><input class='input' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
-<tr><td>Domain</td><td><input class='input' type='text' readonly='readonly' name='domain' value='<?php echo $domain; ?>'></td></tr>
+<tr><td>Domain</td><td><?php echo $device->get_domain(); ?></td></tr>
 <tr><td>Hardware (MAC) Address</td><td><input type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
 <tr><td>User</td><td><input type='text' name='user' value='<?php echo $user; ?>'></td></tr>
 <tr><td>Email</td><td><input type='text' name='email' value='<?php echo $email; ?>'></td></tr>

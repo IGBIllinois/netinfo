@@ -227,12 +227,6 @@ function get_switches($db) {
 	return $db->query($sql);
 }
 
-//get_buildings()
-//returns array of buildings from __BUILDINGS__ in settings.inc.php
-function get_buildings() {
-	return explode(",",__BUILDINGS__);
-
-}
 
 //get_locations()
 //$db - database object
