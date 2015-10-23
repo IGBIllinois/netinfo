@@ -21,8 +21,8 @@ class device {
 	private $vendor;
 	private $switch;
 	private $port;
-	private $domain = "igb.illinois.edu";
-
+	private $domain;
+	private $network;
         ////////////////Public Functions///////////
 
         public function __construct($db,$ipnumber = 0) {
@@ -83,13 +83,13 @@ class device {
 
 	}
 	
-	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$modified_by) {
+	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$domain,$modified_by) {
 		$message = "";
 		$error = 0;
 		if (($aname == $this->get_aname()) && ($hardware == $this->get_hardware()) && ($user == $this->get_user()) &&
 			($email == $this->get_email()) && ($room == $this->get_room()) && ($description == $this->get_description()) &&
 			($serial_number == $this->get_serial_number()) && ($property_tag == $this->get_property_tag()) &&
-			($os == $this->get_os())) 
+			($os == $this->get_os()) && ($domain == $this->get_domain())) 
 		{
 			$error = 1;
 			$message .= "<div class='alert'>No changes were made</div>";	
@@ -136,6 +136,8 @@ class device {
 			}
 		}
 		if ($error == 0) {
+			$domain_obj = new domain($this->db,$domain);
+			
 			$sql = "UPDATE namespace SET ";
 			$sql .= "aname='" . $aname . "',";
 			$sql .= "hardware='" . $hardware . "',";
@@ -146,7 +148,8 @@ class device {
                 	$sql .= "description='" . $description . "',";
 	                $sql .= "serial_number='" . $serial_number . "',";
 	                $sql .= "property_tag='" . $property_tag . "', ";
-			$sql .= "modifiedby='" . $modified_by . "' ";
+			$sql .= "modifiedby='" . $modified_by . "', ";
+			$sql .= "domain_id='" . $domain_obj->get_id() . "' ";
 	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
         	        $sql .= "LIMIT 1";
 			$result = $this->db->non_select_query($sql);
@@ -222,9 +225,11 @@ class device {
 		$sql .= "LOWER(namespace.hardware) as hardware , namespace.name, ";
 		$sql .= "namespace.email, namespace.room, namespace.os, namespace.description, ";
 		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, namespace.modified, ";
-		$sql .= "namespace.property_tag, ";
+		$sql .= "namespace.property_tag,networks.name as network,domains.name as domain, ";
 		$sql .= "a.switch, a.port, a.vendor ";
 		$sql .= "FROM namespace ";
+		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
+		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";
 		$sql .= "LEFT JOIN ( ";
 		$sql .= "SELECT MAX(macwatch.date) as last_seen, macwatch.switch as switch, macwatch.vendor as vendor, ";
 		$sql .= "macwatch.port as port,LOWER(macwatch.mac) as mac FROM macwatch GROUP BY mac) as a ";
@@ -253,6 +258,8 @@ class device {
 			$this->vendor = $result[0]['vendor'];
 			$this->switch = $result[0]['switch'];
 			$this->port = $result[0]['port'];
+			$this->domain = $result[0]['domain'];
+			$this->network = $result[0]['network'];
 
 		}
 	}
