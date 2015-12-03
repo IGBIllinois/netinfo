@@ -83,13 +83,13 @@ class device {
 
 	}
 	
-	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$domain,$modified_by) {
+	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$modified_by) {
 		$message = "";
 		$error = 0;
 		if (($aname == $this->get_aname()) && ($hardware == $this->get_hardware()) && ($user == $this->get_user()) &&
 			($email == $this->get_email()) && ($room == $this->get_room()) && ($description == $this->get_description()) &&
 			($serial_number == $this->get_serial_number()) && ($property_tag == $this->get_property_tag()) &&
-			($os == $this->get_os()) && ($domain == $this->get_domain())) 
+			($os == $this->get_os())) 
 		{
 			$error = 1;
 			$message .= "<div class='alert'>No changes were made</div>";	
@@ -136,7 +136,6 @@ class device {
 			}
 		}
 		if ($error == 0) {
-			$domain_obj = new domain($this->db,$domain);
 			
 			$sql = "UPDATE namespace SET ";
 			$sql .= "aname='" . $aname . "',";
@@ -148,10 +147,10 @@ class device {
                 	$sql .= "description='" . $description . "',";
 	                $sql .= "serial_number='" . $serial_number . "',";
 	                $sql .= "property_tag='" . $property_tag . "', ";
-			$sql .= "modifiedby='" . $modified_by . "', ";
-			$sql .= "domain_id='" . $domain_obj->get_id() . "' ";
+			$sql .= "modifiedby='" . $modified_by . "' ";
 	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
         	        $sql .= "LIMIT 1";
+			echo $sql;
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success'>Device Successfully Updated</div>";

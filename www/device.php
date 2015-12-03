@@ -19,7 +19,6 @@ if (isset($_POST['ipnumber'])) {
         $serial_number = $_POST['serial_number'];
         $property_tag = $_POST['property_tag'];
         $device_os = $_POST['os'];
-	$domain = $_POST['domain'];
 }
 
 if (isset($_POST['delete'])) {
@@ -51,7 +50,7 @@ elseif (isset($_POST['update'])) {
         }
         $result = $device->update($aname,$hardware,$user,
                         $email,$room,$description,
-                        $serial_number,$property_tag,$device_os,$domain,$session->get_var('username'));
+                        $serial_number,$property_tag,$device_os,$session->get_var('username'));
 	if ($result['RESULT']) {
 	        unset($_POST);
 	}
