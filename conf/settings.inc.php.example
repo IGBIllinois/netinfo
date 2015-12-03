@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","2.07");
+define("__VERSION__","2.08");
 define("__TITLE__","");
 define("__SESSION_NAME__","netinfo");
 define("__SESSION_TIMEOUT__",3600);
