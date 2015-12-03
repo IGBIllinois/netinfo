@@ -150,7 +150,6 @@ class device {
 			$sql .= "modifiedby='" . $modified_by . "' ";
 	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
         	        $sql .= "LIMIT 1";
-			echo $sql;
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success'>Device Successfully Updated</div>";
