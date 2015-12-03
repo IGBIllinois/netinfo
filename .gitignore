@@ -2,5 +2,5 @@
 /bin/updateDuplicity.sh
 /bin/updateNetsvc2.sh
 /bin/macfinder.pl
-/bin/master.sh
+/bin/netupdate.sh
 
