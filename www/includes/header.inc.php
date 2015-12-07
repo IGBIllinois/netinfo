@@ -30,7 +30,8 @@
 			<div class='span3 well'>
 				<div class='sidebar-nav'>
 					<ul class='nav nav-list'>
-
+					<li><a href='index.php'>All Networks</a></li>
+					<li class='divider'></li>
 					<?php echo $nav_html; ?>
 						<li class='divider'></li>
 						<li><a href='hardware.php'>Mac Addresses</a></li>

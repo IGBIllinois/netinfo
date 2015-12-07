@@ -51,6 +51,8 @@ class device {
 	public function get_switch() { return $this->switch; }
 	public function get_port() { return $this->port; }
 	public function get_domain() { return $this->domain; }
+	public function get_network() { return $this->network; }
+
 	public function delete($modified_by) {
 		$sql = "UPDATE namespace ";
 		$sql .= "SET aname='spare',";
@@ -103,7 +105,7 @@ class device {
 				$error = 1;
 			}
 			elseif (!$this->unique_aname($aname)) {
-				$message .= "<div class='alert alert-error'>Hostname " . $aname . " already exists in database</div>";
+				$message .= "<div class='alert alert-error'>Hostname " . $aname . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
 				$error = 1;
 		
 			}
@@ -115,7 +117,7 @@ class device {
 			}
 			elseif (!$this->unique_hardware($hardware)) {
 				$message .= "<div class='alert alert-error'>Hardware Address ";
-				$message .= $hardware . " already exists in database</div";
+				$message .= $hardware . " already exists on network <strong>" . $this->get_network() . "</strong></div";
 				$error = 1;
 			}
 			if (!$this->verify_user($user)) {
@@ -172,7 +174,7 @@ class device {
 		}
 		elseif (!$this->unique_alias($alias)) {
 			$error = 1;
-			$message = "<div class='alert alert-error'>Hostname " . $alias . " already exists in database</div>";
+			$message = "<div class='alert alert-error'>Hostname " . $alias . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
 			$result = false;
 
 		}
@@ -308,9 +310,13 @@ class device {
 
 	private function unique_aname($aname) {
 		$sql = "SELECT count(1) as count FROM namespace ";
+		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
+                $sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";	
 		$sql .= "WHERE (aname='" . $aname . "' AND ";
-		$sql .= "ipnumber<>'" . $this->get_ipnumber() . "') ";
-		$sql .= "OR FIND_IN_SET('" . $aname . "',alias) ";
+		$sql .= "domains.name='" . $this->get_domain() . "' AND ";
+		$sql .= "namespace.ipnumber<>'" . $this->get_ipnumber() . "') ";
+		$sql .= "OR (FIND_IN_SET('" . $aname . "',namespace.alias) AND ";
+		$sql .= "domains.name='" . $this->get_domain() . "') ";
 		$result = $this->db->query($sql);
 		if ($result[0]['count']) {
 			return false;
@@ -321,8 +327,12 @@ class device {
 	private function unique_alias($alias) {
                 $alias = strtolower($alias);
                 $sql = "SELECT count(1) as count FROM namespace ";
-                $sql .= "WHERE aname='" . $alias . "' ";
-                $sql .= "OR FIND_IN_SET('" . $alias . "',alias) ";
+		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
+		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";
+                $sql .= "WHERE (aname='" . $alias . "' AND ";
+		$sql .= "domains.name='" . $this->get_domain() . "') ";
+                $sql .= "OR (FIND_IN_SET('" . $alias . "',alias) AND ";
+		$sql .= "domains.name='" . $this->get_domain() . "')";
                 $result = $this->db->query($sql);
                 if ($result[0]['count']) {
                         return false;
@@ -339,8 +349,10 @@ class device {
 		}
 		else {
 			$sql = "SELECT count(1) as count FROM namespace ";
+			$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
 			$sql .= "WHERE hardware='" . $hardware . "' AND ";
-			$sql .= "ipnumber<>'" . $this->get_ipnumber() . "'";
+			$sql .= "ipnumber<>'" . $this->get_ipnumber() . "' AND ";
+			$sql .= "networks.name='" . $this->get_network() . "'";
 			$result = $this->db->query($sql);
 			if ($result[0]['count']) {
 				return false;
