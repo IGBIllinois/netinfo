@@ -122,6 +122,7 @@ class network {
                 if (count($reservations)) {
                         foreach ($reservations as $reservation) {
                                 $reservation_txt .= "\thost " . $reservation['aname'] . " {\n";
+				$reservation_txt .= "\t\toption host-name \"" . $reservation['aname'] . "\";\n";
                                 $reservation_txt .= "\t\thardware ethernet " . $this->format_hardware_address($reservation['hardware']) . ";\n";
                                 $reservation_txt .= "\t\tfixed-address " . $reservation['ipnumber'] . ";\n";
                                 $reservation_txt .= "\t}\n";

@@ -10,6 +10,7 @@ class domain {
 	private $enabled;
 	private $header;
 	private $options;
+	private $name;
 	private $last_updated;
 	private $alt_names = array();
 	private $serial_variable = "[SERIAL]";
