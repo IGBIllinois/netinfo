@@ -38,7 +38,7 @@ class network {
 	public function get_last_updated() { return $this->last_updated; }
 
 
-	public function update_dhcpd($directory) {
+	public function update_dhcpd($directory,$verify_config = true) {
                 $valid = false;
                 $error = false;
                 $message = "";
@@ -57,9 +57,9 @@ class network {
                         $dhcpd_conf = $this->build_dhcpd_conf();
                         $filename = $directory . "/" . $this->get_name() . ".conf";
                         functions::write_file($dhcpd_conf,$filename);
-			$valid = $this->verify_dhcpd_conf($filename);
-			if ($valid) {
-                        	$message = "DHCP successfully updated for " . $this->get_name() . " to " . $filename . "\n";
+			$valid_conf = $this->verify_dhcpd_conf($filename);
+			if (!$verify_config || $valid_conf ) {
+                       		$message = "DHCP successfully updated for " . $this->get_name() . " to " . $filename . "\n";
 			}
 			else {
 				$message = "Failed updating DHCP for " . $this->get_name() . "\n";
@@ -160,7 +160,6 @@ class network {
 
 
 	}
-
 
 
 

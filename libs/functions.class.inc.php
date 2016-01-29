@@ -25,23 +25,6 @@ class functions {
 		
 	}
 
-	public static function create_dhcp_conf($db,$network_name,$directory) {
-		$network = new network($db,$network_name);
-                $result = $network->update_dhcpd($directory);
-		return $result;
-
-
-	}
-
-	public static function create_bind_conf($db,$domain_name,$directory) {
-
-		$domain = new domain($db,$domain_name);
-		$result = $domain->update_bind($directory);
-		return $result;
-
-
-
-	}
 	public static function write_file($data,$filename) {
 		$handle = fopen($filename,"w");
 		$bytes = fwrite($handle,$data);
@@ -59,6 +42,7 @@ class functions {
 		return 32-log(($long ^ $base)+1,2);
 
 	}
+
 
 }
 

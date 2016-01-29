@@ -12,10 +12,22 @@ function my_autoloader($class_name) {
 }
 spl_autoload_register('my_autoloader');
 
+//Command parameters
+$output_command = "Usage: php dhcpd.php -n NETWORK NAME -d OUTPUT DIRECTORY -f\n";
+$output_command .= "   -n Name of the network.  Using 'ALL' will generate all network dhcp configs\n";
+$output_command .= "   -d Output directory (ie -d /etc/dhcp)\n";
+$output_command .= "   -c check dhcpd config syntax. Versions of dhcpd older than 4.0 will give errors with having seperated dhcpd configs for each network\n";
+
+//Parameters
+$shortopts = "";
+$shortopts .= "n:"; //-n required
+$shortopts .= "d:"; //-d required
+$shortopts .= "c::"; //-c is optional
+
 $sapi_type = php_sapi_name();
 //If run from command line
 if ($sapi_type != 'cli') {
-        echo "Error: This script can only be run from the command line.\n";
+        $message = "Error: This script can only be run from the command line.\n";
 }
 else {
 
@@ -23,39 +35,68 @@ else {
 	$network_name = "";
 	$directory = "";
 	$message = "";
-	if (isset($argv[1])) {
-		$network_name = $argv[1];
+	$options = getopt($shortopts);
+
+	//network parameter	
+	if (!isset($options['n']) || ($options['n'] == "")) {
+		$error = true;
+		$message .= "Error: Please specifiy a network name with the -n parameter\n";
 	}
-	if (isset($argv[2])) {
-		$directory = $argv[2];
+	else {
+		$network_name = $options['n'];
+
 	}
 
-	if ($network_name == "") {
+	//directory parameter
+	if (!isset($options['d']) || ($options['d'] == "")) {
 		$error = true;
-		$message = "Please enter a network name\n";
-	}	
-	elseif (!file_exists($directory) || $directory == "") {
-		$error = true;
-		$message = $directory . " does not exist\n";
-	}	
+		$message .= "Error: Please specify a directory with the -d parameter\n";
+	}
+	else {
+		$directory = $options['d'];
+                //remove trailing slash
+                if (substr($directory,-1) == "/") {
+                        $directory = substr($directory,0,-1);
+                }
+                //check directory exists
+                if (!file_exists($directory)) {
+                        $error = true;
+                        $message = "Error: " . $directory . " does not exist\n";
+                }
 
+
+	}
+
+	//verify config parameter
+	$verify_config = false;
+	if (isset($options['c'])) {
+		$verify_config = true;
+	}
+	
 	if (!$error) {
+
 		$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 		if ($network_name == 'ALL') {
 			$dhcp_enabled = 1;
 			$all_networks = functions::get_networks($db,$dhcp_enabled);
 			foreach ($all_networks as $network) {
-				$result = functions::create_dhcp_conf($db,$network['name'],$directory);
+				$network = new network($db,$network['name']);
+		                $result = $network->update_dhcpd($directory,$verify_config);
+
 				$message .= $result['MESSAGE'];
 			}
-
 		}
 		else {
-			$result = functions::create_dhcp_conf($db,$network_name,$directory);
-
-
+			$network = new network($db,$network_name);
+	                $result = $network->update_dhcpd($directory,$verify_conf);
+			$message .= $result['MESSAGE'];
 		}
 	}
-	echo $message;
+	else {
+		$message .= $output_command;
+	}
 }
+
+echo $message;
+
 ?>

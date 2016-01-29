@@ -11,37 +11,70 @@ function my_autoloader($class_name) {
         }
 }
 
+//Command parameters
+$output_command = "Usage: php bind.php -n DOMIAN NAME -d OUTPUT DIRECTORY -f\n";
+$output_command .= "   -n Domain name of the network.  Using 'ALL' will generate all domain bind configs\n";
+$output_command .= "   -d Output directory (ie -d /var/named/chroot/var/named)\n";
+$output_command .= "   -f force creation of bind config files. This will increment the domain serial number\n";
+
+
+//Parameters
+$shortopts = "";
+$shortopts .= "n:"; //-n required
+$shortopts .= "d:"; //-d required
+$shortopts .= "f::"; //-f is optional
+
 spl_autoload_register('my_autoloader');
 
 
 $sapi_type = php_sapi_name();
 //If run from command line
 if ($sapi_type != 'cli') {
-        echo "Error: This script can only be run from the command line.\n";
+        $message = "Error: This script can only be run from the command line.\n";
 }
+
 else {
 	$domain_name = "";
 	$directory = "";
 	$error = false;
 	$message = "";
-	if (isset($argv[1])) {
-		$domain_name = $argv[1];
-	}
-	if (isset($argv[2])) {
-		$directory = $argv[2];
-	}
 
-	if ($domain_name == "") {
+	$options = getopt($shortopts);
+
+        //domain name parameter
+        if (!isset($options['n']) || ($options['n'] == "")) {
                 $error = true;
-                $message .= "Please enter a domain name\n";
+		$message .= "Error: Please specify a domain name with the -n parameter\n";
         }
-	if ($directory == "") {
-		$message .= "Please enter a directory\n";
+        else {
+                $domain_name = $options['n'];
+
+        }
+
+        //directory parameter
+        if (!isset($options['d']) || ($options['d'] == "")) {
+                $error = true;
+		$message .= "Error: Please specify a directory with the -d parameter\n";
+        }
+        else {
+                $directory = $options['d'];
+                //remove trailing slash
+                if (substr($directory,-1) == "/") {
+                        $directory = substr($directory,0,-1);
+                }
+                //check directory exists
+                if (!file_exists($directory)) {
+                        $error = true;
+                        $message .= "Error: " . $directory . " does not exist\n";
+                }
+
+
+        }
+
+	$force_create = false;
+	if (isset($options['f'])) {
+		$force_create = true;
 	}
-        elseif (!file_exists($directory)) {
-                $error = true;
-                $message = $directory . " does not exist\n";
-        }
 
         if (!$error) {
 		$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
@@ -49,18 +82,22 @@ else {
                         $bind_enabled = 1;
                         $all_domains = functions::get_domains($db,$bind_enabled);
                         foreach ($all_domains as $domain) {
-                                $result = functions::create_bind_conf($db,$domain['name'],$directory);
-                                $message .= $result['MESSAGE'];
+			                $domain = new domain($db,$domain['name']);
+			                $result = $domain->update_bind($directory,$force_create);
+                                	$message .= $result['MESSAGE'];
                         }
 
                 }
                 else {
-                        $result = functions::create_bind_conf($db,$domain_name,$directory);
+			$domain = new domain($db,$domain_name);
+			$result = $domain->update_bind($directory,$force_create);
 			$message = $result['MESSAGE'];
 
                 }
         }
-        echo $message;
-	
+	else {
+		 $message .= $output_command;
+	}	
 }
+echo $message;
 ?>

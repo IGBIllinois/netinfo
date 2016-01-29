@@ -77,7 +77,7 @@ class domain {
         }
 
 
-        public function update_bind($directory) {
+        public function update_bind($directory,$force_create = false) {
                 $valid = true;
                 $error = false;
                 $message = "";
@@ -89,7 +89,7 @@ class domain {
                         $error = true;
                         $message = $directory . " is not writable\n";
                 }
-                elseif (strtotime($this->get_last_updated()) > strtotime($this->get_last_modified())) {
+                elseif (($force_create == false) && (strtotime($this->get_last_updated()) > strtotime($this->get_last_modified()))) {
                         $error = true;
                         $message = "No DNS updates needed for " . $this->get_name() . "\n";
                 }
