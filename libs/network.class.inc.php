@@ -56,15 +56,24 @@ class network {
                         $valid = true;
                         $dhcpd_conf = $this->build_dhcpd_conf();
                         $filename = $directory . "/" . $this->get_name() . ".conf";
-                        functions::write_file($dhcpd_conf,$filename);
-			$valid_conf = $this->verify_dhcpd_conf($filename);
-			if (!$verify_config || $valid_conf ) {
-                       		$message = "DHCP successfully updated for " . $this->get_name() . " to " . $filename . "\n";
+                        if (!functions::write_file($dhcpd_conf,$filename)) {
+				$valid = false;
+				$message .= "Failed writing file " . $filename . "\n";
 			}
 			else {
-				$message = "Failed updating DHCP for " . $this->get_name() . "\n";
+				$valid_conf = $this->verify_dhcpd_conf($filename);
+				if (!$verify_config && !$valid_conf ) {
+					$valid = false;
+					$message .= "Invalid DHCP config file " . $filename . "\n";
+				}
 			}
                 }
+		if ($valid) {
+                                $message .= "DHCP successfully updated for " . $this->get_name() . " to " . $filename . "\n";
+                        }
+                        else {
+                                $message .= "Failed updating DHCP for " . $this->get_name() . "\n";
+                        }
 
                 return array('RESULT'=>$valid,'MESSAGE'=>$message);
 

@@ -23,6 +23,8 @@ class device {
 	private $port;
 	private $domain;
 	private $network;
+
+	const hostname_length = 20;
         ////////////////Public Functions///////////
 
         public function __construct($db,$ipnumber = 0) {
@@ -101,7 +103,7 @@ class device {
 			if (!$this->verify_hostname($aname)) {
 				$message .= "<div class='alert alert-error'>Invalid hostname. ";
 				$message .= "Hostname can contain only lowercase letters, numbers, and hyphens. ";
-				$message .= "Maximum length is 20 characters. It can not contain the word 'spare'.</div>";
+				$message .= "Maximum length is " . $this::hostname_length . " characters. It can not contain the word 'spare'.</div>";
 				$error = 1;
 			}
 			elseif (!$this->unique_aname($aname)) {
@@ -165,20 +167,39 @@ class device {
 	}
 	public function add_alias($alias,$modified_by) {
 		$message = "";
-		$error = 0;
-		if (!$this->verify_hostname($alias)) {
-			$error = 1;
+		$result = true;
+		$number_periods = substr_count($alias,".");
+		if ($number_periods > 1) {
+                        $message = "<div class='alert alert-error'>Invalid Alias Name. ";
+                        $message .= "Alias can contain only one subdomain.</div>";
+                        $result = false;
+
+		}
+		elseif ($number_periods == 1) {
+			$hostnames = explode(".",$alias);
+			foreach ($hostnames as $host) {
+				if (!$this->verify_hostname($host)) {
+		                        $message = "<div class='alert alert-error'>Invalid Alias Name. ";
+                		        $message .= "Alias can contain only lowercase letters, numbers, and hyphens. here</div>";
+		                        $result = false;
+
+				}
+
+			}
+
+		}
+		elseif ((!$number_periods) && (!$this->verify_hostname($alias))) {
 			$message = "<div class='alert alert-error'>Invalid Alias Name. ";
 			$message .= "Alias can contain only lowercase letters, numbers, and hyphens.</div>";
 			$result = false;
 		}
-		elseif (!$this->unique_alias($alias)) {
-			$error = 1;
+		
+		if (!$this->unique_alias($alias)) {
 			$message = "<div class='alert alert-error'>Hostname " . $alias . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
 			$result = false;
 
 		}
-		if ($error == 0) {
+		if ($result) {
 			$alias_array = $this->get_alias();
 			array_push($alias_array,$alias);
 			$alias_string = implode(",",$alias_array);
@@ -272,7 +293,7 @@ class device {
 		elseif (preg_match('/spare/',$hostname)) {
 			$valid = 0;
 		}
-		elseif (strlen($hostname) > 20) {
+		elseif (strlen($hostname) > $this::hostname_length) {
 			$valid = 0;
 		}
 		elseif (strpos($hostname,"spare")) {

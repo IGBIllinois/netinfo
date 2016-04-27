@@ -26,11 +26,21 @@ class functions {
 	}
 
 	public static function write_file($data,$filename) {
-		$handle = fopen($filename,"w");
-		$bytes = fwrite($handle,$data);
-		fclose($handle);
-		if ($bytes) {
-			return true;
+		$valid = true;
+		if ((file_exists($filename)) && (!is_writable($filename))) {
+			$valid = false;
+		}
+		elseif (!is_writeable(dirname($filename))) {
+			$valid = false;
+		}
+
+		if ($valid) {
+			$handle = fopen($filename,"w");
+			$bytes = fwrite($handle,$data);
+			fclose($handle);
+			if ($bytes) {
+				return true;
+			}
 		}
 		return false;
 

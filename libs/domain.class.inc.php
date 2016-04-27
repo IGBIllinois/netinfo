@@ -102,7 +102,10 @@ class domain {
 			$domain_name = $this->get_name();	
                         $bind_conf = $this->build_bind_conf($domain_name);
                         $filename = $directory . "/db." . $domain_name;
-                        functions::write_file($bind_conf,$filename);
+                        if (!functions::write_file($bind_conf,$filename)) {
+				$valid = false;
+				$message .= "Failed writing file " . $filename . "\n";
+			}
 			
 			$verify = $this->verify_zone_file($domain_name,$filename);
 			if (!$verify) {
@@ -115,7 +118,10 @@ class domain {
 				foreach ($this->get_alt_names() as $domain_name) {
 					$bind_conf = $this->build_bind_conf($domain_name);
 					$filename = $directory . "/db." . $domain_name;
-		                        functions::write_file($bind_conf,$filename);
+		                        if (!functions::write_file($bind_conf,$filename)) {
+						$valid = false;
+						$message .= "Failed writing file " . $filename . "\n";
+					}
 					$verify = $this->verify_zone_file($domain_name,$filename);
         	                        if (!$verify) {
                 	                        $valid = false;
@@ -133,7 +139,10 @@ class domain {
                                 $reverse_network = implode('.', array_reverse($parts));
 				$reverse_txt = $this->build_bind_header($network) . "\n\n" . $reverse_txt;	
 				$filename = $directory . "/db." . $reverse_network;
-				functions::write_file($reverse_txt,$filename);
+				if (!functions::write_file($reverse_txt,$filename)) {
+					$valid = false;
+					$message .= "Failed writing file " . $filename . "\n";
+				}
 				$verify = $this->verify_zone_file($network,$filename);
 				if (!$verify) {
 					$valid = false;
