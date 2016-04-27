@@ -62,7 +62,7 @@ class network {
 			}
 			else {
 				$valid_conf = $this->verify_dhcpd_conf($filename);
-				if (!$verify_config && !$valid_conf ) {
+				if ($verify_config && !$valid_conf ) {
 					$valid = false;
 					$message .= "Invalid DHCP config file " . $filename . "\n";
 				}
