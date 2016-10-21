@@ -24,7 +24,7 @@ class device {
 	private $domain;
 	private $network;
 
-	const hostname_length = 20;
+	const hostname_length = 35;
         ////////////////Public Functions///////////
 
         public function __construct($db,$ipnumber = 0) {

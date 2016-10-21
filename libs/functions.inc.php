@@ -28,7 +28,7 @@ function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",
 	}
 	if (($start_date != "") && ($end_date != "")) {
 		if (($start_date == 0) && ($end_date == 0)) {
-			$last_seen_sql = "(a.last_seen IS NULL) ";
+			$last_seen_sql = "(a.last_seen IS NULL) AND namespace.aname !='spare' ";
 		}
 		elseif ($end_date == 0) {
 			$last_seen_sql = "(DATE(a.last_seen) <= DATE('" . $start_date . "')) ";
