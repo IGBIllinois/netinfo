@@ -10,7 +10,11 @@
 //
 ////////////////////////////////////
 
+<<<<<<< HEAD
 define("__VERSION__","2.12");
+=======
+define("__VERSION__","2.11");
+>>>>>>> 6dfcdaa20487a64b8e2189549ddd00a618715778
 define("__TITLE__","");
 define("__SESSION_NAME__","netinfo");
 define("__SESSION_TIMEOUT__",3600);
