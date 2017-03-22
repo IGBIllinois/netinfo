@@ -109,7 +109,9 @@ class network {
 
                 $dhcpd_conf = "subnet " . $this->get_network_number() . " netmask " . $this->get_netmask() . " {\n";
 		if ($this->get_options() != "") {
-                	$dhcpd_conf .= "\n\t" . $this->get_options();
+                	$safe_options = str_replace( "\r", "", $this->get_options());
+			$dhcpd_conf .= "\n\t" . $safe_options;
+		
 		}
                 $dhcpd_conf .= "\n\n";
                 $dhcpd_conf .= $this->get_reservations();

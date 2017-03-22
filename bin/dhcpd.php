@@ -88,7 +88,7 @@ else {
 		}
 		else {
 			$network = new network($db,$network_name);
-	                $result = $network->update_dhcpd($directory,$verify_conf);
+	                $result = $network->update_dhcpd($directory,$verify_config);
 			$message .= $result['MESSAGE'];
 		}
 	}

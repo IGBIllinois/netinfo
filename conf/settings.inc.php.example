@@ -10,15 +10,12 @@
 //
 ////////////////////////////////////
 
-<<<<<<< HEAD
-define("__VERSION__","2.12");
-=======
-define("__VERSION__","2.11");
->>>>>>> 6dfcdaa20487a64b8e2189549ddd00a618715778
+define("__VERSION__","2.13");
 define("__TITLE__","");
 define("__SESSION_NAME__","netinfo");
 define("__SESSION_TIMEOUT__",3600);
 define("__COUNT__",30);
+
 //////////Mysql Settings//////////////
 define("__MYSQL_HOST__","");
 define("__MYSQL_USER__","");

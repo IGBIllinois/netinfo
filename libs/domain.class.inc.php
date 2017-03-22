@@ -55,7 +55,8 @@ class domain {
 	//build_bind_header()
 	//builds the header file that goes at the top of a zone file.
 	public function build_bind_header() {
-		$bind_conf = $this->get_header();
+		//$bind_conf = $this->get_header();
+		$bind_conf = str_replace( "\r", "", $this->get_header());
                 //Replace variables for [SERIAL]
                 $search = array($this->serial_variable);
                 $replace = array($this->get_serial());
