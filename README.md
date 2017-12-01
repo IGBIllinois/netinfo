@@ -1,8 +1,8 @@
-#Netinfo Database
+# Netinfo Database
 
 Netinfo keeps track of dhcp reservations for multiple networks and can then autogenerate the dhcpd and bind configuration files
 
-#Requirements
+# Requirements
 * Mysql
 * PHP
 * Apache
@@ -10,7 +10,7 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 * Bind Name Server
 * LDAP to login
 
-#Installation
+# Installation
 * git clone https://github.com/IGB-UIUC/netinfo
 * Create mysql database and mysql user which has insert,update,select,delete privileges on the database
 * Import sql files from the sql directory
@@ -19,7 +19,7 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 * Copy /conf/settings.inc.php.original to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server
 
-#Initial Setup
+# Initial Setup
 * Create domains in the domains table manual.
 ```INSERT INTO domains(name,alt_names,serial) VALUES('example.com','example.net',1);
 * Create networks in the networks table manual.
