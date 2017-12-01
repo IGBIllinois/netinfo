@@ -1,6 +1,7 @@
 <?php
 set_include_path(get_include_path() . ':../libs');
 require_once '../conf/settings.inc.php';
+require_once '../vendor/autoload.php';
 require_once 'functions.inc.php';
 
 function my_autoloader($class_name) {
