@@ -11,8 +11,8 @@
 //
 //////////////////////////////////////////
 
-include_once 'includes/main.inc.php';
-include_once 'authenticate.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'authenticate.inc.php';
 
 $session = new session(__SESSION_NAME__);
 if (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
@@ -31,9 +31,5 @@ else {
 	$session_vars = array('timeout'=>time());
 	$session->set_session($session_vars);	
 }
-
-
-
-
 
 ?>

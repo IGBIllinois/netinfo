@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/header.inc.php';
 
 $count = __COUNT__;
 $start = 0;
@@ -89,5 +89,5 @@ for ($i=$start;$i<$start+$count;$i++) {
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

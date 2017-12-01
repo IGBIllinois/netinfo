@@ -52,5 +52,5 @@ $domain = new domain($db,$selected_domain);
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>
