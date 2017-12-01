@@ -122,8 +122,22 @@ for ($i=$start;$i<$start+$count;$i++) {
 </table>
 <?php echo $pages_html; ?>
 
+<form class='form-inline' action='report.php' method='post'>
+        <input type='hidden' name='network' value='<?php echo $network; ?>'> 
+	<input type='hidden' name='search' value='<?php echo $search; ?>'>
+	<input type='hidden' name='exact' value='<?php echo $exact; ?>'> 
+	<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
+	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
+	<select name='report_type' class='input-medium'>
+                <option value='xls'>Excel 2003</option>
+                <option value='xlsx'>Excel 2007</option>
+                <option value='csv'>CSV</option>
+        </select> 
+<input class='btn btn-primary' type='submit' name='create_report' value='Download Report'>
+</form>
+
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

@@ -9,8 +9,8 @@
 //
 ///////////////////////////////////
 
-include_once 'includes/main.inc.php';
-include_once 'authenticate.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'authenticate.inc.php';
 
 
 $message = "";
@@ -95,4 +95,4 @@ if (isset($_POST['login'])) {
 					echo $message;
 } ?>
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>
