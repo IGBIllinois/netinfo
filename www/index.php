@@ -32,7 +32,7 @@ if ((isset($_GET['start_date'])) && (isset($_GET['end_date']))) {
 	$end_date = $_GET['end_date'];
 }
 $count = __COUNT__;
-$devices = get_devices($db,$network,$search,$exact,$start_date,$end_date);
+$devices = functions::get_devices($db,$network,$search,$exact,$start_date,$end_date);
 $num_devices = count($devices);
 $pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search . "&exact=" . $exact;
 if ($network != "") {
@@ -41,7 +41,7 @@ if ($network != "") {
 if (($start_date != "") && ($end_date != "")) {
 	$pages_url .= "&start_date=" . $start_date . "&end_date=" . $end_date;
 }
-$pages_html = get_pages_html($pages_url,$num_devices,$start,$count);
+$pages_html = functions::get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
 for ($i=$start;$i<$start+$count;$i++) {
@@ -54,7 +54,7 @@ for ($i=$start;$i<$start+$count;$i++) {
 		else {
 			$devices_html .= "<tr>";
 		}
-		$last_seen = get_last_seen($devices[$i]['last_seen']);
+		$last_seen = functions::get_last_seen($devices[$i]['last_seen']);
 		if ($last_seen == 1) {
 			$devices_html .= "<td><span class='badge badge-success'>&nbsp</span></td>";
 		}

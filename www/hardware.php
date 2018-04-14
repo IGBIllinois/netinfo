@@ -11,17 +11,17 @@ $search = "";
 if (isset($_GET['search'])) {
         $search = $_GET['search'];
 }
-$devices = get_hardware_addresses($db,$search);
+$devices = functions::get_hardware_addresses($db,$search);
 $num_devices = count($devices);
 $pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
-$pages_html = get_pages_html($pages_url,$num_devices,$start,$count);
+$pages_html = functions::get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
 for ($i=$start;$i<$start+$count;$i++) {
         if (array_key_exists($i,$devices)) {
 		$devices_html .= "<tr>";
 
-                $last_seen = get_last_seen($devices[$i]['last_seen']);
+                $last_seen = functions::get_last_seen($devices[$i]['last_seen']);
                 if ($last_seen == 1) {
                         $devices_html .= "<td><span class='badge badge-success'>&nbsp</span></td>";
                 }

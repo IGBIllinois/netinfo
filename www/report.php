@@ -10,7 +10,7 @@ if (isset($_POST['create_report'])) {
 	$start_date = $_POST['start_date'];
 	$end_date = $_POST['end_date'];
 	$type = $_POST['report_type'];
-	$data = get_devices($db,$network,$search,$exact,$start_date,$end_date);
+	$data = functions::get_devices($db,$network,$search,$exact,$start_date,$end_date);
 	$filename = "report." . $type; 
 }
 

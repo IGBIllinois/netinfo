@@ -103,7 +103,7 @@ if (count($aliases)) {
 else {
 	$alias_html = "<tr><td colspan='2'>None</td></tr>";
 }
-$os = get_operating_systems($db);
+$os = functions::get_operating_systems($db);
 $os_html = "<select name='os'>";
 $os_exist = false;
 foreach ($os as $var) {
