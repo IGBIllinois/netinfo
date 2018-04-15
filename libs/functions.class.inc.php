@@ -59,7 +59,7 @@ class functions {
 		$where_sql = array();
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
 		$sql .= "LOWER(namespace.hardware) as hardware, namespace.name as user, ";
-		$sql .= "namesppublic static ace.email, namespace.room, namespace.os, ";
+		$sql .= "namespace.email, namespace.room, namespace.os, ";
 		$sql .= "namespace.description, namespace.serial_number, namespace.alias, ";
 		$sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
 		$sql .= "a.switch, a.port, a.last_seen ";

@@ -12,7 +12,6 @@ function my_autoloader($class_name) {
 spl_autoload_register('my_autoloader');
 
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-
 $networks = functions::get_networks($db);
 
 $nav_html = "";

@@ -25,6 +25,10 @@ class db {
 	////////////////Public Functions///////////
 
 	public function __construct($host,$database,$username,$password) {
+
+		ini_set('mysql.connect_timeout', 300);
+		ini_set('default_socket_timeout', 300);
+		ini_set('mysqlnd.net_read_timeout',300);
 		$this->open($host,$database,$username,$password);
 
 
@@ -44,15 +48,17 @@ class db {
 	//opens a connect to the database
 	public function open($host,$database,$username,$password,$port = 3306) {
 		//Connects to database.
-		$this->link = mysql_connect($host .":" . $port,$username,$password);
-		if ($this->link) {
-			@mysql_select_db($database,$this->link) or die("Unable to select database " . $database);
+		try {
+			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,array());
+
 			$this->host = $host;
 			$this->database = $database;
 			$this->username = $username;
 			$this->password = $password;
+
 		}
-		else { return false;
+		catch(PDOException $e) {
+			echo $e->getMessage();
 		}
 
 	}
@@ -60,21 +66,18 @@ class db {
 	//close()
 	//closes database connection
 	public function close() {
-		if ($this->link) {
-			mysql_close($this->link);
-		}
+		$this->link = null;
 	}
 
 	//insert_query()
 	//$sql - sql string to run on the database
 	//returns the id number of the new record, 0 if it fails
 	public function insert_query($sql) {
-		if (mysql_query($sql,$this->link)) {
-			return mysql_insert_id($this->link);
+		$result = $this->link->exec($sql);
+		if ($result === false) {
+			functions::log("INSERT ERROR: " . $sql);
 		}
-		else {
-			return 0;
-		}
+		return $this->link->lastInsertId();
 
 	}
 
@@ -90,11 +93,11 @@ class db {
 		foreach ($data as $key=>$value) {
 			if ($count == 0) {
 				$columns_sql .= $key;
-				$values_sql .= "'" . mysql_real_escape_string($value,$this->get_link()) . "'";
+				$values_sql .= "'" . $value . "'";
 			}
 			else {
 				$columns_sql .= "," . $key;
-				$values_sql .= ",'" . mysql_real_escape_string($value,$this->get_link()) . "'";
+				$values_sql .= ",'" . $value . "'";
 			}
 
 			$count++;
@@ -104,13 +107,14 @@ class db {
 		$sql = $sql . $columns_sql . " " . $values_sql;
 		return $this->insert_query($sql);
 	}
-	
+
 	//non_select_query()
 	//$sql - sql string to run on the database
 	//For update and delete queries
 	//returns true on success, false otherwise
 	public function non_select_query($sql) {
-		return mysql_query($sql,$this->link);
+		$result = $this->link->exec($sql);
+		return $result;
 	}
 
 	//query()
@@ -118,43 +122,33 @@ class db {
 	//Used for SELECT queries
 	//returns an associative array of the select query results.
 	public function query($sql) {
-		$result = mysql_query($sql,$this->link);
-		return $this->mysqlToArray($result);
+		$result = $this->link->query($sql);
+		return $result->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	//query_single()
-	//$sql - sql string to run on the database
-	//$row - row to retrieve
-	//$field - column to retrieve
-	//returns a single value from the specified row and field.
-	public function query_single($sql,$row,$field) {
-		$result = mysql_query($sql,$this->link);
-		return mysql_result($result,$row,$field);
-
-	}
 	//getLink
 	//returns the mysql resource link
 	public function get_link() {
 		return $this->link;
 	}
 
-	/////////////////Private Functions///////////////////
-
-	//mysqlToArray
-	//$mysqlResult - a mysql result
-	//returns an associative array of the mysql result.
-	private function mysqlToArray($mysqlResult) {
-		$dataArray = array();
-		$i =0;
-		while($row = mysql_fetch_array($mysqlResult,MYSQL_ASSOC)){
-			foreach($row as $key=>$data) {
-				$dataArray[$i][$key] = $data;
-			}
-			$i++;
+	//ping
+	//pings the mysql server to see if connection is alive
+	//returns true if alive, false otherwise
+	public function ping() {
+		if ($this->link->getAttribute(PDO::ATTR_CONNECTION_STATUS)) {
+			return true;
 		}
-		return $dataArray;
+		return false;
+
 	}
 
-}
+	public function transaction($sql) {
+		$this->link->beginTransaction();
+		$result = $this->link->exec($sql);
+		$this->link->commit();
+		return $result;
 
+	}
+}
 ?>
