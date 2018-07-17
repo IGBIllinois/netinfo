@@ -5,9 +5,15 @@ if (file_exists('../conf/settings.inc.php')) {
 	require_once '../conf/settings.inc.php';
 }
 else {
-	echo "/conf/settings.inc.php does not exist";
+	echo "<br>/conf/settings.inc.php does not exist";
 }
-require_once '../vendor/autoload.php';
+
+if (file_exists('../vendor/autoload.php')) {
+	require_once '../vendor/autoload.php';
+}
+else {
+	echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
+}
 
 function my_autoloader($class_name) {
 	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
