@@ -1,5 +1,0 @@
-order deny,allow
-#deny from all
-#allow from 128.174.124.0/22
-#allow from 128.174.50.0/24
-allow from all

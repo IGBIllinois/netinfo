@@ -7,6 +7,6 @@
 		"components/bootstrap": "2.3.2"
 	},
 	"config": {
-		"component-dir": "www/vendor/components"
+		"component-dir": "html/vendor/components"
 	}
 }
