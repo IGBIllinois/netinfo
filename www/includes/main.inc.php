@@ -1,6 +1,12 @@
 <?php
 set_include_path(get_include_path() . ':../libs');
-require_once '../conf/settings.inc.php';
+
+if (file_exists('../conf/settings.in.php')) {
+	require_once '../conf/settings.inc.php';
+}
+else {
+	echo "/conf/settings.inc.php does not exist";
+}
 require_once '../vendor/autoload.php';
 
 function my_autoloader($class_name) {
