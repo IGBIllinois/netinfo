@@ -4,5 +4,5 @@
 /bin/macfinder.pl
 /bin/netupdate.sh
 /vendor
-/www/vendor
+/html/vendor
 composer.lock
