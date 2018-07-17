@@ -1,7 +1,7 @@
 <?php
 set_include_path(get_include_path() . ':../libs');
 
-if (file_exists('../conf/settings.in.php')) {
+if (file_exists('../conf/settings.inc.php')) {
 	require_once '../conf/settings.inc.php';
 }
 else {
