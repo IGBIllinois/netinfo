@@ -123,9 +123,9 @@ $os_html .= "</select>";
 ?>
 <form method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?ipnumber=" . $device->get_ipnumber(); ?>'>
 <input type='hidden' name='ipnumber' value='<?php echo $device->get_ipnumber(); ?>'>
-<div class='span5'>
+<div class='col-md-5 col-lg-5 col-xl-5'>
 <h4>Device Information</h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-bordered table-sm table-striped '>
 <tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
 <tr><td>Name (ANAME)</td><td><input class='input' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
 <tr><td>Domain</td><td><?php echo $device->get_domain(); ?></td></tr>
@@ -142,9 +142,9 @@ $os_html .= "</select>";
 <tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>
 </table>
 </div>
-<div class='span5'>
+<div class='col-md-5 col-lg-5 col-xl-5'>
 <h4>Location</h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-bordered table-sm table-striped '>
 	<thead>
 		<th>Last Seen</th>
 		<th>Switch</th>
@@ -153,9 +153,9 @@ $os_html .= "</select>";
 	<?php echo $locations_html; ?>
 </table>
 </div>
-<div class='span5'>
+<div class='col-md-5 col-lg-5 col-xl-5'>
 <h4>Aliases</h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-bordered table-sm table-striped '>
 	<thead>
 		<th colspan='2'>Alias (CNAME)</th>
 	</thead>
@@ -171,7 +171,7 @@ $os_html .= "</select>";
 </table>
 
 </div>
-<div class='span8'>
+<div class='col-md-8 col-lg-8 col-xl-8'>
 <input class='btn btn-primary' type='submit' value='Update' name='update' onClick='return confirm_update()'>
 <input class='btn btn-warning' type='submit' value='Cancel' name='cancel'>
 <?php if ($device->get_aname() != 'spare') {
@@ -180,7 +180,7 @@ echo "<input class='btn btn-danger' type='submit' value='Delete' name='delete' o
 ?>
 </div>
 </form>
-<div class='span10'>
+<div class='col-md-10 col-lg-10 col-xl-10'>
 <p>
 <?php
 if (isset($result['MESSAGE'])) {

@@ -213,36 +213,35 @@ class functions {
 		
 		}
 	
-		$pages_html = "<div class='pagination pagination-centered'><ul>";
-
+		$pages_html = "<nav><ul class='pagination'>";
 		if ($current_page > 1) {
 			$start_record = $start - $count;
-			$pages_html .= "<li><a href='" . $url . $start_record . "'>&laquo;</a></li> ";
+			$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&laquo;</a></li> ";
 		}
 		else {
-			$pages_html .= "<li class='disabled'><a href='#'>&laquo;</a></li>";
+			$pages_html .= "<li class='page-item disabled'><a class='page-link' href='#'>&laquo;</a></li>";
 		}
 		
 		for ($i=0; $i<$num_pages; $i++) {
 			$start_record = $count * $i;
 			if ($i == $current_page - 1) {
-				$pages_html .= "<li class='disabled'>";
+				$pages_html .= "<li class='page-item disabled'>";
 			}
 			else {
-				$pages_html .= "<li>";
+				$pages_html .= "<li class='page-item'>";
 			}
 			$page_number = $i + 1;
-			$pages_html .= "<a href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
+			$pages_html .= "<a class='page-link' href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
 		}
 
 		if ($current_page < $num_pages) {
 			$start_record = $start + $count;
-			$pages_html .= "<li><a href='" . $url . $start_record . "'>&raquo;</a></li> ";
+			$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&raquo;</a></li> ";
 		}
 		else {
-			$pages_html .= "<li class='disabled'><a href='#'>&raquo;</a></li>";
+			$pages_html .= "<li class='page-item disabled'><a href='#'>&raquo;</a></li>";
 		}
-		$pages_html .= "</ul></div>";
+		$pages_html .= "</ul></nav>";
 		return $pages_html;
 
 	}

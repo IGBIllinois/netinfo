@@ -35,21 +35,16 @@ foreach ($networks as $network) {
 	$cidr = functions::mask2cidr($network['netmask']);
 	$nav_html .= "<div class='accordion-group'>";
 	$nav_html .= "<div class='accordion-heading'>";
-	$nav_html .= "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse$i'>";
-	$nav_html .= "<i class='icon-chevron-right'></i> " . $network['name'] . " - " . $network['network'] . "/" . $cidr . "</a></div>";
+	$nav_html .= "<a class='nav-link accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse$i'>";
+	$nav_html .= "<i class='fa fa-caret-right'></i> " . strtoupper($network['name']) . " - " . $network['network'] . "/" . $cidr . "</a></div>";
 	$nav_html .= "<div id='collapse$i' class='accordion-body collapse'><div class='accordion-inner'>";
-	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>";
-	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&search=spare&exact=1'>Spares</a></li>";
-	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=" . date('Y:m:d',strtotime("-6 month",time())) . "&end_date=0'>Older Than 6 Months Devices</a></li>";
-	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=0&end_date=0'>Never Seen Devices</a></li></div></div>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link'  href='index.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='index.php?network=" . $network['network'] . "/" . $cidr . "&search=spare&exact=1'>Spares</a></li>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=" . date('Y:m:d',strtotime("-6 month",time())) . "&end_date=0'>Older Than 6 Months Devices</a></li>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=0&end_date=0'>Never Seen Devices</a></li></div></div>";
 	$nav_html .= "</div>";
 
 	$i++;
-//	$nav_html .=<li class='nav-header'>" . $network['name'] . " - " . $network['network'] . "/" . $cidr . "</li>";
-//	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>";
-//	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&search=spare&exact=1'>Spares</a></li>";
-//	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=" . date('Y:m:d',strtotime("-6 month",time())) . "&end_date=0'>Older Than 6 Months Devices</a></li>";
-//	$nav_html .= "<li><a href='index.php?network=" . $network['network'] . "/" . $cidr . "&start_date=0&end_date=0'>Never Seen Devices</a></li></div>";
 }
 $nav_html .= "</div>";
 ?>

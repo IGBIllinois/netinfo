@@ -55,20 +55,23 @@ for ($i=$start;$i<$start+$count;$i++) {
 			$devices_html .= "<tr>";
 		}
 		$last_seen = functions::get_last_seen($devices[$i]['last_seen']);
-		if ($last_seen == 1) {
-			$devices_html .= "<td><span class='badge badge-success'>&nbsp</span></td>";
-		}
-		elseif ($last_seen == 2) {
-			$devices_html .= "<td><span class='badge badge-warning'>&nbsp</span></td>";
-		}
-		elseif ($last_seen == 3) {
-			$devices_html .= "<td><span class='badge badge-info'>&nbsp</span></td>";
-		}
-		elseif ($last_seen == 4) {
-			$devices_html .= "<td><span class='badge badge-important'>&nbsp</span></td>";
-		}
-		else {
-			$devices_html .= "<td><span class='badge'>&nbsp</span></td>";
+		switch($last_seen) {
+			case 1:
+				$devices_html .= "<td><span class='badge badge-pill badge-success'>&nbsp</span></td>";
+				break;
+			
+			case 2:
+				$devices_html .= "<td><span class='badge badge-pill badge-warning'>&nbsp</span></td>";
+				break;
+			case 3:
+				$devices_html .= "<td><span class='badge badge-pill badge-info'>&nbsp</span></td>";
+				break;
+			case 4:
+				$devices_html .= "<td><span class='badge badge-pill badge-danger'>&nbsp</span></td>";
+				break;
+			default:
+				$devices_html .= "<td><span class='badge badge-pill badge-secondary'>&nbsp</span></td>";
+				break;
 		}
 	        $devices_html .= "<td><a href='device.php?ipnumber=" . $devices[$i]['ipnumber'] . "'>" . $devices[$i]['ipnumber'] . "</a></td>";
 		$devices_html .= "<td>" . $devices[$i]['aname']. "</td>";
@@ -94,15 +97,15 @@ for ($i=$start;$i<$start+$count;$i++) {
 		<button type='submit' class='btn'>Search</button>
 	</div>
 </form>
-<ul class='unstyled inline'>
-<li><span class='badge badge-success'>&nbsp</span> Less than 1 Day</li>
-<li><span class='badge badge-warning'>&nbsp</span> Less than 1 Month</li>
-<li><span class='badge badge-info'>&nbsp</span> Less than 6 Months</li>
-<li><span class='badge badge-important'>&nbsp</span> Greater than 6 Months</li>
-<li><span class='badge'>&nbsp</span> Never Seen</li>
+<ul class='list-inline'>
+<li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Less than 1 Day</li>
+<li class='list-inline-item'><span class='badge badge-pill badge-warning'>&nbsp</span> Less than 1 Month</li>
+<li class='list-inline-item'><span class='badge badge-pill badge-info'>&nbsp</span> Less than 6 Months</li>
+<li class='list-inline-item'><span class='badge badge-pill badge-danger'>&nbsp</span> Greater than 6 Months</li>
+<li class='list-inline-item'><span class='badge badge-pill badge-secondary'>&nbsp</span> Never Seen</li>
 </ul>   
 
-<table class='table table-condensed table-bordered table-hover'>
+<table class='table table-bordered table-sm table-striped table-hover'>
         <thead>
                 <tr>
 			<th></th>

@@ -6,8 +6,7 @@
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
 	href="vendor/components/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-href="vendor/components/bootstrap/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css" type="text/css" />
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
 <script src='vendor/components/bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
 <script src='includes/main.inc.js' type='text/javascript'></script>
@@ -15,38 +14,32 @@ href="vendor/components/bootstrap/css/bootstrap-responsive.css">
 <title><?php echo __TITLE__; ?></title>
 </head>
 
-<body>
-	<div class='navbar navbar-inverse'>
-		<div class='navbar-inner'>
-			<div class='container'>
-				<div class='span9 brand'>
-					<?php echo __TITLE__; ?>
-				</div>
-				<div class='span3 pull-right'>
-					<p class='navbar-text pull-right'>
-					<small>Version <?php echo __VERSION__; ?></small>
-					</p>
-				</div>
+<body style='padding-top: 60px; padding-bottom: 60px;'>
+<nav class="navbar fixed-top navbar-dark bg-dark">
+        <a class='navbar-brand' href='#'><?php echo __TITLE__ ?></a>
+                <span class='navbar-text'>
+                Version <?php echo __VERSION__; ?>&nbsp;
+                </span>
+
+</nav>
+
+
+<div class='container-fluid'>
+	<div class='row'>
+		<div class='col-md-2 col-lg-2 col-xl-2'>
+			<div class='sidebar-nav'>
+				<ul class='nav flex-column'>
+				<li class='nav-item'><a class='nav-link' href='index.php'>Home</a></li>
+				<span class="border-top my-2"></span>
+				<?php echo $nav_html; ?>
+					<span class="border-top my-2"></span>
+					<li class='nav-item'><a class='nav-link' href='hardware.php'>Mac Addresses</a></li>
+					<li class='nav-item'><a class='nav-link' href='networks.php'>Networks</a></li>
+					<li class='nav-item'><a class='nav-link' href='domains.php'>Domains</a></li>
+					<span class="border-top my-2"></span>
+					<li class='nav-item'><a class='nav-link' href='logout.php'>Logout</a></li>
+				</ul>
+				
 			</div>
 		</div>
-	</div>
-
-	<div class='container-fluid'>
-		<div class='row-fluid'>
-			<div class='span3 well'>
-				<div class='sidebar-nav'>
-					<ul class='nav nav-list'>
-					<li><a href='index.php'>Home</a></li>
-					<li class='divider'></li>
-					<?php echo $nav_html; ?>
-						<li class='divider'></li>
-						<li><a href='hardware.php'>Mac Addresses</a></li>
-						<li><a href='networks.php'>Networks</a></li>
-						<li><a href='domains.php'>Domains</a></li>
-						<li class='divider'></li>
-						<li><a href='logout.php'>Logout</a></li>
-					</ul>
-					
-				</div>
-			</div>
-			<div class='span9'>
+		<div class='col-md-8 col-lg-8 col-xl-8'>

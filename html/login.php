@@ -63,7 +63,7 @@ if (isset($_POST['login'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
 	href="vendor/components/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="vendor/components/font-awesome/css/fontawesome.min.css" type="text/css" />
+<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <title><?php echo __TITLE__; ?></title>
 </head>

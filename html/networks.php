@@ -12,7 +12,7 @@ else {
 	$selected_network = $networks[0]['name'];
 }
 
-$networks_html = "<select name='network' onchange='this.form.submit()'>";
+$networks_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control' name='network' onchange='this.form.submit()'>";
 if (count($networks)) {
 
 	foreach ($networks as $network) {
@@ -34,11 +34,11 @@ $network = new network($db,$selected_network);
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php echo $networks_html; ?>
 </form>
+<p>
 
 
 
-
-<table class='table table-condensed table-bordered'>
+<table class='table table-sm table-bordered'>
 
 <tr><td>Name</td><td><?php echo $network->get_name(); ?></td></tr>
 <tr><td>Domain</td><td><?php echo $network->get_domain_name(); ?></td></tr>

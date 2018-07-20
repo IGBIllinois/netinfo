@@ -12,7 +12,7 @@ else {
         $selected_domain = $domains[0]['name'];
 }
 
-$domains_html = "<select name='domain' onchange='this.form.submit()'>";
+$domains_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control' name='domain' onchange='this.form.submit()'>";
 if (count($domains)) {
 
         foreach ($domains as $domain) {
@@ -34,11 +34,11 @@ $domain = new domain($db,$selected_domain);
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php echo $domains_html; ?>
 </form>
+<p>
 
 
 
-
-<table class='table table-condensed table-bordered'>
+<table class='table table-sm table-bordered'>
 
 <tr><td>Name</td><td><?php echo $domain->get_name(); ?></td></tr>
 <tr><td>Alternate Names</td><td><?php echo implode(",",$domain->get_alt_names()); ?></td></tr>
