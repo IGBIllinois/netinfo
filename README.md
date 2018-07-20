@@ -5,6 +5,7 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 ## Requirements
 * Mysql
 * PHP
+* Composer
 * Apache
 * DHCPD
 * Bind Name Server
@@ -20,7 +21,10 @@ alias /usr/local/netinfo/html /netinfo
 ```
 * Copy /conf/settings.inc.php.original to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server
-
+* Run composer install to install depedencies from the root folder
+```
+composer install
+```
 # Initial Setup
 * Create domains in the domains table manual.
 ```
@@ -36,8 +40,8 @@ INSERT INTO namespace(aname,ipnumber,network_id) VALUES('spare','192.168.1.1',1)
 ```
 * Create cron job to create the dhcpd and bind conf files
 ```
-0,15,30,45 * * * * root php /usr/local/netinfo/bin/dhcpd.php ALL /etc/dhcpd/
-0,15,30,45 * * * * root php /usr/local/netinfo/bin/bind.php ALL /var/named/chroot/var/named
+0,15,30,45 * * * * root php /usr/local/netinfo/bin/dhcpd.php -n ALL -d /etc/dhcpd/
+0,15,30,45 * * * * root php /usr/local/netinfo/bin/bind.php -n ALL -d /var/named/chroot/var/named
 ```
 * Done
 
