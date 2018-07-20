@@ -59,40 +59,60 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
 	href="vendor/components/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/components/font-awesome/css/fontawesome.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <title><?php echo __TITLE__; ?></title>
 </head>
-<body OnLoad="document.login.username.focus();">
-	<div class='navbar navbar-inverse'>
-		<div class='navbar-inner'>
-			<div class='container'>
-				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"></a> <a class="brand" href="#"><?php echo __TITLE__; ?></a>
+<body style='padding-top: 70px; padding-bottom: 60px;' OnLoad="document.login.username.focus();">
+
+<nav class="navbar fixed-top navbar-dark bg-dark">
+        <a class='navbar-brand' href='#'><?php echo __TITLE__;  ?></a>
+	<span class='navbar-text'>Version <?php echo __VERSION__; ?>&nbsp;
+	</span>
+
+</nav>
+
+
+<div class='container'>
+
+<form class='form' role='form'  action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' name='login'>
+	<div class='form-group row'>
+		<label for='username' class='col-form-label'>Username</label>
+		<div class='col-md-8 col-lg-8 col-xl-8'>
+			<div class='input-group'> 
+			<input class='form-control' type='text'
+				name='username' tabindex='1' placeholder='Username'
+				value='<?php if (isset($username)) { echo $username; } ?>'>
+			<div class="input-group-append">
+				<span class='input-group-text'> <span class='fa fa-user'></span></span>
+			</div>
 			</div>
 		</div>
 	</div>
-	<p>
-	
-	
-	<div class='container'>
-		<div class='row'>
-			<div class='span5 offset3'>
-				<form action='login.php' method='post' name='login'
-					class='form-vertical'>
-					<label>Username:</label> <input class='span3' type='text'
-						name='username' tabindex='1'
-						value='<?php if (isset($username)) { echo $username; } ?>'> <label>Password:</label>
-					<input class='span3' type='password' name='password' tabindex='2'>
-					<br>
-					<button type='submit' name='login' class='btn btn-primary'>Login</button>
+	<div class='form-group row'>
+		<label for='password' class='col-form-label'>Password</label>
+		<div class='col-md-8 col-lg-8 col-xl-8'>
+			<div class='input-group'>
+			<input class='form-control' type='password' name='password' 
+			placeholder='Password' tabindex='2'>		
+			<div class='input-group-append'>
+				<span class='input-group-text'><span class='fa fa-lock'></span></span>
+			</div>
+			</div>
+		</div>
 
-				</form>
+	</div>
+	<div class='row'>
+		<button type='submit' name='login' class='btn btn-primary'>Login</button>
+	</div>
 
-				<?php if (isset($message)) { 
-					echo $message;
-} ?>
+</form>
+
+
+<?php if (isset($message)) { echo $message; } ?>
 
 <?php require_once 'includes/footer.inc.php'; ?>
