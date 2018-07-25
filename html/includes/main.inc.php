@@ -27,7 +27,6 @@ spl_autoload_register('my_autoloader');
 
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 $networks = functions::get_networks($db);
-
 $nav_html = "<div class='accordion' id='accordion2'>";
 $i=1;
 foreach ($networks as $network) {
@@ -36,7 +35,7 @@ foreach ($networks as $network) {
 	$nav_html .= "<div class='accordion-group'>";
 	$nav_html .= "<div class='accordion-heading'>";
 	$nav_html .= "<a class='nav-link accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse$i'>";
-	$nav_html .= "<i class='fa fa-caret-right'></i> " . strtoupper($network['name']) . " - " . $network['network'] . "/" . $cidr . "</a></div>";
+	$nav_html .= "<i class='fa fa-caret-right'></i> " . strtoupper($network['name']) . " - VLAN" . $network['vlan'] . " - " . $network['network'] . "/" . $cidr . "</a></div>";
 	$nav_html .= "<div id='collapse$i' class='accordion-body collapse'><div class='accordion-inner'>";
 	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link'  href='index.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>";
 	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='index.php?network=" . $network['network'] . "/" . $cidr . "&search=spare&exact=1'>Spares</a></li>";

@@ -86,15 +86,18 @@ for ($i=$start;$i<$start+$count;$i++) {
 }
 ?>
 <h3>Devices <?php if ($network != "") { echo " - " . $network; } ?></h3>
-<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-	<div class='input-append'>
+<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
 		<input type='hidden' name='network' value='<?php echo $network; ?>'>
 		<input type='hidden' name='count' value='<?php echo $count; ?>'>
 		<input type='hidden' name='exact' value='<?php echo $exact; ?>'>
 		<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
 		<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
-		<input type='text' name='search' class='input-long search-query' value='<?php echo $search; ?>'>
-		<button type='submit' class='btn'>Search</button>
+	<div class='input-group mb-4'>
+		<input type='text' name='search' class='form-control' value='<?php echo $search; ?>'>
+		<div class='input-group-append'>
+		<button type='submit' class='btn btn-primary'>Search</button>
+		</div>
+
 	</div>
 </form>
 <ul class='list-inline'>
@@ -131,7 +134,8 @@ for ($i=$start;$i<$start+$count;$i++) {
 	<input type='hidden' name='exact' value='<?php echo $exact; ?>'> 
 	<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
-	<select name='report_type' class='input-medium'>
+
+	<select name='report_type' class='form-control'>
                 <option value='xls'>Excel 2003</option>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>

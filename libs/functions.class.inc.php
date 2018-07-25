@@ -18,6 +18,7 @@ class functions {
 	public static function get_networks($db,$dhcp_enabled = false) {
 		$sql = "SELECT networks.*,domains.name as domain_name FROM networks ";
 		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";
+		$sql .= "ORDER BY vlan ASC ";
 		if ($dhcp_enabled) {
 			$sql .= "WHERE networks.enabled='1' ";
 		}
@@ -213,7 +214,7 @@ class functions {
 		
 		}
 	
-		$pages_html = "<nav><ul class='pagination'>";
+		$pages_html = "<nav><ul class='pagination justify-content-center flex-wrap'>";
 		if ($current_page > 1) {
 			$start_record = $start - $count;
 			$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&laquo;</a></li> ";
@@ -239,7 +240,7 @@ class functions {
 			$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&raquo;</a></li> ";
 		}
 		else {
-			$pages_html .= "<li class='page-item disabled'><a href='#'>&raquo;</a></li>";
+			$pages_html .= "<li class='page-item disabled'><a class='page-link' href='#'>&raquo;</a></li>";
 		}
 		$pages_html .= "</ul></nav>";
 		return $pages_html;
@@ -355,14 +356,14 @@ class functions {
 
 	}
 
-	public static function get_hardware_addresses($db,$search = "") {
+	public static function get_hardware_addresses($db,$search = "",$start = 0,$count = 0) {
 		$search = strtolower(trim(rtrim($search)));
 		$where_sql = array();
 		$sql = "SELECT macwatch.switch as switch, macwatch.port as port, ";
 		$sql .= "macwatch.mac as mac, macwatch.vendor as vendor, ";
-		$sql .= "MAX(macwatch.date) as last_seen, namespace.ipnumber as ipnumber ";
+		$sql .= "macwatch.date as last_seen ";
 		$sql .= "FROM macwatch ";
-		$sql .= "LEFT JOIN namespace ON namespace.hardware=macwatch.mac ";
+		//$sql .= "LEFT JOIN namespace ON namespace.hardware=macwatch.mac ";
 	
 		array_push($where_sql,"macwatch.port IS NOT NULL ");
 
@@ -390,12 +391,19 @@ class functions {
 
 	        }
 		$sql .= "GROUP BY macwatch.mac ";
+		$sql .= "HAVING MAX(macwatch.date) ";
 	        $sql .= "ORDER BY last_seen DESC ";
+	
+		if ($count !== 0) {
+			$sql .= "LIMIT " . $start . "," . $count;
+		}
         	$result = $db->query($sql);
 	        return $result;
 
 	}
 
-
+	public static function get_num_hardware_addresses($db,$search) {
+		return count(self::get_hardware_addresses($db,$search));
+	}	
 }
 ?>

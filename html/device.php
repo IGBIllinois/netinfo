@@ -104,7 +104,7 @@ else {
 	$alias_html = "<tr><td colspan='2'>None</td></tr>";
 }
 $os = functions::get_operating_systems($db);
-$os_html = "<select name='os'>";
+$os_html = "<select class='form-control' name='os'>";
 $os_exist = false;
 foreach ($os as $var) {
 	if ($device_os == $var['os']) {
@@ -123,55 +123,58 @@ $os_html .= "</select>";
 ?>
 <form method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?ipnumber=" . $device->get_ipnumber(); ?>'>
 <input type='hidden' name='ipnumber' value='<?php echo $device->get_ipnumber(); ?>'>
-<div class='col-md-5 col-lg-5 col-xl-5'>
-<h4>Device Information</h4>
-<table class='table table-bordered table-sm table-striped '>
-<tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
-<tr><td>Name (ANAME)</td><td><input class='input' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
-<tr><td>Domain</td><td><?php echo $device->get_domain(); ?></td></tr>
-<tr><td>Hardware (MAC) Address</td><td><input type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
-<tr><td>User</td><td><input type='text' name='user' value='<?php echo $user; ?>'></td></tr>
-<tr><td>Email</td><td><input type='text' name='email' value='<?php echo $email; ?>'></td></tr>
-<tr><td>Room</td><td><input type='text' name='room' value='<?php echo $room; ?>'></td></tr>
-<tr><td>Device Type/OS</td><td><?php echo $os_html; ?></td></tr>
-<tr><td>Description</td><td><input type='text' name='description' value='<?php echo $description; ?>'></td></tr>
-<tr><td>Serial Number</td><td><input type='text' name='serial_number' value='<?php echo $serial_number; ?>'></td></tr>
-<tr><td>Property Tag</td><td><input type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
-<tr><td>Last Modified By</td><td><?php echo $device->get_modifiedby(); ?></td></tr>
-<tr><td>Last Modified</td><td><?php echo $device->get_modified(); ?></td></tr>
-<tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>
-</table>
+<div class='row'>
+<div class='col-md-6 col-lg-6 col-xl-6'>
+	<h4>Device Information</h4>
+	<table class='table table-bordered table-sm table-striped '>
+	<tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
+	<tr><td>Name (ANAME)</td><td><input class='form-control' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
+	<tr><td>Domain</td><td><?php echo $device->get_domain(); ?></td></tr>
+	<tr><td>Hardware (MAC) Address</td><td><input class='form-control' type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
+	<tr><td>User</td><td><input class='form-control' type='text' name='user' value='<?php echo $user; ?>'></td></tr>
+	<tr><td>Email</td><td><input class='form-control' type='text' name='email' value='<?php echo $email; ?>'></td></tr>
+	<tr><td>Room</td><td><input class='form-control' type='text' name='room' value='<?php echo $room; ?>'></td></tr>
+	<tr><td>Device Type/OS</td><td><?php echo $os_html; ?></td></tr>
+	<tr><td>Description</td><td><input class='form-control' type='text' name='description' value='<?php echo $description; ?>'></td></tr>
+	<tr><td>Serial Number</td><td><input class='form-control' type='text' name='serial_number' value='<?php echo $serial_number; ?>'></td></tr>
+	<tr><td>Property Tag</td><td><input class='form-control' type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
+	<tr><td>Last Modified By</td><td><?php echo $device->get_modifiedby(); ?></td></tr>
+	<tr><td>Last Modified</td><td><?php echo $device->get_modified(); ?></td></tr>
+	<tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>
+	</table>
 </div>
-<div class='col-md-5 col-lg-5 col-xl-5'>
-<h4>Location</h4>
-<table class='table table-bordered table-sm table-striped '>
-	<thead>
-		<th>Last Seen</th>
-		<th>Switch</th>
-		<th>Port</th>
-	</thead>
-	<?php echo $locations_html; ?>
-</table>
+
+<div class='col-md-6 col-lg-6 col-xl-6'>
+	<h4>Location</h4>
+	<table class='table table-bordered table-sm table-striped '>
+		<thead>
+			<th>Last Seen</th>
+			<th>Switch</th>
+			<th>Port</th>
+		</thead>
+		<?php echo $locations_html; ?>
+	</table>
 </div>
-<div class='col-md-5 col-lg-5 col-xl-5'>
-<h4>Aliases</h4>
-<table class='table table-bordered table-sm table-striped '>
-	<thead>
-		<th colspan='2'>Alias (CNAME)</th>
-	</thead>
-<?php 
-	echo $alias_html;
-	if ($device->get_aname() != "spare") { 
-		echo "<tr><td><input class='input' type='text' name='new_alias' value='";
-		if (isset($_POST['new_alias'])) { echo $_POST['new_alias']; }
-		echo "'></td>";
-		echo "<td><input class='btn btn-primary' type='submit' name='add_alias' value='Add' onClick='return confirm_alias()'></td></tr>";
-	}
+<div class='col-md-6 col-lg-6 col-xl-6'>
+	<h4>Aliases</h4>
+	<table class='table table-bordered table-sm table-striped '>
+		<thead>
+			<th colspan='2'>Alias (CNAME)</th>
+		</thead>
+	<?php 
+		echo $alias_html;
+		if ($device->get_aname() != "spare") { 
+			echo "<tr><td><input class='input' type='text' name='new_alias' value='";
+			if (isset($_POST['new_alias'])) { echo $_POST['new_alias']; }
+			echo "'></td>";
+			echo "<td><input class='btn btn-primary' type='submit' name='add_alias' value='Add' onClick='return confirm_alias()'></td></tr>";
+		}
 	?>
-</table>
+	</table>
 
 </div>
-<div class='col-md-8 col-lg-8 col-xl-8'>
+</div>
+<div class='col-md-12 col-lg-12 col-xl-12'>
 <input class='btn btn-primary' type='submit' value='Update' name='update' onClick='return confirm_update()'>
 <input class='btn btn-warning' type='submit' value='Cancel' name='cancel'>
 <?php if ($device->get_aname() != 'spare') {
@@ -180,7 +183,7 @@ echo "<input class='btn btn-danger' type='submit' value='Delete' name='delete' o
 ?>
 </div>
 </form>
-<div class='col-md-10 col-lg-10 col-xl-10'>
+<div class='container col-md-12 col-lg-12 col-xl-12'>
 <p>
 <?php
 if (isset($result['MESSAGE'])) {

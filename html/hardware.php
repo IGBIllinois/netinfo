@@ -11,18 +11,18 @@ $search = "";
 if (isset($_GET['search'])) {
         $search = $_GET['search'];
 }
-$devices = functions::get_hardware_addresses($db,$search);
-$num_devices = count($devices);
+
+$devices = functions::get_hardware_addresses($db,$search,$start,$count);
+$num_devices = functions::get_num_hardware_addresses($db,$search);
 $pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
 $pages_html = functions::get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
-for ($i=$start;$i<$start+$count;$i++) {
-        if (array_key_exists($i,$devices)) {
-		$devices_html .= "<tr>";
 
-                $last_seen = functions::get_last_seen($devices[$i]['last_seen']);
-                switch($last_seen) {
+foreach ($devices as $device) {
+	$devices_html .= "<tr>";
+	$last_seen = functions::get_last_seen($device['last_seen']);
+        switch($last_seen) {
                         case 1:
                                 $devices_html .= "<td><span class='badge badge-pill badge-success'>&nbsp</span></td>";
                                 break;
@@ -41,28 +41,29 @@ for ($i=$start;$i<$start+$count;$i++) {
                                 break;
                 }
 
-		$devices_html .= "<td>" . $devices[$i]['mac'] . "</td>";
+		$devices_html .= "<td>" . $device['mac'] . "</td>";
 		$devices_html .= "<td>";
                 if ($devices[$i]['ipnumber'] != "") {
-                        $devices_html .= "<a href='device.php?ipnumber=" . $devices[$i]['ipnumber'] . "'>" . $devices[$i]['ipnumber'] . "</a>";
+                        $devices_html .= "<a href='device.php?ipnumber=" . $device['ipnumber'] . "'>" . $device['ipnumber'] . "</a>";
                 }
                 $devices_html .= "</td>";
 
-		$devices_html .= "<td>" . $devices[$i]['switch'] . "</td>";
-		$devices_html .= "<td>" . $devices[$i]['port'] . "</td>";
-		$devices_html .= "<td>" . $devices[$i]['vendor'] . "</td>";
-		$devices_html .= "<td>" . $devices[$i]['last_seen'] . "</td>";
+		$devices_html .= "<td>" . $device['switch'] . "</td>";
+		$devices_html .= "<td>" . $device['port'] . "</td>";
+		$devices_html .= "<td>" . $device['vendor'] . "</td>";
+		$devices_html .= "<td>" . $device['last_seen'] . "</td>";
 		$devices_html .= "</tr>";
-	}
 }
 ?>
 
 <h3>Hardware Addresses</h3>
-<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-        <div class='input-append'>
+<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='hidden' name='count' value='<?php echo $count; ?>'>
-                <input type='text' name='search' class='input-long search-query' value='<?php echo $search; ?>'>
-                <button type='submit' class='btn'>Search</button>
+	<div class='input-group mb-4'>
+                <input type='text' name='search' class='form-control' value='<?php echo $search; ?>'>
+		<div class='input-group-append'>
+	                <button type='submit' class='btn btn-primary'>Search</button>
+		</div>
         </div>
 </form>
 <ul class='list-inline'>

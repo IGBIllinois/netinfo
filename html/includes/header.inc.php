@@ -42,4 +42,4 @@
 				
 			</div>
 		</div>
-		<div class='col-md-8 col-lg-8 col-xl-8'>
+		<div class='col-md-10 col-lg-10 col-xl-10'>
