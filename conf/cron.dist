@@ -1,0 +1,4 @@
+################ Netinfo ####################
+
+*/15 * * * * root /usr/local/netinfo/bin/netupdate.sh > /dev/null 2>&1
+*/15 * * * * root cd /usr/local/netinfo/bin && php /usr/local/netinfo/bin/macwatch.php > /dev/null 2>&1

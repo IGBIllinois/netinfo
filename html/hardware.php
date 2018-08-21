@@ -42,12 +42,6 @@ foreach ($devices as $device) {
                 }
 
 		$devices_html .= "<td>" . $device['mac'] . "</td>";
-		$devices_html .= "<td>";
-                if ($devices[$i]['ipnumber'] != "") {
-                        $devices_html .= "<a href='device.php?ipnumber=" . $device['ipnumber'] . "'>" . $device['ipnumber'] . "</a>";
-                }
-                $devices_html .= "</td>";
-
 		$devices_html .= "<td>" . $device['switch'] . "</td>";
 		$devices_html .= "<td>" . $device['port'] . "</td>";
 		$devices_html .= "<td>" . $device['vendor'] . "</td>";
@@ -79,7 +73,6 @@ foreach ($devices as $device) {
 		<tr>
 		<th></th>
 		<th>Hardware Address</th>
-		<th>IP Address</th>
 		<th>Switch</th>
 		<th>Port</th>
 		<th>Vendor</th>

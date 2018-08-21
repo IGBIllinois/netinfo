@@ -4,7 +4,7 @@ chdir(dirname(__FILE__));
 
 set_include_path(get_include_path() . ':../libs');
 require_once '../conf/settings.inc.php';
-
+date_default_timezone_set(__TIMEZONE__);
 function my_autoloader($class_name) {
         if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
                 require_once $class_name . '.class.inc.php';
