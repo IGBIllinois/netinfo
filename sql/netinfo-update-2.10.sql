@@ -27,4 +27,5 @@ FROM `macwatch` where (`macwatch`.`mac` = `m1`.`mac`)) AS `date` from `macwatch`
 ALTER TABLE `macwatch` 
 DROP KEY `switch`,
 ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`),
-ADD KEY `mac` (`mac`);
+ADD KEY `mac` (`mac`),
+ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`;

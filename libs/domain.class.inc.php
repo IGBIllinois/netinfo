@@ -69,6 +69,7 @@ class domain {
 	//builds the text for additional DNS records that are not CNAMES or ANAMES
         public function build_bind_options($domain_name) {
                 $bind_conf = $this->get_options();
+		$bind_conf = str_replace("\r","",$bind_conf);
                 //Replace variables for [SERIAL]
                 $search = array($this->domain_variable);
                 $replace = array($domain_name);
