@@ -136,9 +136,8 @@ for ($i=$start;$i<$start+$count;$i++) {
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
 
 	<select name='report_type' class='form-control'>
-                <option value='xls'>Excel 2003</option>
-                <option value='xlsx'>Excel 2007</option>
-                <option value='csv'>CSV</option>
+                <option value='xlsx'>Excel 2007 (.xlsx)</option>
+                <option value='csv'>CSV (.csv)</option>
         </select> 
 <input class='btn btn-primary' type='submit' name='create_report' value='Download Report'>
 </form>
