@@ -13,3 +13,4 @@ function confirm_remove_alias() {
 	return confirm("Are you sure you want to remove this alias?");
 }
 
+

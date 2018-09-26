@@ -405,5 +405,40 @@ class functions {
 	public static function get_num_hardware_addresses($db,$search) {
 		return count(self::get_hardware_addresses($db,$search));
 	}	
+
+        public static function alert($message, $success = 1) {
+                $alert = "";
+                if ($success) {
+                        $alert = "<div class='alert alert-success' role='alert'>" . $message . "</div>&nbsp;";
+
+                }
+                else {
+                        $alert = "<div class='alert alert-danger' role='alert'>" . $message . "</div>&nbsp;";
+                }
+                return $alert;
+
+        }
+
+	public static function authenticate($ldap,$username,$password,$group) {
+	        $result = false;
+        	$rdn = self::get_user_rdn($ldap,$username);
+	        if (($ldap->bind($rdn,$password)) && ($ldap->is_group_member($username,$group))) {
+        	        $result = true;
+	        }
+        	return $result;
+	}
+
+	private static function get_user_rdn($ldap,$username) {
+                $filter = "(uid=" . $username . ")";
+                $attributes = array('dn');
+                $result = $ldap->search($filter,'',$attributes);
+                if (isset($result[0]['dn'])) {
+                        return $result[0]['dn'];
+                }
+                else {
+                        return false;
+                }
+        }
+
 }
 ?>

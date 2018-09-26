@@ -10,8 +10,6 @@
 ///////////////////////////////////
 
 require_once 'includes/main.inc.php';
-require_once 'authenticate.inc.php';
-
 
 $message = "";
 
@@ -23,15 +21,15 @@ if (isset($_POST['login'])) {
 	$error = false;
 	if ($username == "") {
 		$error = true;
-		$message .= "<div class='alert alert-warning'>Please enter your username.</div>";
+		$message = functions::alert("Please enter your username",false);
 	}
 	if ($password == "") {
 		$error = true;
-		$message .= "<div class='alert alert-warning'>Please enter your password.</div>";
+		$message .= functions::alert("Please enter your password",false);
 	}
 	if ($error == false) {
 		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-		$success = authenticate($ldap,$username,$password,__LDAP_GROUP__);
+		$success = functions::authenticate($ldap,$username,$password,__LDAP_GROUP__);
 		if ($success == true) {
 			$session = new session(__SESSION_NAME__);
                         $session_vars = array('login'=>true,
@@ -48,7 +46,7 @@ if (isset($_POST['login'])) {
 			header("Location: " . $webpage);
 		}
 		else {
-			$message .= "<div class='alert alert-danger'>Invalid username or password.  Please try again. </div>";
+			$message = functions::alert("Invalid Username or Password",false);
 		}
 	}
 }
@@ -78,9 +76,9 @@ if (isset($_POST['login'])) {
 
 
 <div class='container'>
-
+<div class='col-md-6 col-lg-6 col-xl-6 offset-md-3 offset-lg-3 offset-xl-3'>
 <form class='form-signin' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' name='login'>
-	<div class='form-group row col-md-6 col-lg-6 col-xl-6'>
+	<div class='form-group row'>
 		<label for='username' class='col-form-label'>Username</label>
 			<div class='input-group'> 
 			<input class='form-control' type='text'
@@ -91,7 +89,7 @@ if (isset($_POST['login'])) {
 			</div>
 			</div>
 	</div>
-	<div class='form-group row col-md-6 col-lg-6 col-xl-6'>
+	<div class='form-group row'>
 		<label for='password' class='col-form-label'>Password</label>
 			<div class='input-group'>
 			<input class='form-control' type='password' name='password' 
@@ -102,12 +100,10 @@ if (isset($_POST['login'])) {
 			</div>
 
 	</div>
-	<div class='form-group row col-md-6 col-lg-6 col-xl-6'>
+	<div class='form-group row'>
 		<button type='submit' name='login' class='btn btn-primary'>Login</button>
 	</div>
 </form>
-
-<div class='row col-md-12'>
 <?php if (isset($message)) { echo $message; } ?>
 </div>
 <?php require_once 'includes/footer.inc.php'; ?>
