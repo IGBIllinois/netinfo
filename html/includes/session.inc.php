@@ -12,7 +12,6 @@
 //////////////////////////////////////////
 
 require_once 'includes/main.inc.php';
-require_once 'authenticate.inc.php';
 
 $session = new session(__SESSION_NAME__);
 if (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {

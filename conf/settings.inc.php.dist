@@ -12,6 +12,7 @@
 
 define("__VERSION__","2.14");
 define("__TITLE__","");
+define("__FOOTER__","");
 define("__SESSION_NAME__","netinfo");
 define("__SESSION_TIMEOUT__",3600);
 define("__COUNT__",30);

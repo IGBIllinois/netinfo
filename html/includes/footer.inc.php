@@ -5,7 +5,7 @@
 <div class='container'>
 	<p class='text-center'>
 	<span class='text-muted'>
-                <em>&copy;<?php echo date('Y'); ?> University of Illinois Board of Trustees</em>
+                <em>&copy;<?php echo date('Y') . "&nbsp;" . __FOOTER__; ?></em>
         </span>
 	</p>
 
