@@ -139,7 +139,9 @@ for ($i=$start;$i<$start+$count;$i++) {
                 <option value='xlsx'>Excel 2007 (.xlsx)</option>
                 <option value='csv'>CSV (.csv)</option>
         </select> 
-<input class='btn btn-primary' type='submit' name='create_report' value='Download Report'>
+<input class='btn btn-primary' type='submit' name='create_report_full' value='Download Full Report'>&nbsp;
+<input class='btn btn-primary' type='submit' name='create_report_no_spares' value='Download Device In Use Report'>&nbsp;
+<input class='btn btn-primary' type='submit' name='create_host_file' value='Download Host File'>
 </form>
 
 

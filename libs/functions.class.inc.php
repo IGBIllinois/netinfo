@@ -55,7 +55,7 @@ class functions {
 	}
 
 
-	public static function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",$end_date = "") {
+	public static function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",$end_date = "",$include_spares = 1) {
 		$search = strtolower(trim(rtrim($search)));
 		$where_sql = array();
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
@@ -63,12 +63,15 @@ class functions {
 		$sql .= "namespace.email, namespace.room, namespace.os, ";
 		$sql .= "namespace.description, namespace.serial_number, namespace.alias, ";
 		$sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
-		$sql .= "a.switch, a.port, a.last_seen ";
+		$sql .= "a.switch, a.port, a.last_seen, ";
+		$sql .= "domains.name as domain_name ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN ( ";
 		$sql .= "SELECT MAX(macwatch.date) as last_seen, macwatch.switch as switch, ";
 		$sql .= "macwatch.port as port,LOWER(macwatch.mac) as mac FROM macwatch GROUP BY mac) as a ";
 		$sql .= "ON a.mac=LOWER(namespace.hardware) ";
+		$sql .= "LEFT JOIN networks ON networks.id=namespace.network_id ";
+		$sql .= "LEFT JOIN domains ON domains.id=networks.domain_id ";
 		if ($network != "") {
 			if (strpos($network,"/")) {  //Use network/subnet format, 128.174.124.0/22
 				list($low,$high) = self::get_ip_range($network);
@@ -131,7 +134,11 @@ class functions {
 
 		}
 
+		if (!$include_spares) {
+			$search_sql = "ANAME<>'spare'";
+			array_push($where_sql,$search_sql);
 
+		}
 		$num_where = count($where_sql);
 		if ($num_where) {
 			$sql .= "WHERE ";
@@ -438,6 +445,35 @@ class functions {
                 else {
                         return false;
                 }
+        }
+
+        //create_host_file()
+        //$data - double array of data
+        //$filename - name of file to create
+        //creates a linux formatted /etc/hosts file.
+        public static function create_host_file($data,$filename) {
+                $delimiter = "\t";
+                $file_handle = fopen('php://output','w');
+                ob_start();
+                foreach ($data as $row) {
+			$formatted_row_array = array($row['ipnumber'],
+						$row['aname'],
+						$row['aname'] . "." . $row['domain_name']
+						);
+			
+			fputcsv($file_handle,$formatted_row_array,$delimiter);				
+                }
+                fclose($file_handle);
+                $result = ob_get_clean();
+                //Sets headers then downloads the csv report file.
+                header('Pragma: public');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Content-Type: text/plain');
+                header("Content-Disposition:attachment; filename=" . $filename);
+                echo $result;
+
+
         }
 
 }

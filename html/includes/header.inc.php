@@ -16,7 +16,7 @@
 
 <body style='padding-top: 80px; padding-bottom: 60px;'>
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand' href='#'><?php echo __TITLE__ ?></a>
+        <a class='navbar-brand' href='#'>Network Information Database - <?php echo __TITLE__ ?></a>
                 <span class='navbar-text'>
                 Version <?php echo __VERSION__; ?>&nbsp;
                 </span>

@@ -19,7 +19,7 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 ```
 alias /usr/local/netinfo/html /netinfo
 ```
-* Copy /conf/settings.inc.php.original to /conf/settings.inc.php
+* Copy /conf/settings.inc.php.dist to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server
 * Run composer install to install depedencies from the root folder
 ```
