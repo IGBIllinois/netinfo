@@ -11,7 +11,7 @@
 <script src='vendor/components/bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
 <script src='includes/main.inc.js' type='text/javascript'></script>
 
-<title><?php echo __TITLE__; ?></title>
+<title>Network Information Database - <?php echo __TITLE__; ?></title>
 </head>
 
 <body style='padding-top: 80px; padding-bottom: 60px;'>

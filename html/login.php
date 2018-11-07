@@ -63,12 +63,12 @@ if (isset($_POST['login'])) {
 	href="vendor/components/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-<title><?php echo __TITLE__; ?></title>
+<title>Network Information Database - <?php echo __TITLE__; ?></title>
 </head>
 <body style='padding-top: 70px; padding-bottom: 60px;' OnLoad="document.login.username.focus();">
 
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand' href='#'><?php echo __TITLE__;  ?></a>
+        <a class='navbar-brand' href='#'>Network Information Database - <?php echo __TITLE__;  ?></a>
 	<span class='navbar-text'>Version <?php echo __VERSION__; ?>&nbsp;
 	</span>
 
