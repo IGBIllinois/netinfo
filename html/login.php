@@ -60,16 +60,16 @@ if (isset($_POST['login'])) {
 <meta charset='utf-8'>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
-	href="vendor/components/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css" type="text/css" />
+	href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/font-awesome.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <title>Network Information Database - <?php echo __TITLE__; ?></title>
 </head>
 <body style='padding-top: 70px; padding-bottom: 60px;' OnLoad="document.login.username.focus();">
 
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand' href='#'>Network Information Database - <?php echo __TITLE__;  ?></a>
-	<span class='navbar-text'>Version <?php echo __VERSION__; ?>&nbsp;
+        <a class='navbar-brand py-0' href='#'>Network Information Database - <?php echo __TITLE__;  ?></a>
+	<span class='navbar-text py-0'>Version <?php echo __VERSION__; ?>&nbsp;
 	</span>
 
 </nav>
