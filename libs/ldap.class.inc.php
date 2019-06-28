@@ -1,5 +1,4 @@
 <?php
-
 class ldap {
 
         ///////////////Private Variables//////////
@@ -32,7 +31,9 @@ class ldap {
         public function get_port() { return $this->ldap_port; }
         public function get_protocol() { return $this->ldap_protocol; }
         public function get_resource() { return $this->ldap_resource; }
-
+	public function get_connection() {
+			return is_resource($this->ldap_resource);
+	}
         //set ldap functions
         public function set_protocol($ldap_protocol) {
                 $this->ldap_protocol = $ldap_protocol;
@@ -47,13 +48,13 @@ class ldap {
 	//returns true if successful, false otherwise.
         public function bind($rdn = "",$password = "") {
 		$result = false;
-		if ($this->get_resource()) {
+		if ($this->get_connection()) {
 			if (($rdn != "") && ($password != "")) {
-				$result = ldap_bind($this->get_resource(), $rdn, $password);
+				$result = @ldap_bind($this->get_resource(), $rdn, $password);
 
 			}
 			elseif (($rdn == "") && ($password == "")) {
-				$result = ldap_bind($this->get_resource());
+				$result = @ldap_bind($this->get_resource());
 			}
 		}
 		return $result;
@@ -67,12 +68,11 @@ class ldap {
 		if ($ou == "") {
 			$ou = $this->get_base_dn();
 		}
-		if ((is_resource($this->get_resource())) && ($attributes != "")) {
+		if (($this->get_connection()) && ($attributes != "")) {
 	                $ldap_result = ldap_search($this->get_resource(),$ou,$filter,$attributes);
 	                $result = ldap_get_entries($this->get_resource(),$ldap_result);
-                
 		}
-		elseif ((is_resource($this->get_resource())) && ($attributes == "")) {
+		elseif (($this->get_connection()) && ($attributes == "")) {
 			$ldap_result = ldap_search($this->get_resource(),$ou,$filter);
                         $result = ldap_get_entries($this->get_resource(),$ldap_result);
 
@@ -92,8 +92,23 @@ class ldap {
                 }
 	}
 
-	public function get_group_members($group) {
-                if (is_resource($this->get_resource())) {
+	public function is_ldap_user($username) {
+                $username = trim(rtrim($username));
+                $filter = "(uid=" . $username . ")";
+                $attributes = array('');
+                $result = $this->search($filter,"",$attributes);
+                if ($result['count']) {
+                        return true;
+                }
+                else {
+                        return false;
+                }
+
+
+        }
+
+        public function get_group_members($group) {
+                if ($this->get_connection()) {
                         $group = trim(rtrim($group));
                         $filter = "(cn=" . $group . ")";
                         $attributes = array('memberUid');
@@ -112,7 +127,100 @@ class ldap {
                 return in_array($username,$group_members);
 
         }
+	 public function get_user_groups($username) {
+                if ($this->get_connection()) {
+                        $username = trim(rtrim($username));
+                        $filter = "(&(cn=*)(memberUid=" . $username . "))";
+                        $attributes = array('cn');
+                        $result = $this->search($filter,"",$attributes);
+                        unset($result['count']);
+                        $groups = array();
+                        foreach ($result as $row) {
+                                array_push($groups,$row['cn'][0]);
+                        }
+                        return $groups;
+                }
 
+
+        }
+        public function get_group_exists($group) {
+                if ($this->get_connection()) {
+                        $group = trim(rtrim($group));
+                        $filter = "(cn=" . $group . ")";
+                        $attributes = array('');
+                        $result = $this->search($filter,"",$attributes);
+                        if ($result['count']) {
+                                return true;
+                        }
+                        return false;
+                }
+
+        }
+
+	public function get_home_dir($username) {
+                if ($this->get_connection()) {
+                        $username = trim(rtrim($username));
+                        $filter = "(uid=" . $username . ")";
+                        $attributes = array('homeDirectory');
+                        $result = $this->search($filter,"",$attributes);
+                        if ($result['count']) {
+
+                                return $result[0]['homedirectory'][0];
+                        }
+                        else {
+                                return false;
+                        }
+                }
+
+
+        }
+
+        public function get_email($username) {
+                if ($this->get_connection()) {
+                        $username = trim(rtrim($username));
+                        $filter = "(uid=" . $username . ")";
+                        $attributes = array('mail');
+                        $result = $this->search($filter,"",$attributes);
+                        if (($result['count']) && (isset($result[0]['mail'][0]))){
+				return $result[0]['mail'][0];
+			
+                        }
+                        else {
+                                return false;
+                        }
+                }
+
+
+        }
+	
+	public function get_all_users() {
+		$users_array = array();
+		if ($this->get_connection()) {
+                        $filter = "(objectClass=posixAccount)";
+                        $attributes = array('uid');
+                        $result = $this->search($filter,"",$attributes);
+			foreach ($result as $user) {
+				array_push($users_array,$user['uid'][0]);
+
+			}
+				
+                }
+		return $users_array;
+
+
+	}
+
+        public function get_ldap_full_name($username) {
+                if ($this->get_connection()) {
+                        $username = trim(rtrim($username));
+                        $filter = "(uid=" . $username . ")";
+                        $attributes = array("cn");
+                        $result = $this->search($filter,"",$attributes);
+                        return $result[0]['cn'][0];
+                }
+                else { return false;
+                }
+        }
 
 	//////////////////Private Functions/////////////////////
 
@@ -122,25 +230,19 @@ class ldap {
         private function set_port($ldap_port) { $this->ldap_port = $ldap_port; }
 
 	private function connect() {
-
-                $prefix;
-                if ($this->get_ssl() == true) {
-                        $prefix = "ldaps://";
+                $ldap_uri;
+                if ($this->get_ssl()) {
+                        $ldap_uri = "ldaps://" . $this->get_host() . ":" . $this->get_port();
                 }
-                elseif ($this->get_ssl() == false) {
-                        $prefix = "ldap://";
+                elseif (!$this->get_ssl()) {
+                        $ldap_uri = "ldap://" . $this->get_host() . ":" . $this->get_port();
                 }
-
-                $this->ldap_resource = ldap_connect($prefix . $this->get_host(),$this->get_port());
-                ldap_set_option($this->get_resource(),LDAP_OPT_REFERRALS,0);
-                if (is_resource($this->get_resource()))
-                {
-                        return true;
-                }
-                else {
-                        return false;
-                }
-
+		echo "uri: " . $ldap_uri;
+		$this->ldap_resource = ldap_connect($ldap_uri);
+		if ($this->get_connection()) {
+			return true;
+		}
+		return false;
         }
 
 }
