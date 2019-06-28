@@ -8,7 +8,7 @@
 	href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/font-awesome.min.css" type="text/css" />
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
-<script src='vendor/twbs/bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
+<script src='vendor/twbs/bootstrap/dist/js/bootstrap.min.js' type='text/javascript'></script>
 <script src='includes/main.inc.js' type='text/javascript'></script>
 
 <title>Network Information Database - <?php echo __TITLE__; ?></title>
