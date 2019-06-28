@@ -6,7 +6,7 @@
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
 	href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/all.min.css" type="text/css" />
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
 <script src='vendor/twbs/bootstrap/dist/js/bootstrap.min.js' type='text/javascript'></script>
 <script src='includes/main.inc.js' type='text/javascript'></script>
