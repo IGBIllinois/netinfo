@@ -8,7 +8,7 @@ require_once 'includes/header.inc.php';
 
 <div class='jumbotron'>
 	<h1 class='display-3'><img src="images/imark_bw.gif">&nbsp;Network Information Database</h1>
-	<p class='lead'>View Manager Devices on the network</p>
+	<p class='lead'>View and Manage Devices on the network</p>
 </div>
 
 
