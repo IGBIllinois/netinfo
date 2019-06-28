@@ -61,7 +61,7 @@ if (isset($_POST['login'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
 	href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/all.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <title>Network Information Database - <?php echo __TITLE__; ?></title>
 </head>
