@@ -477,12 +477,14 @@ class functions {
         }
 
 	public static function get_dhcpd_version() {
-                $exec = "/usr/sbin/dhcpd --version";
-                $exit_status = 1;
-                $output_array = array();
-                $output = exec($exec,$output_array,$exit_status);
-		print_r($output_array);
-		return $output;
+		$exec = "/usr/sbin/dhcpd --version 2>&1";
+		$exit_status = 1;
+		$output_array = array();
+		$output = exec($exec,$output_array,$exit_status);
+		if (!$exit_status) {
+			return $output_array[0];
+		}	
+		return "";
 
 
 	}
@@ -499,10 +501,12 @@ class functions {
         }
 
 	public static function get_php_extensions() {
+		$chunk_size = 10;
 		$extensions = get_loaded_extensions(); 
 		natcasesort($extensions);
-		$extensions_string = implode("<br>",$extensions);
-		return $extensions_string;
+		$extensions_chunk = array_chunk($extensions,$chunk_size);	
+			
+		return $extensions_chunk;
 
 	}
 
