@@ -152,5 +152,43 @@ class db {
 		return $this->link->rowCount();
 
 	}
+
+	public function update($table,$data,$where_key,$where_value) {
+                try {
+
+                        $sql = "UPDATE `" . $table . "` SET ";
+
+                        $count = count($data);
+                        $i = 1;
+                        foreach ($data as $key=>$value) {
+                                if ($i == $count) {
+                                        $sql .= $key . "= :" . $key . " ";;
+                                }
+                                else {
+                                        $sql .= $key . "= :" . $key . ", ";
+                                }
+
+                                $i++;
+                        }
+                        $sql .= "WHERE " . $where_key . "='" . $where_value . "' LIMIT 1";
+                        $statement = $this->link->prepare($sql);
+                        foreach ($data as $key=>$value) {
+                                $statement->bindValue(":" . $key,$value);
+                        }
+                        $result = $statement->execute();
+                        return $result;
+                }
+                catch(PDOException $e) {
+                        echo "<br>Error: " . $e->getMessage();
+                }
+
+
+        }
+
+	public function get_version() {
+		return $this->link->getAttribute(PDO::ATTR_SERVER_VERSION);
+
+	}
+
 }
 ?>

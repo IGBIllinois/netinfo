@@ -12,7 +12,7 @@ else {
 	$selected_network = $networks[0]['name'];
 }
 
-$networks_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control' name='network' onchange='this.form.submit()'>";
+$networks_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control custom-select' name='network' onchange='this.form.submit()'>";
 if (count($networks)) {
 
 	foreach ($networks as $network) {

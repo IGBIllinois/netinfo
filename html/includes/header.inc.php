@@ -37,6 +37,7 @@
 					<li class='nav-item'><a class='nav-link' href='networks.php'>Networks</a></li>
 					<li class='nav-item'><a class='nav-link' href='domains.php'>Domains</a></li>
 					<span class="border-top my-2"></span>
+					<li class='nav-item'><a class='nav-link' href='about.php'>About</a></li>
 					<li class='nav-item'><a class='nav-link' href='logout.php'>Logout</a></li>
 				</ul>
 				

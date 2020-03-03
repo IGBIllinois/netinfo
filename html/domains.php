@@ -12,7 +12,7 @@ else {
         $selected_domain = $domains[0]['name'];
 }
 
-$domains_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control' name='domain' onchange='this.form.submit()'>";
+$domains_html = "<select class='col-md-4 col-lg-4 col-xl-4 form-control custom-select' name='domain' onchange='this.form.submit()'>";
 if (count($domains)) {
 
         foreach ($domains as $domain) {
