@@ -39,6 +39,12 @@ Alias /netinfo /var/www/netinfo/html
 ```
 composer install
 ```
+* Create symlink to vendor folder from html folder
+```
+cd html
+ln -s ../vendor vendor
+```
+
 # Initial Setup
 * Create domains in the domains table manual.
 ```
