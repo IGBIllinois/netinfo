@@ -16,16 +16,14 @@ CREATE TABLE `macwatch_vlans` (
   PRIMARY KEY (`vlan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE VIEW `macwatch_latest`
-AS SELECT
-   `m1`.`switch` AS `switch`,
-   `m1`.`port` AS `port`,
-   `m1`.`mac` AS `mac`,
-   `m1`.`vendor` AS `vendor`,(select max(`macwatch`.`date`)
-FROM `macwatch` where (`macwatch`.`mac` = `m1`.`mac`)) AS `date` from `macwatch` `m1` group by `m1`.`mac`;
+CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
+AS SELECT `m1`.`switch` AS `switch`,
+	`m1`.`port` AS `port`,
+	`m1`.`mac` AS `mac`,
+	`m1`.`vendor` AS `vendor`,
+	`m1`.`vlans` AS `vlans`,
+	`m1`.`date` AS `date` FROM `macwatch` `m1` 
+	WHERE `m1`.`date` = (SELECT MAX(`netinfo`.`macwatch`.`date`) FROM `macwatch` WHERE `netinfo`.`macwatch`.`mac` = `m1`.`mac`);
 
-ALTER TABLE `macwatch` 
-DROP KEY `switch`,
-ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`),
-ADD KEY `mac` (`mac`),
-ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`;
+ALTER TABLE `macwatch` DROP KEY `switch`, ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`), ADD KEY `mac` (`mac`), ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`;
+
