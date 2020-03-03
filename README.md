@@ -12,7 +12,10 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 * LDAP to login
 
 ## Installation
-* git clone https://github.com/IGB-UIUC/netinfo
+* git clone https://github.com/IGB-UIUC/netinfo or download tagged tar.gz
+```
+git clone https://github.com/IGB-UIUC/netinfo netinfo
+```
 * Create mysql database
 ```
 CREATE DATABASE netinfo CHARACTER SET utf8;
