@@ -35,7 +35,7 @@ Alias /netinfo /var/www/netinfo/html
 ```
 * Copy /conf/settings.inc.php.dist to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server
-* Run composer install to install depedencies from the root folder
+* Run composer install to install dependencies from the root folder
 ```
 composer install
 ```

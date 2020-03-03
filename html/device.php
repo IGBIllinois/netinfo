@@ -104,7 +104,7 @@ else {
 	$alias_html = "<tr><td colspan='2'>None</td></tr>";
 }
 $os = functions::get_operating_systems($db);
-$os_html = "<select class='form-control' name='os'>";
+$os_html = "<select class='form-control custom-select' name='os'>";
 $os_exist = false;
 foreach ($os as $var) {
 	if ($device_os == $var['os']) {
