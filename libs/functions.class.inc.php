@@ -476,5 +476,58 @@ class functions {
 
         }
 
+	public static function get_dhcpd_version() {
+                $exec = "/usr/sbin/dhcpd --version";
+                $exit_status = 1;
+                $output_array = array();
+                $output = exec($exec,$output_array,$exit_status);
+		print_r($output_array);
+		return $output;
+
+
+	}
+
+        public static function get_bind_version() {
+                $exec = "/usr/sbin/named -V";
+                $exit_status = 1;
+                $output_array = array();
+                $output = exec($exec,$output_array,$exit_status);
+		if (!$exit_status) {
+			return $output_array[0];
+		}
+                return "";
+        }
+
+	public static function get_php_extensions() {
+		$extensions = get_loaded_extensions(); 
+		natcasesort($extensions);
+		$extensions_string = implode("<br>",$extensions);
+		return $extensions_string;
+
+	}
+
+	public static function log($message) {
+                $current_time = date('Y-m-d H:i:s');
+                $full_msg = $current_time . ": " . $message . "\n";
+		
+                if (self::log_enabled()) {
+                        file_put_contents(self::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
+                }
+		if (php_sapi_name() == "cli") {
+	                echo $full_msg;
+		}
+        }
+	public static function get_log_file() {
+                if (!file_exists(__LOG_FILE__)) {
+                        touch(__LOG_FILE__);
+                }
+                return __LOG_FILE__;
+
+        }
+
+        public static function log_enabled() {
+                return __ENABLE_LOG__;
+        }
+
 }
 ?>

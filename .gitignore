@@ -6,3 +6,4 @@
 /vendor
 /html/vendor
 composer.lock
+/log

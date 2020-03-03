@@ -34,4 +34,7 @@ define("__LDAP_SSL__",FALSE);
 define("__LDAP_PORT__",389);
 
 define("__DEBUG__",FALSE);
+
+define("__ENABLE_LOG__",TRUE);
+define("__LOG_FILE__","/var/log/netinfo.log");
 ?>
