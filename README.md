@@ -3,7 +3,7 @@
 Netinfo keeps track of dhcp reservations for multiple networks and can then autogenerate the dhcpd and bind configuration files
 
 ## Requirements
-* Mysql
+* MySQL/MariaDB
 * PHP
 * Composer
 * Apache
