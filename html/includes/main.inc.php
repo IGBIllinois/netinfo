@@ -17,6 +17,14 @@ else {
 	echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
 }
 
+if (__DEBUG__) {
+	ini_set("log_errors", 1);
+	ini_set('display_errors', 1); 
+	ini_set('display_startup_errors', 1); 
+	error_reporting(E_ALL);
+
+}
+
 date_default_timezone_set(__TIMEZONE__);
 
 function my_autoloader($class_name) {

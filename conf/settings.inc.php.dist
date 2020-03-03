@@ -33,4 +33,5 @@ define("__LDAP_BIND_PASS__","");
 define("__LDAP_SSL__",FALSE);
 define("__LDAP_PORT__",389);
 
+define("__DEBUG__",FALSE);
 ?>
