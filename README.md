@@ -13,11 +13,22 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 
 ## Installation
 * git clone https://github.com/IGB-UIUC/netinfo
-* Create mysql database and mysql user which has insert,update,select,delete privileges on the database
+* Create mysql database
+```
+CREATE DATABASE netinfo CHARACTER SET utf8;
+```
+* Create mysql user with insert,update,select,delete privileges on the database
+```
+CREATE USER 'netinfo'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
+GRANT SELECT,INSERT,DELETE,UPDATE ON netinfo.* to 'netinfo'@'localhost';
+```
 * Import sql files from the sql directory
+```
+mysql -u root -p netinfo < sql/netinfo.sql
+```
 * Create an apache alias to point to the html directory
 ```
-alias /usr/local/netinfo/html /netinfo
+Alias /netinfo /var/www/netinfo/html
 ```
 * Copy /conf/settings.inc.php.dist to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server

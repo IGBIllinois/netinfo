@@ -10,7 +10,6 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","2.14");
 define("__TITLE__","");
 define("__FOOTER__","");
 define("__SESSION_NAME__","netinfo");
