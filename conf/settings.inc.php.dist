@@ -37,4 +37,5 @@ define("__DEBUG__",FALSE);
 
 define("__ENABLE_LOG__",TRUE);
 define("__LOG_FILE__","/var/log/netinfo.log");
+define("__SNMP_COMMUNITY__","");
 ?>

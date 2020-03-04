@@ -2,6 +2,8 @@
 
 class settings {
 
+	const SNMP_COMMUNITY = "public";
+
 	public static function get_version() {
 		return __VERSION__;
 	}
@@ -16,7 +18,14 @@ class settings {
 	}
 
 
-
+	public static function get_snmp_community() {
+		if ((isset(__SNMP_COMMUNITY__) && (__SNMP_COMMUNITY__ != "")) {
+			return __SNMP_COMMUNITY__;
+		}
+		else {
+			return self::SNMP_COMMUNITY;
+		}
+	}
 
 
 
