@@ -39,6 +39,16 @@ class device {
 	public function get_aname() { return $this->aname; }
 	public function get_ipnumber() { return $this->ipnumber; }
 	public function get_hardware() { return $this->hardware; }
+
+	public function get_hardware_cisco() {
+		return preg_replace('/....(?!$)/', '$0.', $this->hardware);
+	}
+	public function get_hardware_dashes() {
+		return preg_replace('/..(?!$)/', '$0-', $this->hardware);
+	}
+	public function get_hardware_colon() {
+		return preg_replace('/..(?!$)/', '$0:', $this->hardware);
+	}
 	public function get_user() { return $this->user; }
 	public function get_email() { return $this->email; }
 	public function get_room() { return $this->room; }

@@ -155,6 +155,16 @@ $os_html .= "</select>";
 		<?php echo $locations_html; ?>
 	</table>
 </div>
+
+<div class='col-md-6 col-lg-6 col-xl-6'>
+	<h4>MAC Address Formats</h4>
+	<table class='table table-bordered table-sm'>
+		<tr><td><?php echo $device->get_hardware_cisco(); ?></td></tr>
+		<tr><td><?php echo $device->get_hardware_dashes(); ?></td></tr>
+		<tr><td><?php echo $device->get_hardware_colon(); ?></td></tr>
+	</table>
+
+</div>
 <div class='col-md-6 col-lg-6 col-xl-6'>
 	<h4>Aliases</h4>
 	<table class='table table-bordered table-sm table-striped '>
