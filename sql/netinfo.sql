@@ -12,7 +12,7 @@ CREATE TABLE `domains` (
 
 CREATE TABLE `macwatch` (
   `switch` varchar(255) NOT NULL,
-  `port` varchar(10) NOT NULL,
+  `port` varchar(30) NOT NULL,
   `mac` varchar(12) NOT NULL,
   `vendor` varchar(50) NOT NULL,
   `vlans` varchar(128) DEFAULT NULL,

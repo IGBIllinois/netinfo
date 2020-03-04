@@ -17,6 +17,11 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
+//If run from command line
+if (php_sapi_name() != 'cli') {
+        exit("Error: This script can only be run from the command line.\n");
+}
+
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 
 $macoid='.1.3.6.1.2.1.17.4.3.1.1';

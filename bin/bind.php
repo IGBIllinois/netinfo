@@ -27,9 +27,8 @@ $shortopts .= "f::"; //-f is optional
 spl_autoload_register('my_autoloader');
 
 
-$sapi_type = php_sapi_name();
 //If run from command line
-if ($sapi_type != 'cli') {
+if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
 

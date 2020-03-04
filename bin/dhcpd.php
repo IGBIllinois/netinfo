@@ -24,9 +24,8 @@ $shortopts .= "n:"; //-n required
 $shortopts .= "d:"; //-d required
 $shortopts .= "c::"; //-c is optional
 
-$sapi_type = php_sapi_name();
 //If run from command line
-if ($sapi_type != 'cli') {
+if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
 

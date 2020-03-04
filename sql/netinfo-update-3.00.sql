@@ -25,5 +25,6 @@ AS SELECT `m1`.`switch` AS `switch`,
 	`m1`.`date` AS `date` FROM `macwatch` `m1` 
 	WHERE `m1`.`date` = (SELECT MAX(`netinfo`.`macwatch`.`date`) FROM `macwatch` WHERE `netinfo`.`macwatch`.`mac` = `m1`.`mac`);
 
-ALTER TABLE `macwatch` DROP KEY `switch`, ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`), ADD KEY `mac` (`mac`), ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`;
+ALTER TABLE `macwatch` DROP KEY `switch`, ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`), ADD KEY `mac` (`mac`), ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, MODIFY `port` VARCHAR(30);
+
 
