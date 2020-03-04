@@ -30,74 +30,73 @@ spl_autoload_register('my_autoloader');
 $sapi_type = php_sapi_name();
 //If run from command line
 if ($sapi_type != 'cli') {
-        $message = "Error: This script can only be run from the command line.\n";
+        exit("Error: This script can only be run from the command line.\n");
 }
 
+$domain_name = "";
+$directory = "";
+$error = false;
+$message = "";
+
+$options = getopt($shortopts);
+
+//domain name parameter
+if (!isset($options['n']) || ($options['n'] == "")) {
+	$error = true;
+	$message .= "Error: Please specify a domain name with the -n parameter\n";
+}
 else {
-	$domain_name = "";
-	$directory = "";
-	$error = false;
-	$message = "";
+	$domain_name = $options['n'];
 
-	$options = getopt($shortopts);
+}
 
-        //domain name parameter
-        if (!isset($options['n']) || ($options['n'] == "")) {
-                $error = true;
-		$message .= "Error: Please specify a domain name with the -n parameter\n";
-        }
-        else {
-                $domain_name = $options['n'];
-
-        }
-
-        //directory parameter
-        if (!isset($options['d']) || ($options['d'] == "")) {
-                $error = true;
-		$message .= "Error: Please specify a directory with the -d parameter\n";
-        }
-        else {
-                $directory = $options['d'];
-                //remove trailing slash
-                if (substr($directory,-1) == "/") {
-                        $directory = substr($directory,0,-1);
-                }
-                //check directory exists
-                if (!file_exists($directory)) {
-                        $error = true;
-                        $message .= "Error: " . $directory . " does not exist\n";
-                }
-
-
-        }
-
-	$force_create = false;
-	if (isset($options['f'])) {
-		$force_create = true;
+//directory parameter
+if (!isset($options['d']) || ($options['d'] == "")) {
+	$error = true;
+	$message .= "Error: Please specify a directory with the -d parameter\n";
+}
+else {
+	$directory = $options['d'];
+	//remove trailing slash
+	if (substr($directory,-1) == "/") {
+		$directory = substr($directory,0,-1);
+	}
+	//check directory exists
+	if (!file_exists($directory)) {
+		$error = true;
+		$message .= "Error: " . $directory . " does not exist\n";
 	}
 
-        if (!$error) {
-		$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-                if ($domain_name == 'ALL') {
-                        $bind_enabled = 1;
-                        $all_domains = functions::get_domains($db,$bind_enabled);
-                        foreach ($all_domains as $domain) {
-			                $domain = new domain($db,$domain['name']);
-			                $result = $domain->update_bind($directory,$force_create);
-                                	$message .= $result['MESSAGE'];
-                        }
 
-                }
-                else {
-			$domain = new domain($db,$domain_name);
-			$result = $domain->update_bind($directory,$force_create);
-			$message = $result['MESSAGE'];
-
-                }
-        }
-	else {
-		 $message .= $output_command;
-	}	
 }
+
+$force_create = false;
+if (isset($options['f'])) {
+	$force_create = true;
+}
+
+if (!$error) {
+	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+	if ($domain_name == 'ALL') {
+		$bind_enabled = 1;
+		$all_domains = functions::get_domains($db,$bind_enabled);
+		foreach ($all_domains as $domain) {
+			$domain = new domain($db,$domain['name']);
+	                $result = $domain->update_bind($directory,$force_create);
+			$message .= $result['MESSAGE'];
+		}
+
+	}
+	else {
+		$domain = new domain($db,$domain_name);
+		$result = $domain->update_bind($directory,$force_create);
+		$message = $result['MESSAGE'];
+
+	}
+}
+else {
+	$message .= $output_command;
+}
+
 echo $message;
 ?>

@@ -27,74 +27,70 @@ $shortopts .= "c::"; //-c is optional
 $sapi_type = php_sapi_name();
 //If run from command line
 if ($sapi_type != 'cli') {
-        $message = "Error: This script can only be run from the command line.\n";
+        exit("Error: This script can only be run from the command line.\n");
+}
+
+$error = false;
+$network_name = "";
+$directory = "";
+$message = "";
+$options = getopt($shortopts);
+
+//network parameter	
+if (!isset($options['n']) || ($options['n'] == "")) {
+	$error = true;
+	$message .= "Error: Please specifiy a network name with the -n parameter\n";
 }
 else {
+	$network_name = $options['n'];
+}
 
-	$error = false;
-	$network_name = "";
-	$directory = "";
-	$message = "";
-	$options = getopt($shortopts);
-
-	//network parameter	
-	if (!isset($options['n']) || ($options['n'] == "")) {
+//directory parameter
+if (!isset($options['d']) || ($options['d'] == "")) {
+	$error = true;
+	$message .= "Error: Please specify a directory with the -d parameter\n";
+}
+else {
+	$directory = $options['d'];
+	//remove trailing slash
+	if (substr($directory,-1) == "/") {
+		$directory = substr($directory,0,-1);
+	}
+	//check directory exists
+	if (!file_exists($directory)) {
 		$error = true;
-		$message .= "Error: Please specifiy a network name with the -n parameter\n";
-	}
-	else {
-		$network_name = $options['n'];
-
+		$message = "Error: " . $directory . " does not exist\n";
 	}
 
-	//directory parameter
-	if (!isset($options['d']) || ($options['d'] == "")) {
-		$error = true;
-		$message .= "Error: Please specify a directory with the -d parameter\n";
-	}
-	else {
-		$directory = $options['d'];
-                //remove trailing slash
-                if (substr($directory,-1) == "/") {
-                        $directory = substr($directory,0,-1);
-                }
-                //check directory exists
-                if (!file_exists($directory)) {
-                        $error = true;
-                        $message = "Error: " . $directory . " does not exist\n";
-                }
 
+}
 
-	}
-
-	//verify config parameter
-	$verify_config = false;
-	if (isset($options['c'])) {
-		$verify_config = true;
-	}
+//verify config parameter
+$verify_config = false;
+if (isset($options['c'])) {
+	$verify_config = true;
+}
 	
-	if (!$error) {
+if (!$error) {
 
-		$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-		if ($network_name == 'ALL') {
-			$dhcp_enabled = 1;
-			$all_networks = functions::get_networks($db,$dhcp_enabled);
-			foreach ($all_networks as $network) {
-				$network = new network($db,$network['name']);
-		                $result = $network->update_dhcpd($directory,$verify_config);
-
-				$message .= $result['MESSAGE'];
-			}
-		}
-		else {
-			$network = new network($db,$network_name);
+	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+	if ($network_name == 'ALL') {
+		$dhcp_enabled = 1;
+		$all_networks = functions::get_networks($db,$dhcp_enabled);
+		foreach ($all_networks as $network) {
+			$network = new network($db,$network['name']);
 	                $result = $network->update_dhcpd($directory,$verify_config);
 			$message .= $result['MESSAGE'];
 		}
 	}
 	else {
-		$message .= $output_command;
+		$network = new network($db,$network_name);
+                $result = $network->update_dhcpd($directory,$verify_config);
+		$message .= $result['MESSAGE'];
 	}
+}
+else {
+	$message .= $output_command;
 }
 
 echo $message;
