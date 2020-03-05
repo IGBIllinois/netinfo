@@ -21,11 +21,11 @@ if (isset($_POST['login'])) {
 	$error = false;
 	if ($username == "") {
 		$error = true;
-		$message = functions::alert("Please enter your username",false);
+		$message = html::alert("Please enter your username",false);
 	}
 	if ($password == "") {
 		$error = true;
-		$message .= functions::alert("Please enter your password",false);
+		$message .= html::alert("Please enter your password",false);
 	}
 	if ($error == false) {
 		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
@@ -46,7 +46,7 @@ if (isset($_POST['login'])) {
 			header("Location: " . $webpage);
 		}
 		else {
-			$message = functions::alert("Invalid Username or Password",false);
+			$message = html::alert("Invalid Username or Password",false);
 		}
 	}
 }
