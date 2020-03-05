@@ -41,7 +41,7 @@ if ($network != "") {
 if (($start_date != "") && ($end_date != "")) {
 	$pages_url .= "&start_date=" . $start_date . "&end_date=" . $end_date;
 }
-$pages_html = functions::get_pages_html($pages_url,$num_devices,$start,$count);
+$pages_html = html::get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
 for ($i=$start;$i<$start+$count;$i++) {

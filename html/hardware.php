@@ -15,7 +15,7 @@ if (isset($_GET['search'])) {
 $devices = functions::get_hardware_addresses($db,$search,$start,$count);
 $num_devices = functions::get_num_hardware_addresses($db,$search);
 $pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
-$pages_html = functions::get_pages_html($pages_url,$num_devices,$start,$count);
+$pages_html = html::get_pages_html($pages_url,$num_devices,$start,$count);
 $current_time = date('Y-m-d H:i:s');
 $devices_html = "";
 
