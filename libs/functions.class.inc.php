@@ -61,10 +61,10 @@ class functions {
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
 		$sql .= "LOWER(namespace.hardware) as hardware, namespace.name as user, ";
 		$sql .= "namespace.email, namespace.room, namespace.os, ";
-		$sql .= "namespace.description, namespace.serial_number, namespace.alias, ";
+		$sql .= "namespace.description, namespace.serial_number, ";
 		$sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
 		$sql .= "a.switch, a.port, a.last_seen, ";
-		$sql .= "domains.name as domain_name ";
+		$sql .= "domains.name as domain_name, namespace.alias ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN ( ";
 		$sql .= "SELECT MAX(macwatch.date) as last_seen, macwatch.switch as switch, ";
@@ -110,7 +110,9 @@ class functions {
 				$search_sql .= "LOWER(namespace.description) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(namespace.property_tag) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(namespace.alias) LIKE '%" . $term . "%') ";
+				$search_sql .= "LOWER(namespace.alias) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(a.port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(a.switch) LIKE '%" . $term . "%') ";
 				array_push($where_sql,$search_sql);
 			}
 	
@@ -128,7 +130,9 @@ class functions {
         	                $search_sql .= "LOWER(namespace.description)='" . $term . "' OR ";
                 	        $search_sql .= "LOWER(namespace.property_tag)='" . $term . "' OR ";
 				$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
-	                        $search_sql .= "LOWER(namespace.alias)='" . $term . "') ";
+	                        $search_sql .= "LOWER(namespace.alias)='" . $term . "' OR ";
+				$search_sql .= "LOWER(a.port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(a.switch) LIKE '%" . $term . "%') ";
         	                array_push($where_sql,$search_sql);
                 	}
 
@@ -153,6 +157,7 @@ class functions {
 
 		}
 		$sql .= "ORDER BY INET_ATON(ipnumber) ASC ";
+		echo $sql;
 		$result = $db->query($sql);
 		return $result;
 
