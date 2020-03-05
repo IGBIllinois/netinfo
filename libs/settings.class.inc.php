@@ -3,7 +3,8 @@
 class settings {
 
 	const SNMP_COMMUNITY = "public";
-
+	const TIMEZONE = "UTC";
+	const DEBUG = false;
 	public static function get_version() {
 		return __VERSION__;
 	}
@@ -37,5 +38,17 @@ class settings {
 
         }
 
+	public static function get_debug() {
+		if (defined(__DEBUG__) && (__DEBUG__ != "")) {
+			return __DEBUG__;
+		}
+		return self::DEBUG;
+	}
+	public static function get_timezone() {
+		if (defined(__TIMEZONE__) && (__TIMEZONE__ != "")) {
+			return __TIMEZONE__;
+		}
+		return self::TIMEZONE;
+	}
 
 }

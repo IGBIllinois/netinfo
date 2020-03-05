@@ -17,7 +17,7 @@ else {
 	echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
 }
 
-if (__DEBUG__) {
+if (settings::get_debug()) {
 	ini_set("log_errors", 1);
 	ini_set('display_errors', 1); 
 	ini_set('display_startup_errors', 1); 
@@ -25,7 +25,7 @@ if (__DEBUG__) {
 
 }
 
-date_default_timezone_set(__TIMEZONE__);
+date_default_timezone_set(settings::get_timezone());
 
 function my_autoloader($class_name) {
 	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {

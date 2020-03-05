@@ -4,14 +4,13 @@ chdir(dirname(__FILE__));
 
 set_include_path(get_include_path() . ':../libs');
 require_once '../conf/settings.inc.php';
-date_default_timezone_set(__TIMEZONE__);
 function my_autoloader($class_name) {
         if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
                 require_once $class_name . '.class.inc.php';
         }
 }
 spl_autoload_register('my_autoloader');
-
+date_default_timezone_set(settings::get_timezone());
 //Command parameters
 $output_command = "Usage: php dhcpd.php -n NETWORK NAME -d OUTPUT DIRECTORY -f\n";
 $output_command .= "   -n Name of the network.  Using 'ALL' will generate all network dhcp configs\n";

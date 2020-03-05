@@ -4,12 +4,13 @@ chdir(dirname(__FILE__));
 
 set_include_path(get_include_path() . ':../libs');
 require_once '../conf/settings.inc.php';
-date_default_timezone_set(__TIMEZONE__);
 function my_autoloader($class_name) {
         if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
                 require_once $class_name . '.class.inc.php';
         }
 }
+spl_autoload_register('my_autoloader');
+date_default_timezone_set(settings::get_timezone());
 
 //Command parameters
 $output_command = "Usage: php bind.php -n DOMIAN NAME -d OUTPUT DIRECTORY -f\n";
@@ -24,7 +25,6 @@ $shortopts .= "n:"; //-n required
 $shortopts .= "d:"; //-d required
 $shortopts .= "f::"; //-f is optional
 
-spl_autoload_register('my_autoloader');
 
 
 //If run from command line
