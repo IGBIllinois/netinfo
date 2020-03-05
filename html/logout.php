@@ -13,6 +13,7 @@
 require_once 'includes/main.inc.php';
 
 $session = new session(__SESSION_NAME__);
+log::send_log("User " . $session->get_var('username') . " logged out");
 
 //destroy session, this logs you out on our side.
 $session->destroy_session();

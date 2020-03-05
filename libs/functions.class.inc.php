@@ -431,6 +431,7 @@ class functions {
         	$rdn = self::get_user_rdn($ldap,$username);
 	        if (($ldap->bind($rdn,$password)) && ($ldap->is_group_member($username,$group))) {
         	        $result = true;
+			log::send_log("User " . $username . " successfully logged in");
 	        }
         	return $result;
 	}
@@ -452,6 +453,7 @@ class functions {
         //$filename - name of file to create
         //creates a linux formatted /etc/hosts file.
         public static function create_host_file($data,$filename) {
+		ob_clean();
                 $delimiter = "\t";
                 $file_handle = fopen('php://output','w');
                 ob_start();

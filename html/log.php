@@ -5,7 +5,7 @@ require_once 'includes/header.inc.php';
 $log_contents = log::get_log();
 ?>
 <h4>Log</h4>
-<textarea class='form-control'><?php echo $log_contents; ?></textarea>
+<textarea class='form-control' rows='50' readonly><?php echo $log_contents; ?></textarea>
 
 
 <?php
