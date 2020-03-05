@@ -158,7 +158,6 @@ class functions {
 
 		}
 		$sql .= "ORDER BY INET_ATON(ipnumber) ASC ";
-		echo $sql;
 		$result = $db->query($sql);
 		return $result;
 
