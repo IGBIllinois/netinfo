@@ -36,6 +36,7 @@
 					<li class='nav-item'><a class='nav-link' href='hardware.php'>Mac Addresses</a></li>
 					<li class='nav-item'><a class='nav-link' href='networks.php'>Networks</a></li>
 					<li class='nav-item'><a class='nav-link' href='domains.php'>Domains</a></li>
+					<li class='nav-item'><a class='nav-link' href='devicetype.php'>Device Types</a></li>
 					<span class="border-top my-2"></span>
 					<li class='nav-item'><a class='nav-link' href='log.php'>View Log</a></li>
 					<li class='nav-item'><a class='nav-link' href='about.php'>About</a></li>
