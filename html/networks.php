@@ -46,7 +46,7 @@ $network = new network($db,$selected_network);
 <tr><td>Network</td><td><?php echo $network->get_network_number(); ?></td></tr>
 <tr><td>Netmask</td><td><?php echo $network->get_netmask(); ?></td></tr>
 <tr><td>Vlan</td><td><?php echo $network->get_vlan(); ?></td><tr>
-<tr><td>Options</td><td><textarea class=' input-block-level' rows='20' cols='80' readonly><?php echo $network->get_options(); ?></textarea></td></tr>
+<tr><td>Options</td><td><textarea class='form-control' rows='20' cols='80' readonly><?php echo $network->get_options(); ?></textarea></td></tr>
 </table>
 
 

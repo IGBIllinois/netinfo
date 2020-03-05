@@ -43,7 +43,8 @@ class device {
 	public function get_hardware_cisco($uppercase = 0) {
 		$hardware_cisco = "";
 		if ($this->hardware != "") {
-			$hardware_cisco = preg_replace('/....(?!$)/', '$0.', $this->hardware);
+                        $chunks = str_split($this->hardware,4);
+                        $hardware_cisco = implode('.',$chunks);
 			if ($uppercase) {
 				$hardware_cisco = strtoupper($hardware_cisco);
 			}
@@ -53,7 +54,8 @@ class device {
 	public function get_hardware_dashes($uppercase = 0) {
 		$hardware_dashes = "";
 		if ($this->hardware != "") {
-			$hardware_dashes = preg_replace('/..(?!$)/', '$0-', $this->hardware);
+			$chunks = str_split($this->hardware,2);
+	                $hardware_dashes = implode('-',$chunks);
 			if ($uppercase) {
 				$hardware_dashes = strtoupper($hardware_dashes);
 			}
@@ -63,7 +65,8 @@ class device {
 	public function get_hardware_colon($uppercase = 0) {
 		$hardware_colon = "";
 		if ($this->hardware != "") {
-			$hardware_colon = preg_replace('/..(?!$)/', '$0:', $this->hardware);
+                        $chunks = str_split($this->hardware,2);
+                        $hardware_colon = implode(':',$chunks);
 			if ($uppercase) {
 				$hardware_colon = strtoupper($hardware_colon);
 			}

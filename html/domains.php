@@ -45,8 +45,8 @@ $domain = new domain($db,$selected_domain);
 <tr><td>Enabled</td><td><?php echo $domain->is_enabled(); ?></td></tr>
 <tr><td>Serial</td><td><?php echo $domain->get_serial(); ?></td></tr>
 <tr><td>Last Updated</td><td><?php echo $domain->get_last_updated(); ?></td></tr>
-<tr><td>Header</td><td><textarea class='input-block-level' rows='20' cols='80' readonly><?php echo $domain->get_header(); ?></textarea></td></tr>
-<tr><td>Options</td><td><textarea class='input-block-level' rows='20' cols='80' readonly><?php echo $domain->get_options(); ?></textarea></td></tr>
+<tr><td>Header</td><td><textarea class='form-control' rows='20' cols='80' readonly><?php echo $domain->get_header(); ?></textarea></td></tr>
+<tr><td>Options</td><td><textarea class='form-control' rows='20' cols='80' readonly><?php echo $domain->get_options(); ?></textarea></td></tr>
 </table>
 
 
