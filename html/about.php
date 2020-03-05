@@ -23,6 +23,18 @@ echo $extensions_string;
 
 </table>
 </div>
+<div class='col-md-8 col-lg-8 col-xl-8'>
+<h3>Settings</h3>
+<table class='table table-bordered table-sm'>
+	<thead>
+		<th>Setting</th><th>Value</th>
+	</thead>
+	<tbody>
+		<tr><td>__DEBUG__</td><td><?php echo settings::get_debug(); ?></td></tr>
+	</tbody>
+</table>
+
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

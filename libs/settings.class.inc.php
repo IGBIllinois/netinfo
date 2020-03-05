@@ -20,7 +20,7 @@ class settings {
 
 
 	public static function get_snmp_community() {
-		if (defined(__SNMP_COMMUNITY__) && (__SNMP_COMMUNITY__ != "")) {
+		if (defined("__SNMP_COMMUNITY__") && (__SNMP_COMMUNITY__ != "")) {
 			return __SNMP_COMMUNITY__;
 		}
 		return self::SNMP_COMMUNITY;
@@ -31,7 +31,7 @@ class settings {
         }
 
 	 public static function get_log_file() {
-                if (!file_exists(__LOG_FILE__)) {
+                if (self::log_enabled() && !file_exists(__LOG_FILE__)) {
                         touch(__LOG_FILE__);
                 }
                 return __LOG_FILE__;
@@ -39,13 +39,13 @@ class settings {
         }
 
 	public static function get_debug() {
-		if (defined(__DEBUG__) && (__DEBUG__ != "")) {
+		if (defined("__DEBUG__") && (__DEBUG__ != "")) {
 			return __DEBUG__;
 		}
 		return self::DEBUG;
 	}
 	public static function get_timezone() {
-		if (defined(__TIMEZONE__) && (__TIMEZONE__ != "")) {
+		if (defined("__TIMEZONE__") && (__TIMEZONE__ != "")) {
 			return __TIMEZONE__;
 		}
 		return self::TIMEZONE;

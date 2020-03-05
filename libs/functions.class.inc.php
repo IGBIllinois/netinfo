@@ -517,19 +517,6 @@ class functions {
 		return "";
 
 	}
-	public static function log($message) {
-                $current_time = date('Y-m-d H:i:s');
-                $full_msg = $current_time . ": " . $message . "\n";
-		
-                if (settings::log_enabled()) {
-                        file_put_contents(settings::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
-                }
-		if (php_sapi_name() == "cli") {
-	                echo $full_msg;
-		}
-        }
-
-
 	
 }
 ?>
