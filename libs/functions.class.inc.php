@@ -509,7 +509,14 @@ class functions {
 		return $extensions_chunk;
 
 	}
+	
+	public static function get_webserver_version() {
+		if (isset($_SERVER['SERVER_SOFTWARE'])) {
+			return $_SERVER['SERVER_SOFTWARE'];
+		}
+		return "";
 
+	}
 	public static function log($message) {
                 $current_time = date('Y-m-d H:i:s');
                 $full_msg = $current_time . ": " . $message . "\n";
@@ -533,5 +540,6 @@ class functions {
                 return __ENABLE_LOG__;
         }
 
+	
 }
 ?>

@@ -40,14 +40,35 @@ class device {
 	public function get_ipnumber() { return $this->ipnumber; }
 	public function get_hardware() { return $this->hardware; }
 
-	public function get_hardware_cisco() {
-		return preg_replace('/....(?!$)/', '$0.', $this->hardware);
+	public function get_hardware_cisco($uppercase = 0) {
+		$hardware_cisco = "";
+		if ($this->hardware != "") {
+			$hardware_cisco = preg_replace('/....(?!$)/', '$0.', $this->hardware);
+			if ($uppercase) {
+				$hardware_cisco = strtoupper($hardware_cisco);
+			}
+		}
+		return $hardware_cisco;
 	}
-	public function get_hardware_dashes() {
-		return preg_replace('/..(?!$)/', '$0-', $this->hardware);
+	public function get_hardware_dashes($uppercase = 0) {
+		$hardware_dashes = "";
+		if ($this->hardware != "") {
+			$hardware_dashes = preg_replace('/..(?!$)/', '$0-', $this->hardware);
+			if ($uppercase) {
+				$hardware_dashes = strtoupper($hardware_dashes);
+			}
+		}
+		return $hardware_dashes;
 	}
-	public function get_hardware_colon() {
-		return preg_replace('/..(?!$)/', '$0:', $this->hardware);
+	public function get_hardware_colon($uppercase = 0) {
+		$hardware_colon = "";
+		if ($this->hardware != "") {
+			$hardware_colon = preg_replace('/..(?!$)/', '$0:', $this->hardware);
+			if ($uppercase) {
+				$hardware_colon = strtoupper($hardware_colon);
+			}
+		}
+		return $hardware_colon;
 	}
 	public function get_user() { return $this->user; }
 	public function get_email() { return $this->email; }

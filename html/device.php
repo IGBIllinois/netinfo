@@ -157,11 +157,20 @@ $os_html .= "</select>";
 </div>
 
 <div class='col-md-6 col-lg-6 col-xl-6'>
-	<h4>MAC Address Formats</h4>
+	<h4>Hardware (MAC) Address Formats</h4>
 	<table class='table table-bordered table-sm'>
-		<tr><td><?php echo $device->get_hardware_cisco(); ?></td></tr>
-		<tr><td><?php echo $device->get_hardware_dashes(); ?></td></tr>
-		<tr><td><?php echo $device->get_hardware_colon(); ?></td></tr>
+		<tr>
+			<td><?php echo $device->get_hardware_cisco(); ?>&nbsp;</td>
+			<td><?php echo $device->get_hardware_cisco(true); ?>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><?php echo $device->get_hardware_dashes(); ?>&nbsp;</td>
+			<td><?php echo $device->get_hardware_dashes(true); ?>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><?php echo $device->get_hardware_colon(); ?>&nbsp;</td>
+			<td><?php echo $device->get_hardware_colon(true); ?>&nbsp;</td>
+		</tr>
 	</table>
 
 </div>

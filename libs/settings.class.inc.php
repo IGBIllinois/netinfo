@@ -19,12 +19,10 @@ class settings {
 
 
 	public static function get_snmp_community() {
-		if ((isset(__SNMP_COMMUNITY__) && (__SNMP_COMMUNITY__ != "")) {
+		if (defined(__SNMP_COMMUNITY__) && (__SNMP_COMMUNITY__ != "")) {
 			return __SNMP_COMMUNITY__;
 		}
-		else {
-			return self::SNMP_COMMUNITY;
-		}
+		return self::SNMP_COMMUNITY;
 	}
 
 
