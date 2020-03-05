@@ -49,26 +49,22 @@ class report {
 			//Creates headers
 			$headings = array_keys($data[0]);
 			for ($i=0;$i<count($headings);$i++) {
-				$excel_file->getActiveSheet()->setCellValueByColumnAndRow($i,1,$headings[$i]);
-				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getFont()->setBold(true);
-				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getFont()->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
-				$excel_file->getActiveSheet()->getColumnDimensionByColumn($i)->setAutoSize(true);
+				$column = $i+1;
+				$excel_file->getActiveSheet()->setCellValueByColumnAndRow($column,1,$headings[$i]);
+				$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,1)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+				$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,1)->getFont()->setBold(true);
+				$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,1)->getFont()->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
+				$excel_file->getActiveSheet()->getColumnDimensionByColumn($column)->setAutoSize(true);
 			}
 			//Adds data
 			$rows = count($data);
 			$start_row = 2;
 			foreach ($data as $row_data) {
-				$column=0;
+				$column=1;
 				foreach ($row_data as $key => $value) {
 					$excel_file->getActiveSheet()->setCellValueByColumnAndRow($column,$start_row,$value);
-					if (($key == 'Cost') || ($key == 'Billed Amount') || ($key == 'COST')) {
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00);
-					}
-					else {
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-					}
+					$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+					$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
 					$column++;
 				}
 				$start_row++;

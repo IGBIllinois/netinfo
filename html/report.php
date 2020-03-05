@@ -13,7 +13,6 @@ if (isset($_POST['create_report_full'])) {
 	$data = functions::get_devices($db,$network,$search,$exact,$start_date,$end_date);
 	$filename = "report." . $type; 
 
-
 	switch ($type) {
 		case 'csv':
 			report::create_csv_report($data,$filename);
@@ -25,7 +24,6 @@ if (isset($_POST['create_report_full'])) {
 			report::create_excel_2007_report($data,$filename);
 			break;
 	}
-
 }
 
 elseif (isset($_POST['create_report_no_spares'])) {
