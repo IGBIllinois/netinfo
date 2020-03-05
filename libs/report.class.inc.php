@@ -36,6 +36,21 @@ class report {
 		$writer->save('php://output');
 	}
 
+        //create_pdf_report()
+        //$data - double array - data values
+        //$filename = string - name of the file to create
+        //prompts to save an PDF report.
+        public static function create_pdf_report($data,$filename) {
+                ob_clean();
+                $excel_file = self::create_generic_excel($data);
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header("Content-Disposition: attachment;filename=" . $filename);
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel_file,'Tcpdf');
+                $writer->save('php://output');
+        }
+
 	//create_generic_excel()
 	//$data - double array - data values
 	//returns a PHPExcel object with data in correct columns and rows.

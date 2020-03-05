@@ -5,6 +5,7 @@
 		"components/jquery": "3.4.1",
                 "components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "4.4.1",
-		"fortawesome/font-awesome": "5.12.1"
+		"fortawesome/font-awesome": "5.12.1",
+		"tecnickcom/tcpdf": "6.3.5"
 	}
 }

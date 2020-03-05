@@ -23,6 +23,9 @@ if (isset($_POST['create_report_full'])) {
 		case 'xlsx':
 			report::create_excel_2007_report($data,$filename);
 			break;
+		case 'pdf':
+			report::create_pdf_report($data,$filename);
+			break;
 	}
 }
 
@@ -48,6 +51,10 @@ elseif (isset($_POST['create_report_no_spares'])) {
                 case 'xlsx':
                         report::create_excel_2007_report($data,$filename);
                         break;
+		case 'pdf':
+                        report::create_pdf_report($data,$filename);
+                        break;
+
         }
 
 
