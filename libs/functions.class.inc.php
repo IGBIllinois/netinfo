@@ -18,10 +18,10 @@ class functions {
 	public static function get_networks($db,$dhcp_enabled = false) {
 		$sql = "SELECT networks.*,domains.name as domain_name FROM networks ";
 		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";
-		$sql .= "ORDER BY vlan ASC ";
 		if ($dhcp_enabled) {
 			$sql .= "WHERE networks.enabled='1' ";
 		}
+		$sql .= "ORDER BY vlan ASC ";
 		return $db->query($sql);
 		
 	}
