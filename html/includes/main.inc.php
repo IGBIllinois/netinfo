@@ -17,6 +17,14 @@ else {
 	echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
 }
 
+function my_autoloader($class_name) {
+        if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
+                require_once $class_name . '.class.inc.php';
+        }
+}
+
+spl_autoload_register('my_autoloader');
+
 if (settings::get_debug()) {
 	ini_set("log_errors", 1);
 	ini_set('display_errors', 1); 
@@ -26,14 +34,6 @@ if (settings::get_debug()) {
 }
 
 date_default_timezone_set(settings::get_timezone());
-
-function my_autoloader($class_name) {
-	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
-		require_once $class_name . '.class.inc.php';
-	}
-}
-
-spl_autoload_register('my_autoloader');
 
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 $networks = functions::get_networks($db);

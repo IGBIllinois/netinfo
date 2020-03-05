@@ -80,6 +80,7 @@ foreach ($locations as $location) {
 	$locations_html .= "<td>" . $location['date'] . "</td>";
 	$locations_html .= "<td>" . $location['switch'] . "</td>";
 	$locations_html .= "<td>" . $location['port'] . "</td>";
+	$locations_html .= "<td>" . $location['vlans'] . "</td>";
 	$locations_html .= "</tr>";
 }
 
@@ -151,6 +152,7 @@ $os_html .= "</select>";
 			<th>Last Seen</th>
 			<th>Switch</th>
 			<th>Port</th>
+			<th>VLANS</th>
 		</thead>
 		<?php echo $locations_html; ?>
 	</table>

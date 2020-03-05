@@ -108,7 +108,7 @@ class device {
 
 	public function get_locations() {
 		$sql = "SELECT macwatch.date,macwatch.mac, ";
-		$sql .= "macwatch.switch, macwatch.port ";
+		$sql .= "macwatch.switch, macwatch.port, macwatch.vlans ";
 		$sql .= "FROM macwatch ";
 		$sql .= "WHERE LOWER(mac)='" . $this->get_hardware() . "' ";
 		$sql .= "ORDER BY date DESC";
