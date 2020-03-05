@@ -25,7 +25,17 @@ class settings {
 		return self::SNMP_COMMUNITY;
 	}
 
+	 public static function log_enabled() {
+                return __ENABLE_LOG__;
+        }
 
+	 public static function get_log_file() {
+                if (!file_exists(__LOG_FILE__)) {
+                        touch(__LOG_FILE__);
+                }
+                return __LOG_FILE__;
+
+        }
 
 
 }

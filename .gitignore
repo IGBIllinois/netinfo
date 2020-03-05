@@ -1,4 +1,6 @@
 /conf/settings.inc.php
+/conf/log_rotate.conf
+/conf/cron
 /bin/updateDuplicity.sh
 /bin/updateNetsvc2.sh
 /bin/macfinder.pl

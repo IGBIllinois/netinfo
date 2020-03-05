@@ -521,24 +521,14 @@ class functions {
                 $current_time = date('Y-m-d H:i:s');
                 $full_msg = $current_time . ": " . $message . "\n";
 		
-                if (self::log_enabled()) {
-                        file_put_contents(self::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
+                if (settings::log_enabled()) {
+                        file_put_contents(settings::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
                 }
 		if (php_sapi_name() == "cli") {
 	                echo $full_msg;
 		}
         }
-	public static function get_log_file() {
-                if (!file_exists(__LOG_FILE__)) {
-                        touch(__LOG_FILE__);
-                }
-                return __LOG_FILE__;
 
-        }
-
-        public static function log_enabled() {
-                return __ENABLE_LOG__;
-        }
 
 	
 }
