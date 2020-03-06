@@ -2,9 +2,10 @@
 
 class settings {
 
-	const SNMP_COMMUNITY = "public";
-	const TIMEZONE = "UTC";
-	const DEBUG = false;
+	private const SNMP_COMMUNITY = "public";
+	private const TIMEZONE = "UTC";
+	private const DEBUG = false;
+
 	public static function get_version() {
 		return __VERSION__;
 	}

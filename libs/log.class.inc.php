@@ -2,7 +2,7 @@
 
 class log {
 
-	const MAX_FILE_LENGTH = 1000;
+	private const MAX_FILE_LENGTH = 1000;
 	const NOTICE = 0;
 	const WARNING = 1;
 	const ERROR = 2;
