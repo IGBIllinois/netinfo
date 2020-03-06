@@ -108,8 +108,8 @@ class functions {
 				$search_sql .= "LOWER(namespace.property_tag) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(namespace.alias) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(a.port) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(a.switch) LIKE '%" . $term . "%') ";
+				$search_sql .= "LOWER(macwatch_latest.port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(macwatch_latest.switch) LIKE '%" . $term . "%') ";
 				array_push($where_sql,$search_sql);
 			}
 	
@@ -128,8 +128,8 @@ class functions {
                 	        $search_sql .= "LOWER(namespace.property_tag)='" . $term . "' OR ";
 				$search_sql .= "LOWER(namespace.serial_number) LIKE '%" . $term . "%' OR ";
 	                        $search_sql .= "LOWER(namespace.alias)='" . $term . "' OR ";
-				$search_sql .= "LOWER(a.port) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(a.switch) LIKE '%" . $term . "%') ";
+				$search_sql .= "LOWER(macwatch_latest.port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(macwatch_latest.switch) LIKE '%" . $term . "%') ";
         	                array_push($where_sql,$search_sql);
                 	}
 

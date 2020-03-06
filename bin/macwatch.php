@@ -17,22 +17,26 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
+if (settings::get_debug()) {
+        ini_set("log_errors", 1);
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+}
+
 //If run from command line
 if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 
-$macoid='.1.3.6.1.2.1.17.4.3.1.1';
-$bridgeoid='.1.3.6.1.2.1.17.4.3.1.2';
-$ifoid='.1.3.6.1.2.1.17.1.4.1.2';
-$nameoid='.1.3.6.1.2.1.31.1.1.1.1';
-
 // Array of VLANS to watch
 $vlans = macwatch::get_vlans($db);
-
+print_r($vlans);
+echo "Community: " . settings::get_snmp_community() . "\n";
 // Array of switches to poll
-$switches = macwatch::get_vlans($db);
+$switches = macwatch::get_switches($db);
 
 // Foreach switch
 foreach ($switches as $switch) {
@@ -42,17 +46,18 @@ foreach ($switches as $switch) {
 	foreach ($vlans as $vlan) {
 		echo "\tVLAN: ".$vlan['vlan']."\n";
 		//   Get MACs, "bridges", interface numbers, and interface names
-		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'], '" . settings::get_snmp_community() . "@'.$vlan['vlan']);
+		
+		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'], '" . settings::get_snmp_community() . "@'.$vlan['vlan'],1000000,5);
 		$snmp->valueretrieval = SNMP_VALUE_PLAIN;
 
-		$macs = @$snmp->walk($macoid);
+		//$macs = $snmp->walk(macwatch::get_mac_oid());
+		$macs = $snmp->walk(".");
 		if($macs === false){
 			continue; // If there was an SNMP error on the first walk, skip the rest.
 		}
-		$bridges = $snmp->walk($bridgeoid);
-		$ifnums = $snmp->walk($ifoid);
-		$ifnames = $snmp->walk($nameoid);
-
+		$bridges = $snmp->walk(macwatch::get_bridge_oid());
+		$ifnums = $snmp->walk(macwatch::get_interface_oid());
+		$ifnames = $snmp->walk(macwatch::get_interface_name_oid());
 		// Get ports to ignore
 		$ignoredports = $db->query("select * from macwatch_ignored_ports where switch_hostname=:switch",array(':switch'=>$switch['hostname']));
 		// Reverse the array to make it easier to search
@@ -113,7 +118,7 @@ foreach ($switches as $switch) {
 			
 			echo "\t\t$mac: $ifname ($vendor)\n"; // For now, we just print
 			if(!$dryrun){
-				$db->insert_query('insert into macwatch(switch,port,mac,vendor,vlans) values (:switch,:port,:mac,:vendor,:vlans) on duplicate key update date=NOW(), vendor=:vendor, vlans=:vlans',array(':switch'=>$switch['hostname'],':port'=>$ifname,':mac'=>$mac,':vendor'=>$vendor,':vlans'=>implode(',', $portvlans[$ifname][$mac])));
+				//$db->insert_query('insert into macwatch(switch,port,mac,vendor,vlans) values (:switch,:port,:mac,:vendor,:vlans) on duplicate key update date=NOW(), vendor=:vendor, vlans=:vlans',array(':switch'=>$switch['hostname'],':port'=>$ifname,':mac'=>$mac,':vendor'=>$vendor,':vlans'=>implode(',', $portvlans[$ifname][$mac])));
 			}
 		}
 	}
