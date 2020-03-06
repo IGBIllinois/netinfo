@@ -24,12 +24,13 @@ if (isset($_POST['ipnumber'])) {
 if (isset($_POST['delete'])) {
         $result = $device->delete($session->get_var('username'));
 	if ($result['RESULT']) {
+		$result['MESSAGE'] = "<div class='alert alert-danger'>Device Reservation was deleted.</div>";
 		unset($_POST);
 	}
 }
 elseif (isset($_POST['cancel'])) {
         unset($_POST);
-        $result['MESSAGE'] = "<div class='alert'>Device update was canceled.</div>";
+        $result['MESSAGE'] = "<div class='alert alert-warning'>Device update was canceled.</div>";
 }
 elseif (isset($_POST['add_alias'])) {
         $result = $device->add_alias($_POST['new_alias'],$session->get_var('username'));

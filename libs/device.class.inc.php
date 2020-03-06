@@ -130,7 +130,7 @@ class device {
 			($os == $this->get_os())) 
 		{
 			$error = 1;
-			$message .= "<div class='alert'>No changes were made</div>";	
+			$message .= "<div class='alert alert-primary'>No changes were made</div>";	
 
 		}
 		else {
