@@ -33,7 +33,6 @@ $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__
 
 // Array of VLANS to watch
 $vlans = macwatch::get_vlans($db);
-print_r($vlans);
 echo "Community: " . settings::get_snmp_community() . "\n";
 // Array of switches to poll
 $switches = macwatch::get_switches($db);
