@@ -1,32 +1,53 @@
-CREATE TABLE `macwatch_ignored_ports` (
-	`switch_hostname` varchar(64) NOT NULL DEFAULT '',
-	`portname` varchar(128) NOT NULL DEFAULT '',
-	PRIMARY KEY (`switch_hostname`,`portname`),
-	CONSTRAINT `macwatch_ignored_ports_ibfk_1` FOREIGN KEY (`switch_hostname`) REFERENCES `macwatch_switches` (`hostname`) ON DELETE CASCADE ON UPDATE CASCADE
-)
+ALTER DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE domains ENGINE = InnoDB, CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE macwatch ENGINE = InnoDB, CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE namespace ENGINE = InnoDB, CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE networks ENGINE = InnoDB, CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE operating_systems ENGINE = InnoDB, CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-CREATE TABLE `switches` (
-	`switch_id` INT NOT NULL AUTOINCREMENT,
-	`hostname` varchar(64) NOT NULL DEFAULT '',
-	PRIMARY KEY (`switch_id`)
-)
+CREATE TABLE ignored_ports (
+        ignored_ports_id INT NOT NULL AUTO_INCREMENT,
+        switch_hostname varchar(64) NOT NULL DEFAULT '',
+        portname VARCHAR(128) NOT NULL DEFAULT '',
+        PRIMARY KEY (ignored_ports_id)
+);
 
-CREATE TABLE `macwatch_vlans` (
-	`vlan_id` INT NOT NULL AUTOINCREMENT,
-	`vlan` int(11) unsigned NOT NULL,
-	`description` text,
-	PRIMARY KEY (`vlan_id`)
-)
+CREATE TABLE switches (
+        switch_id INT NOT NULL AUTO_INCREMENT,
+        hostname VARCHAR(64) NOT NULL DEFAULT '',
+        PRIMARY KEY (switch_id)
+);
+
+CREATE TABLE vlans (
+        vlan_id INT NOT NULL AUTO_INCREMENT,
+        vlan INT UNSIGNED NOT NULL,
+        PRIMARY KEY (vlan_id)
+);
+
+ALTER TABLE operating_systems 
+	MODIFY column id INT NOT NULL AUTO_INCREMENT FIRST,
+	ADD COLUMN date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE namespace
+	DROP PRIMARY KEY,
+	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+	ADD PRIMARY KEY(id);
+CREATE INDEX hardware ON namespace(hardware,ipnumber);
+
+
+ALTER TABLE macwatch
+	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+	ADD PRIMARY KEY (id),
+	ADD KEY `mac` (`mac`), 
+	ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, 
+	MODIFY `port` VARCHAR(30);
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
-AS SELECT `m1`.`switch` AS `switch`,
-	`m1`.`port` AS `port`,
-	`m1`.`mac` AS `mac`,
-	`m1`.`vendor` AS `vendor`,
-	`m1`.`vlans` AS `vlans`,
-	`m1`.`date` AS `date` FROM `macwatch` `m1` 
-	WHERE `m1`.`date` = (SELECT MAX(`netinfo`.`macwatch`.`date`) FROM `macwatch` WHERE `netinfo`.`macwatch`.`mac` = `m1`.`mac`);
-
-ALTER TABLE `macwatch` DROP KEY `switch`, ADD PRIMARY KEY `PRIMARY` (`switch`, `port`, `mac`), ADD KEY `mac` (`mac`), ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, MODIFY `port` VARCHAR(30);
-
+AS SELECT m1.switch AS switch,
+        m1.port AS port,
+        m1.mac AS mac,
+        m1.vendor AS vendor,
+        m1.vlans AS vlans,
+        m1.date AS date FROM macwatch m1
+        WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
 

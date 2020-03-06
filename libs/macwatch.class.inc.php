@@ -8,7 +8,7 @@ class macwatch {
 	private CONST INTERFACE_NAME_OID='.1.3.6.1.2.1.31.1.1.1.1';
 
 	public static function get_vlans($db) {
-		$sql = "select * from macwatch_vlans";
+		$sql = "select * from vlans";
 		return $db->query($sql);
 
 
