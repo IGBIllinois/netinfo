@@ -21,7 +21,6 @@ spl_autoload_register('my_autoloader');
 if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
-
 $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 
 $macoid='.1.3.6.1.2.1.17.4.3.1.1';
@@ -30,10 +29,10 @@ $ifoid='.1.3.6.1.2.1.17.1.4.1.2';
 $nameoid='.1.3.6.1.2.1.31.1.1.1.1';
 
 // Array of VLANS to watch
-$vlans = $db->query("select * from macwatch_vlans");
+$vlans = macwatch::get_vlans($db);
 
 // Array of switches to poll
-$switches = $db->query("select * from macwatch_switches");
+$switches = macwatch::get_vlans($db);
 
 // Foreach switch
 foreach ($switches as $switch) {

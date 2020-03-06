@@ -1,20 +1,22 @@
 CREATE TABLE `macwatch_ignored_ports` (
-  `switch_hostname` varchar(64) NOT NULL DEFAULT '',
-  `portname` varchar(128) NOT NULL DEFAULT '',
-  PRIMARY KEY (`switch_hostname`,`portname`),
-  CONSTRAINT `macwatch_ignored_ports_ibfk_1` FOREIGN KEY (`switch_hostname`) REFERENCES `macwatch_switches` (`hostname`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	`switch_hostname` varchar(64) NOT NULL DEFAULT '',
+	`portname` varchar(128) NOT NULL DEFAULT '',
+	PRIMARY KEY (`switch_hostname`,`portname`),
+	CONSTRAINT `macwatch_ignored_ports_ibfk_1` FOREIGN KEY (`switch_hostname`) REFERENCES `macwatch_switches` (`hostname`) ON DELETE CASCADE ON UPDATE CASCADE
+)
 
-CREATE TABLE `macwatch_switches` (
-  `hostname` varchar(64) NOT NULL DEFAULT '',
-  PRIMARY KEY (`hostname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `switches` (
+	`switch_id` INT NOT NULL AUTOINCREMENT,
+	`hostname` varchar(64) NOT NULL DEFAULT '',
+	PRIMARY KEY (`switch_id`)
+)
 
 CREATE TABLE `macwatch_vlans` (
-  `vlan` int(11) unsigned NOT NULL,
-  `description` text,
-  PRIMARY KEY (`vlan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	`vlan_id` INT NOT NULL AUTOINCREMENT,
+	`vlan` int(11) unsigned NOT NULL,
+	`description` text,
+	PRIMARY KEY (`vlan_id`)
+)
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
 AS SELECT `m1`.`switch` AS `switch`,
