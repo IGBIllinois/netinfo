@@ -38,6 +38,8 @@ ALTER TABLE namespace
 	ADD PRIMARY KEY(id);
 CREATE INDEX hardware ON namespace(hardware,ipnumber);
 
+ALTER TABLE domains
+	MODIFY serial INT DEFAULT 1;
 
 ALTER TABLE macwatch
 	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,

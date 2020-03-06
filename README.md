@@ -53,9 +53,15 @@ ln -s ../vendor vendor
 ```
 
 # Initial Setup
+* Copy conf/settings.inc.php.dist to conf/setttings.inc.php
+```
+cp conf/settings.inc.php.dist conf/settings.inc.php
+```
+* Edit conf/settings.inc.php for your environment
+
 * Create domains in the domains table manual.
 ```
-INSERT INTO domains(name,alt_names,serial) VALUES('example.com','example.net',1);
+INSERT INTO domains(name,alt_names) VALUES('example.com','example.net');
 ```
 * Create networks in the networks table manual.
 ```
@@ -65,11 +71,25 @@ INSERT INTO networks(name,network,netmask,vlan,enabled,domain_id) VALUES('public
 ```
 INSERT INTO namespace(aname,ipnumber,network_id) VALUES('spare','192.168.1.1',1);
 ```
-* Create cron job to create the dhcpd and bind conf files
+* For cron jobs, copy conf/cron.dist to conf/cron
 ```
-0,15,30,45 * * * * root php /usr/local/netinfo/bin/dhcpd.php -n ALL -d /etc/dhcpd/
-0,15,30,45 * * * * root php /usr/local/netinfo/bin/bind.php -n ALL -d /var/named/chroot/var/named
+cp conf/cron.dist to conf/cron
 ```
+* Edit conf/cron for the schedule you want
+*Make symlink of conf/cron to /etc/cron.d/netinfo
+```
+ln -s /var/www/netinfo/conf/cron /etc/cron.d/netinfo
+```
+* Copy conf/log_rotate.conf.dist to conf/log_rotate.conf
+```
+cp conf/log_rotate.conf.dist conf/log_rorate.conf
+```
+* Edit conf/log_rotate.conf 
+* Make symlink of conf/log_rotate.conf to /etc/logrotate.d/netinfo
+```
+ln -s /var/www/netinfo/conf/log_rotate.conf /etc/logrotate.d/netinfo
+```
+
 * Done
 
 
