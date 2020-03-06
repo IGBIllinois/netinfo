@@ -6,7 +6,7 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 
 ## Requirements
 * MySQL/MariaDB
-* PHP
+* PHP >=7.1 with php-snmp,php-pdo,php-ldap,php-cli mdules
 * Composer
 * Apache
 * DHCPD
@@ -14,6 +14,11 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 * LDAP to login
 
 ## Installation
+
+* For Redhat/CentOS 8
+```
+yum install php php-cli php-pdo php-snmp php-ldap mariadb bind bind-chroot dhcp-server
+```
 * git clone https://github.com/IGB-UIUC/netinfo or download tagged tar.gz
 ```
 git clone https://github.com/IGB-UIUC/netinfo netinfo
