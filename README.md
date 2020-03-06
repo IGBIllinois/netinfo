@@ -36,9 +36,13 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON netinfo.* to 'netinfo'@'localhost';
 ```
 mysql -u root -p netinfo < sql/netinfo.sql
 ```
-* Create an apache alias to point to the html directory
+* Add apache config to apache configuration to point to the html directory
 ```
 Alias /netinfo /var/www/netinfo/html
+<Location /netinfo>
+	AllowOverride None
+	Require all granted
+</Location>
 ```
 * Copy /conf/settings.inc.php.dist to /conf/settings.inc.php
 * Change the settings.inc.php to point to the mysql database and ldap server
@@ -69,7 +73,7 @@ INSERT INTO networks(name,network,netmask,vlan,enabled,domain_id) VALUES('public
 ```
 * Add IP addresses to namespace table.  Use the spare for the aname.  This then becomes an available ip address
 ```
-INSERT INTO namespace(aname,ipnumber,network_id) VALUES('spare','192.168.1.1',1);
+INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
 ```
 * For cron jobs, copy conf/cron.dist to conf/cron
 ```
