@@ -8,3 +8,4 @@ php:
 install:
     - composer install --no-interaction
 
+script: echo "" > /dev/null
