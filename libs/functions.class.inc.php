@@ -316,21 +316,21 @@ class functions {
 	public static function get_hardware_addresses($db,$search = "",$start = 0,$count = 0) {
 		$search = strtolower(trim(rtrim($search)));
 		$where_sql = array();
-		$sql = "SELECT macwatch.switch as switch, macwatch.port as port, ";
-		$sql .= "macwatch.mac as mac, macwatch.vendor as vendor, ";
-		$sql .= "macwatch.date as last_seen ";
-		$sql .= "FROM macwatch ";
-		//$sql .= "LEFT JOIN namespace ON namespace.hardware=macwatch.mac ";
+		$sql = "SELECT macwatch_latest.mac as mac, macwatch_latest.vendor as vendor, ";
+		$sql .= "macwatch_latest.port as port, macwatch_latest.switch as switch, ";
+		$sql .= "macwatch_latest.date as last_seen ";
+		$sql .= "FROM macwatch_latest ";
+		//$sql .= "LEFT JOIN namespace ON namespace.hardware=macwatch_latest.mac ";
 	
-		array_push($where_sql,"macwatch.port IS NOT NULL ");
+		array_push($where_sql,"macwatch_latest.port IS NOT NULL ");
 
         	if ($search != "" ){
 			$terms = explode(" ",$search);
 	                foreach ($terms as $term) {
-        	                $search_sql = "(LOWER(macwatch.switch) LIKE '%" . $term . "%' OR ";
-                	        $search_sql .= "LOWER(macwatch.port) LIKE '%" . $term . "%' OR ";
-                        	$search_sql .= "LOWER(macwatch.mac) LIKE '%" . $term . "%' OR ";
-	                        $search_sql .= "LOWER(macwatch.vendor) LIKE '%" . $term . "%') ";
+        	                $search_sql = "(LOWER(macwatch_latest.switch) LIKE '%" . $term . "%' OR ";
+                	        $search_sql .= "LOWER(macwatch_latest.port) LIKE '%" . $term . "%' OR ";
+                        	$search_sql .= "LOWER(macwatch_latest.mac) LIKE '%" . $term . "%' OR ";
+	                        $search_sql .= "LOWER(macwatch_latest.vendor) LIKE '%" . $term . "%') ";
         	                array_push($where_sql,$search_sql);
                 	}
 		}
@@ -347,8 +347,6 @@ class functions {
                 	}
 
 	        }
-		$sql .= "GROUP BY macwatch.mac ";
-		$sql .= "HAVING MAX(macwatch.date) ";
 	        $sql .= "ORDER BY last_seen DESC ";
 	
 		if ($count !== 0) {
