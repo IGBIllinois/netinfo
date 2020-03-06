@@ -63,14 +63,10 @@ class functions {
 		$sql .= "namespace.email, namespace.room, namespace.os, ";
 		$sql .= "namespace.description, namespace.serial_number, ";
 		$sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
-		$sql .= "a.switch, a.port, a.last_seen, ";
+		$sql .= "macwatch_latest.switch, macwatch_latest.port, macwatch_latest.date as last_seen, ";
 		$sql .= "domains.name as domain_name, namespace.alias ";
 		$sql .= "FROM namespace ";
-		$sql .= "LEFT JOIN ( ";
-		$sql .= "SELECT MAX(b.date) as last_seen, b.switch as switch, ";
-		$sql .= "b.port as port,LOWER(b.mac) as mac FROM macwatch b ";
-		$sql .= "WHERE b.date=(SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac=b.mac) GROUP BY mac) as a ";
-		$sql .= "ON a.mac=LOWER(namespace.hardware) ";
+		$sql .= "LEFT JOIN macwatch_latest ON macwatch_latest.mac=LOWER(namespace.hardware) ";
 		$sql .= "LEFT JOIN networks ON networks.id=namespace.network_id ";
 		$sql .= "LEFT JOIN domains ON domains.id=networks.domain_id ";
 		if ($network != "") {
