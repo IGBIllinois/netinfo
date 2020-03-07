@@ -20,8 +20,8 @@ foreach ($network_stats as $network) {
 	$network_stats_html .= "<tr><td>Registered Devices</td>";
 	$network_stats_html .= "<td>" . $network['num_devices'] . "</td></tr>";
 	$network_stats_html .= "<tr><td>Spares</td><td>" . $network['num_spares'] . "</td></tr>";
-	$network_stats_html .= "<tr><td>Older Than 6 Months</td><td>&nbsp;</td></tr>";
-	$network_stats_html .= "<tr><td>Never Seen</td><td>&nbsp;</td></tr>";
+	$network_stats_html .= "<tr><td>Older Than 6 Months</td><td>" . $network['num_six_months'] . "</td></tr>";
+	$network_stats_html .= "<tr><td>Never Seen</td><td>" . $network['num_never_seen'] . "</td></tr>";
 	$network_stats_html .= "<tr><td>Total</td><td>" . $network['total'] . "</td></tr>";
 	$network_stats_html .= "</tbody>";
 	$network_stats_html .= "</table>&nbsp;";

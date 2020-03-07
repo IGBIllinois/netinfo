@@ -28,14 +28,18 @@ class functions {
 	}
 	
 	public static function get_networks_stats($db) {
+		$six_months =  date('Y:m:d',strtotime("-6 month",time()));	
 		$sql = "SELECT COUNT(1) as total, ";
 		$sql .= "SUM(CASE WHEN namespace.aname<>'spare' then 1 else 0 end) as num_devices, ";
 		$sql .= "SUM(CASE WHEN namespace.aname='spare' then 1 else 0 end) AS num_spares, ";
+		$sql .= "SUM(CASE WHEN macwatch_latest.date IS NULL AND namespace.aname <>'spare' then 1 else 0 end) AS num_never_seen, ";
+		$sql .= "SUM(CASE WHEN macwatch_latest.date <=DATE('" . $six_months . "') then 1 else 0 end) AS num_six_months, ";
 		$sql .= "networks.name,networks.vlan,networks.network, ";
 		$sql .= "networks.netmask ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN networks ON networks.id=namespace.network_id ";
-		$sql .= "GROUP BY namespace.network_id";
+		$sql .= "LEFT JOIN macwatch_latest ON macwatch_latest.mac=namespace.hardware ";
+		$sql .= "GROUP BY namespace.network_id ORDER BY networks.vlan ASC";
 		$result = $db->query($sql);
 		return $result;
 
@@ -122,7 +126,7 @@ class functions {
 				$last_seen_sql = "(DATE(macwatch_latest.date) <= DATE('" . $start_date . "')) ";
 			}
 			else {
-				$last_seen_sql = "((DATE(macwat_latest.date) < DATE('" . $start_date . "')) AND (DATE(macwatch_latest.date) > DATE('" . $end_date . "'))) ";
+				$last_seen_sql = "((DATE(macwatch_latest.date) < DATE('" . $start_date . "')) AND (DATE(macwatch_latest.date) > DATE('" . $end_date . "'))) ";
 			}
 			array_push($where_sql,$last_seen_sql);
 
