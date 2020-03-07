@@ -26,7 +26,20 @@ class functions {
 		return $db->query($sql);
 		
 	}
+	
+	public static function get_networks_stats($db) {
+		$sql = "SELECT COUNT(1) as total, ";
+		$sql .= "SUM(CASE WHEN namespace.aname<>'spare' then 1 else 0 end) as num_devices, ";
+		$sql .= "SUM(CASE WHEN namespace.aname='spare' then 1 else 0 end) AS num_spares, ";
+		$sql .= "networks.name,networks.vlan,networks.network, ";
+		$sql .= "networks.netmask ";
+		$sql .= "FROM namespace ";
+		$sql .= "LEFT JOIN networks ON networks.id=namespace.network_id ";
+		$sql .= "GROUP BY namespace.network_id";
+		$result = $db->query($sql);
+		return $result;
 
+	}
 	public static function write_file($data,$filename) {
 		$valid = true;
 		if ((file_exists($filename)) && (!is_writable($filename))) {

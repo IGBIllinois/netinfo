@@ -50,8 +50,8 @@ foreach ($networks as $network) {
 	$nav_html .= "<div class='accordion-inner'>";
 	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link'  href='devices.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>";
 	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "&search=spare&exact=1'>Spares</a></li>";
-	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "&start_date=" . date('Y:m:d',strtotime("-6 month",time())) . "&end_date=0'>Older Than 6 Months Devices</a></li>";
-	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "&start_date=0&end_date=0'>Never Seen Devices</a></li></div></div>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "&start_date=" . date('Y:m:d',strtotime("-6 month",time())) . "&end_date=0'>Older Than 6 Months</a></li>";
+	$nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "&start_date=0&end_date=0'>Never Seen</a></li></div></div>";
 	$nav_html .= "</div>";
 
 	$i++;
