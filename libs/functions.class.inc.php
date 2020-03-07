@@ -3,6 +3,7 @@
 
 class functions {
 
+	private const RECENT_DEVICES_COUNT = 10;
 
 	public static function get_domains($db,$bind_enabled = false) {
 		$sql = "SELECT id,name,alt_names ";
@@ -54,7 +55,26 @@ class functions {
 
 	}
 
+	public static function get_recent_devices($db) {
+		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
+                $sql .= "LOWER(namespace.hardware) as hardware, namespace.name as user, ";
+                $sql .= "namespace.email, namespace.room, namespace.os, ";
+                $sql .= "namespace.description, namespace.serial_number, ";
+                $sql .= "namespace.modifiedby, namespace.modified, namespace.property_tag, ";
+                $sql .= "macwatch_latest.switch, macwatch_latest.port, macwatch_latest.date as last_seen, ";
+                $sql .= "domains.name as domain_name, namespace.alias ";
+                $sql .= "FROM namespace ";
+                $sql .= "LEFT JOIN macwatch_latest ON macwatch_latest.mac=LOWER(namespace.hardware) ";
+                $sql .= "LEFT JOIN networks ON networks.id=namespace.network_id ";
+                $sql .= "LEFT JOIN domains ON domains.id=networks.domain_id ";
+		$sql .= "WHERE aname<>'spare' ORDER BY namespace.modified DESC LIMIT 0," . self::RECENT_DEVICES_COUNT;
+		$result = $db->query($sql);
+		return $result;
 
+
+
+
+	}
 	public static function get_devices($db,$network = "",$search = "",$exact = 0,$start_date = "",$end_date = "",$include_spares = 1) {
 		$search = strtolower(trim(rtrim($search)));
 		$where_sql = array();
