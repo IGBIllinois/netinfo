@@ -15,17 +15,9 @@ CREATE TABLE ignored_ports (
 
 CREATE TABLE switches (
         switch_id INT NOT NULL AUTO_INCREMENT,
-        hostname VARCHAR(64) NOT NULL DEFAULT '',
+        hostname VARCHAR(255) NOT NULL DEFAULT '',
         enabled BOOLEAN DEFAULT 1,
         PRIMARY KEY (switch_id)
-);
-
-CREATE TABLE vlans (
-        vlan_id INT NOT NULL AUTO_INCREMENT,
-        vlan INT UNSIGNED NOT NULL,
-        description TEXT,
-        enabled BOOLEAN DEFAULT 1,
-        PRIMARY KEY (vlan_id)
 );
 
 ALTER TABLE operating_systems 
