@@ -24,7 +24,7 @@ class device {
 	private $domain;
 	private $network;
 
-	private const hostname_length = 35;
+	private const HOSTNAME_LENGTH = 64;
         ////////////////Public Functions///////////
 
         public function __construct($db,$ipnumber = 0) {
@@ -142,7 +142,7 @@ class device {
 			if (!$this->verify_hostname($aname)) {
 				$message .= "<div class='alert alert-error'>Invalid hostname. ";
 				$message .= "Hostname can contain only lowercase letters, numbers, and hyphens. ";
-				$message .= "Maximum length is " . $this::hostname_length . " characters. It can not contain the word 'spare'.</div>";
+				$message .= "Maximum length is " . $this::HOSTNAME_LENGTH . " characters. It can not contain the word 'spare'.</div>";
 				$error = 1;
 			}
 			elseif (!$this->unique_aname($aname)) {
@@ -196,6 +196,7 @@ class device {
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success'>Device Successfully Updated</div>";
+			log::send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
 			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
 		else {
@@ -248,6 +249,7 @@ class device {
 			$result = $this->db->non_select_query($sql);
 			if ($result) {
 				$message = "<div class='alert alert-success'>Alias " . $alias . " successfully added</div>";
+				 log::send_log("User " . $modified_by . ": Updated Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
 				$this->get_device($this->get_ipnumber());
 			}
 			else {
@@ -332,7 +334,7 @@ class device {
 		elseif (preg_match('/spare/',$hostname)) {
 			$valid = 0;
 		}
-		elseif (strlen($hostname) > $this::hostname_length) {
+		elseif (strlen($hostname) > $this::HOSTNAME_LENGTH) {
 			$valid = 0;
 		}
 		elseif (strpos($hostname,"spare")) {

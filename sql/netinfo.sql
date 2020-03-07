@@ -54,7 +54,7 @@ CREATE TABLE networks (
 
 CREATE TABLE namespace (
 	id INT NOT NULL AUTO_INCREMENT,
-	aname VARCHAR(2) DEFAULT 'spare',
+	aname VARCHAR(64) DEFAULT 'spare',
 	ipnumber VARCHAR(15) NOT NULL DEFAULT '',
 	hardware VARCHAR(12) DEFAULT NULL,
 	name VARCHAR(40) DEFAULT NULL,

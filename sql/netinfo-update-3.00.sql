@@ -27,7 +27,7 @@ ALTER TABLE operating_systems
 ALTER TABLE namespace
 	DROP PRIMARY KEY,
 	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
-	MODIFY aname VARCHAR(20) DEFAULT 'spare',
+	MODIFY aname VARCHAR(64) DEFAULT 'spare',
 	ADD PRIMARY KEY(id);
 CREATE INDEX hardware ON namespace(hardware,ipnumber);
 
