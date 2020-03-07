@@ -48,8 +48,8 @@ foreach ($recent_devices as $device) {
 	<p class='lead'>View and Manage Devices on the network</p>
 </div>
 <h4>Recently Updated Devices</h4>
-<table class='table table-sm table-bordered table-stripped'>
-	<thead>
+<table class='table table-sm table-bordered table-striped'>
+	<thead class='thead-dark'>
 		<th>&nbsp;</th>
 		<th>IP Address</th>
 		<th>Name</th>

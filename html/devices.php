@@ -109,7 +109,7 @@ for ($i=$start;$i<$start+$count;$i++) {
 </ul>   
 
 <table class='table table-bordered table-sm table-striped table-hover'>
-        <thead>
+        <thead class='thead-dark'>
                 <tr>
 			<th></th>
                         <th>IP Address</th>

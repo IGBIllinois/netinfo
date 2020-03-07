@@ -103,13 +103,13 @@ class functions {
 		}
 		if (($start_date != "") && ($end_date != "")) {
 			if (($start_date == 0) && ($end_date == 0)) {
-				$last_seen_sql = "(a.last_seen IS NULL) AND namespace.aname !='spare' ";
+				$last_seen_sql = "(macwatch_latest.date IS NULL) AND namespace.aname !='spare' ";
 			}
 			elseif ($end_date == 0) {
-				$last_seen_sql = "(DATE(a.last_seen) <= DATE('" . $start_date . "')) ";
+				$last_seen_sql = "(DATE(macwatch_latest.date) <= DATE('" . $start_date . "')) ";
 			}
 			else {
-				$last_seen_sql = "((DATE(a.last_seen) < DATE('" . $start_date . "')) AND (DATE(a.last_seen) > DATE('" . $end_date . "'))) ";
+				$last_seen_sql = "((DATE(macwat_latest.date) < DATE('" . $start_date . "')) AND (DATE(macwatch_latest.date) > DATE('" . $end_date . "'))) ";
 			}
 			array_push($where_sql,$last_seen_sql);
 
