@@ -38,7 +38,12 @@ class device {
 
 	public function get_aname() { return $this->aname; }
 	public function get_ipnumber() { return $this->ipnumber; }
-	public function get_hardware() { return $this->hardware; }
+	public function get_hardware($uppercase = 0) { 
+		if ($uppercase) {
+			return strtoupper($this->hardware);
+		}
+		return $this->hardware; 
+	}
 
 	public function get_hardware_cisco($uppercase = 0) {
 		$hardware_cisco = "";

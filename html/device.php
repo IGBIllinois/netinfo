@@ -96,7 +96,7 @@ if (count($aliases)) {
 		$alias_html .= "<input type='hidden' name='alias' value='" . $alias . "'>";
 		$alias_html .= "<input type='hidden' name='ipnumber' value='" . $device->get_ipnumber() . "'>";
 		$alias_html .= "<button class='btn btn-danger btn-mini' name='delete_alias' ";
-		$alias_html .= "onClick='return confirm_remove_alias()'><i class='icon-remove'></i></button>";
+		$alias_html .= "onClick='return confirm_remove_alias()'><i class='fas fa-trash'></i></button>";
 		$alias_html .= "</form></td>";
 		$alias_html .= "</tr>";
 	
@@ -162,6 +162,10 @@ $os_html .= "</select>";
 <div class='col-md-6 col-lg-6 col-xl-6'>
 	<h4>Hardware (MAC) Address Formats</h4>
 	<table class='table table-bordered table-sm'>
+		<tr>
+			<td><?php echo $device->get_hardware(); ?>&nbsp;</td>
+			<td><?php echo $device->get_hardware(true); ?>&nbsp;</td>
+		</tr>
 		<tr>
 			<td><?php echo $device->get_hardware_cisco(); ?>&nbsp;</td>
 			<td><?php echo $device->get_hardware_cisco(true); ?>&nbsp;</td>
