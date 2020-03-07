@@ -14,12 +14,10 @@
 <title>Network Information Database - <?php echo __TITLE__; ?></title>
 </head>
 
-<body style='padding-top: 80px; padding-bottom: 60px;'>
+<body style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand py-0' href='#'>Network Information Database - <?php echo __TITLE__ ?></a>
-                <span class='navbar-text py-0'>
-                Version <?php echo __VERSION__; ?>&nbsp;
-                </span>
+        <a class='navbar-brand py-0' href='#'><img src='images/igb_small.png'>Network Information Database - <?php echo __TITLE__ ?></a>
+	<span class='navbar-text py-0'>Version <?php echo __VERSION__; ?>&nbsp;</span>
 
 </nav>
 
