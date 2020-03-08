@@ -24,7 +24,7 @@ if (isset($_POST['upload_csv'])) {
 
 	else {
 		$result = location::import_iris($db,$file_tmp);
-		$message = html::alert("Imported" . $file_name . " successfully. " . $result . " Locations imported",1);
+		$message = html::alert("Imported " . $file_name . " successfully. " . $result . " Locations imported",1);
 	}
 	
 }

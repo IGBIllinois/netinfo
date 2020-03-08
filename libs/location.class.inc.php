@@ -84,7 +84,7 @@ class location {
 	public static function import_iris($db,$csv) {
 		$result = true;
 		$i = 0;
-		$count = 0;
+		$num_added = 0;
 		if (($file_handle = fopen($csv,'r')) !== FALSE) {
 			while (($line = fgetcsv($file_handle,0,self::IRIS_DELIMITER,self::IRIS_ENCLOSURE)) !== FALSE) {
 				if ($i) {
@@ -93,13 +93,13 @@ class location {
 					$jack_number = $line[self::IRIS_JACK_COL];
 					$room = $line[self::IRIS_ROOM_COL];
 					$building = $line[self::IRIS_BUILDING_COL];
-					$count += self::add_location($db,$switch,$port,$jack_number,$room,$building);
+					$num_added += self::add_location($db,$switch,$port,$jack_number,$room,$building);
 				}
 				$i++;
 			}
 		}
 		fclose($file_handle);
-		return $count;
+		return $num_added;
 	}
 	
 	public static function get_iris_filetype() {
