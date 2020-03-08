@@ -1,24 +1,25 @@
 <?php
-set_include_path(get_include_path() . ':../libs');
 
-require_once '../conf/app.inc.php';
+set_include_path(get_include_path() . ':' . __DIR__ . '/../../libs');
 
-if (file_exists('../conf/settings.inc.php')) {
-	require_once '../conf/settings.inc.php';
+require_once __DIR__ . '/../../conf/app.inc.php';
+
+if (file_exists(__DIR__ . '/../../conf/settings.inc.php')) {
+	require_once __DIR__ . '/../../conf/settings.inc.php';
 }
 else {
 	echo "<br>/conf/settings.inc.php does not exist";
 }
 
-if (file_exists('../vendor/autoload.php')) {
-	require_once '../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+	require_once __DIR__ . '/../../vendor/autoload.php';
 }
 else {
 	echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
 }
 
 function my_autoloader($class_name) {
-        if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
+        if(file_exists(__DIR__ . "/../../libs/" . $class_name . ".class.inc.php")) {
                 require_once $class_name . '.class.inc.php';
         }
 }

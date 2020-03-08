@@ -72,19 +72,35 @@ CREATE TABLE namespace (
 	KEY `hardware` (hardware,ipnumber)
 );
 
-CREATE TABLE `operating_systems` (
+CREATE TABLE operating_systems (
 	id INT NOT NULL AUTO_INCREMENT,
 	os VARCHAR(20) DEFAULT NULL,
 	PRIMARY KEY (id)
 );
 
-CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest` 
-AS SELECT m1.switch AS switch,
-	m1.port AS port,
-	m1.mac AS mac,
-	m1.vendor AS vendor,
-	m1.vlans AS vlans,
-	m1.date AS date FROM macwatch m1 
-	WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
+CREATE TABLE locations (
+	id INT NOT NULL AUTO_INCREMENT,
+	switch_id INT REFERENCES switch(switch_id),
+	port VARCHAR(30),
+	jack_number VARCHAR(8),
+	room VARCHAR(20),
+	building VARCHAR(4),
+	date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
 
+CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
+AS SELECT m1.switch AS switch,
+        m1.port AS port,
+        m1.mac AS mac,
+        m1.vendor AS vendor,
+        m1.vlans AS vlans,
+        a.jack_number AS jack_number,
+        a.room AS room,
+        a.building AS building,
+        m1.date AS date FROM macwatch m1
+        LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations
+        LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
+        ON (a.port=m1.port AND a.hostname=m1.switch)
+        WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
 

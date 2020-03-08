@@ -4,9 +4,6 @@
 <br>
 <?php 
 
-if (isset($nav_js)) {
-	echo $nav_js;
-}
 
 if (settings::get_debug()) {
 echo "<div class='alert alert-danger'>DEBUG MODE ENABLED</div>";

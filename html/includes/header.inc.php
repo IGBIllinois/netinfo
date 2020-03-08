@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/navbar.inc.php'
+require_once __DIR__ . '/navbar.inc.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ require_once __DIR__ . '/navbar.inc.php'
 <body style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class="navbar fixed-top navbar-dark bg-dark">
         <a class='navbar-brand py-0' href='#'><img src='images/igb_small.png'>Network Information Database - <?php echo __TITLE__ ?></a>
-	<span class='navbar-text py-0'>Version <?php echo __VERSION__; ?>&nbsp;</span>
+	<span class='navbar-text py-0'><a class='btn btn-sm btn-danger' href='admin/index.php' onClick='return confirm_admin();'>Admin</a> Version <?php echo __VERSION__; ?>&nbsp;</span>
 
 </nav>
 

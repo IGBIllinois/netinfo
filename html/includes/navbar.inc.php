@@ -9,7 +9,8 @@ foreach ($networks as $network) {
         $nav_html .= "<div>\n";
         $nav_html .= "<div class='none' id='headingCollapse$i'>\n";
         $nav_html .= "<a class='nav-link' data-toggle='collapse' data-parent='#nav_accordion' href='#collapse$i'>\n";
-        $nav_html .= "<i class='fa fa-caret-right' id='iconCollapse$i'></i> VLAN" . $network['vlan'] . " - " . $network['name'] . " - " . $network['network'] . "/" . $cidr . "</a>\n";
+        //$nav_html .= "<i class='fa fa-caret-right' id='iconCollapse$i'></i> VLAN" . $network['vlan'] . " - " . $network['name'] . " - " . $network['network'] . "/" . $cidr . "</a>\n";
+$nav_html .= "<i class='fa fa-caret-right' id='iconCollapse$i'></i> " . $network['name'] . " - " . $network['network'] . "/" . $cidr . "</a>\n";
         $nav_html .= "</div>\n";
         $nav_html .= "<div id='collapse$i' class='collapse' role='tabpanel' data-parent='#nav_accordion'>\n";
         $nav_html .= "<li class='px-2 nav-item'><a class='nav-link' href='devices.php?network=" . $network['network'] . "/" . $cidr . "'>All Devices</a></li>\n";

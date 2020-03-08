@@ -20,6 +20,17 @@ CREATE TABLE switches (
         PRIMARY KEY (switch_id)
 );
 
+CREATE TABLE locations (
+        id INT NOT NULL AUTO_INCREMENT,
+        switch_id INT REFERENCES switch(switch_id),
+        port VARCHAR(30),
+        jack_number VARCHAR(8),
+        room VARCHAR(20),
+        building VARCHAR(4),
+        date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+);
+
 ALTER TABLE operating_systems 
 	MODIFY column id INT NOT NULL AUTO_INCREMENT FIRST,
 	ADD COLUMN date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
@@ -29,15 +40,14 @@ ALTER TABLE namespace
 	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
 	MODIFY aname VARCHAR(64) DEFAULT 'spare',
 	ADD PRIMARY KEY(id);
-CREATE INDEX hardware ON namespace(hardware,ipnumber);
 
 ALTER TABLE domains
 	MODIFY serial INT DEFAULT 1;
 
+
 ALTER TABLE macwatch
 	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
 	ADD PRIMARY KEY (id),
-	ADD KEY `mac` (`mac`), 
 	ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, 
 	MODIFY `port` VARCHAR(30);
 
@@ -47,6 +57,12 @@ AS SELECT m1.switch AS switch,
         m1.mac AS mac,
         m1.vendor AS vendor,
         m1.vlans AS vlans,
+	a.jack_number AS jack_number,
+	a.room AS room,
+	a.building AS building,
         m1.date AS date FROM macwatch m1
+	LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations 
+	LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
+	ON (a.port=m1.port AND a.hostname=m1.switch)
         WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
 

@@ -80,7 +80,7 @@ INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
 cp conf/cron.dist to conf/cron
 ```
 * Edit conf/cron for the schedule you want
-*Make symlink of conf/cron to /etc/cron.d/netinfo
+* Make symlink of conf/cron to /etc/cron.d/netinfo
 ```
 ln -s /var/www/netinfo/conf/cron /etc/cron.d/netinfo
 ```

@@ -116,10 +116,17 @@ class device {
 
 	public function get_locations() {
 		$sql = "SELECT macwatch.date,macwatch.mac, ";
-		$sql .= "macwatch.switch, macwatch.port, macwatch.vlans ";
+		$sql .= "SUBSTRING_INDEX(macwatch.switch,'.',1) AS switch, ";
+		$sql .= "macwatch.port, macwatch.vlans, ";
+		$sql .= "a.jack_number AS jack_number, ";
+                $sql .= "a.room AS room, ";
+                $sql .= "a.building AS building ";
 		$sql .= "FROM macwatch ";
-		$sql .= "WHERE LOWER(mac)='" . $this->get_hardware() . "' ";
-		$sql .= "ORDER BY date DESC";
+		$sql .= "LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations ";
+		$sql .= "LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a ";
+		$sql .= "ON (a.port=macwatch.port AND a.hostname=macwatch.switch) ";
+		$sql .= "WHERE LOWER(macwatch.mac)='" . $this->get_hardware() . "' ";
+		$sql .= "ORDER BY macwatch.date DESC LIMIT 10";
 		
 		return $this->db->query($sql);
 
