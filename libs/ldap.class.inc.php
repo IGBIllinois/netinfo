@@ -3,7 +3,7 @@ class ldap {
 
         ///////////////Private Variables//////////
         private $ldap_resource = false;
-        private $ldap_host;
+        private $ldap_host = array();
         private $ldap_base_dn;
         private $ldap_bind_user;
         private $ldap_bind_pass;
@@ -224,19 +224,28 @@ class ldap {
 
 	//////////////////Private Functions/////////////////////
 
-	private function set_host($ldap_host) { $this->ldap_host = $ldap_host; }
+	private function set_host($ldap_host) { 
+		$this->ldap_host = explode(" ",$ldap_host);
+		print_r($this->ldap_host); 
+	}
         private function set_base_dn($ldap_base_dn) { $this->ldap_base_dn = $ldap_base_dn; }
         private function set_ssl($ldap_ssl) { $this->ldap_ssl = $ldap_ssl; }
         private function set_port($ldap_port) { $this->ldap_port = $ldap_port; }
 
 	private function connect() {
-                $ldap_uri;
+		print_r($this->get_host());
+                $ldap_uri = "";
                 if ($this->get_ssl()) {
-                        $ldap_uri = "ldaps://" . $this->get_host() . ":" . $this->get_port();
+			foreach ($this->get_host() as $host) {
+                        	$ldap_uri .= "ldaps://" . $host . ":" . $this->get_port() . " ";
+			}
                 }
                 elseif (!$this->get_ssl()) {
-                        $ldap_uri = "ldap://" . $this->get_host() . ":" . $this->get_port();
+			foreach ($this->get_host() as $host) {
+                        	$ldap_uri .= "ldap://" . $host . ":" . $this->get_port() . " ";;
+			}
                 }
+		echo "Connection: " . $ldap_uri;
 		$this->ldap_resource = ldap_connect($ldap_uri);
 		if ($this->get_connection()) {
 			return true;

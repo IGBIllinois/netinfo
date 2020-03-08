@@ -12,7 +12,6 @@
 require_once 'includes/main.inc.php';
 
 $message = "";
-
 if (isset($_POST['login'])) {
 
 	$username = trim(rtrim($_POST['username']));
