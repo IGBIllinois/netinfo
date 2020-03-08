@@ -36,6 +36,5 @@ echo $extensions_string;
 
 </div>
 <?php
-
 require_once 'includes/footer.inc.php';
 ?>

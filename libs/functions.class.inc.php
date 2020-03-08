@@ -476,11 +476,10 @@ class functions {
         }
 
 	public static function get_php_extensions() {
-		$chunk_size = 10;
+		$chunk_size = 13;
 		$extensions = get_loaded_extensions(); 
 		natcasesort($extensions);
-		$extensions_chunk = array_chunk($extensions,$chunk_size);	
-			
+		$extensions_chunk = array_chunk($extensions,$chunk_size);
 		return $extensions_chunk;
 
 	}

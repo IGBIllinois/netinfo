@@ -1,3 +1,8 @@
+<?php
+
+require_once __DIR__ . '/navbar.inc.php'
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +15,8 @@
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
 <script src='vendor/twbs/bootstrap/dist/js/bootstrap.min.js' type='text/javascript'></script>
 <script src='includes/main.inc.js' type='text/javascript'></script>
-
 <title>Network Information Database - <?php echo __TITLE__; ?></title>
+
 </head>
 
 <body style='padding-top: 70px; padding-bottom: 60px;'>
