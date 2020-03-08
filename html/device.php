@@ -76,17 +76,21 @@ if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
 
 $locations = $device->get_locations();
 $locations_html = "";
-foreach ($locations as $location) {
-	$locations_html .= "<tr>";
-	$locations_html .= "<td>" . $location['date'] . "</td>";
-	$locations_html .= "<td>" . $location['switch'] . "</td>";
-	$locations_html .= "<td>" . $location['port'] . "</td>";
-	$locations_html .= "<td>" . $location['jack_number'] . "</td>";
-	$locations_html .= "<td>" . $location['room'] . "</td>";
-	$locations_html .= "<td>" . $location['vlans'] . "</td>";
-	$locations_html .= "</tr>";
+if (count($locations)) {
+	foreach ($locations as $location) {
+		$locations_html .= "<tr>";
+		$locations_html .= "<td>" . $location['date'] . "</td>";
+		$locations_html .= "<td>" . $location['switch'] . "</td>";
+		$locations_html .= "<td>" . $location['port'] . "</td>";
+		$locations_html .= "<td>" . $location['jack_number'] . "</td>";
+		$locations_html .= "<td>" . $location['room'] . "</td>";
+		$locations_html .= "<td>" . $location['vlans'] . "</td>";
+		$locations_html .= "</tr>";
+	}
 }
-
+else {
+	$locations_html = "<tr><td colspan='6'>Not Seen</td></tr>";
+}
 $aliases = $device->get_alias();
 $alias_html = "";
 if (count($aliases)) {
