@@ -45,12 +45,11 @@ foreach ($switches as $switch) {
 	foreach ($vlans as $vlan) {
 		echo "\tVLAN: ".$vlan['vlan']."\n";
 		//   Get MACs, "bridges", interface numbers, and interface names
-		
-		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'], '" . settings::get_snmp_community() . "@'.$vlan['vlan'],1000000,5);
+				
+		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'],settings::get_snmp_community() . "@" . $vlan['vlan'],1000000,5);
 		$snmp->valueretrieval = SNMP_VALUE_PLAIN;
 
-		//$macs = $snmp->walk(macwatch::get_mac_oid());
-		$macs = $snmp->walk(".");
+		$macs = $snmp->walk(macwatch::get_mac_oid());
 		if($macs === false){
 			continue; // If there was an SNMP error on the first walk, skip the rest.
 		}
@@ -58,7 +57,7 @@ foreach ($switches as $switch) {
 		$ifnums = $snmp->walk(macwatch::get_interface_oid());
 		$ifnames = $snmp->walk(macwatch::get_interface_name_oid());
 		// Get ports to ignore
-		$ignoredports = $db->query("select * from macwatch_ignored_ports where switch_hostname=:switch",array(':switch'=>$switch['hostname']));
+		$ignoredports = macwatch::get_ignore_ports($db,$switch['hostname']);
 		// Reverse the array to make it easier to search
 		$ignore = array();
 		foreach ($ignoredports as $port) {
@@ -117,7 +116,7 @@ foreach ($switches as $switch) {
 			
 			echo "\t\t$mac: $ifname ($vendor)\n"; // For now, we just print
 			if(!$dryrun){
-				//$db->insert_query('insert into macwatch(switch,port,mac,vendor,vlans) values (:switch,:port,:mac,:vendor,:vlans) on duplicate key update date=NOW(), vendor=:vendor, vlans=:vlans',array(':switch'=>$switch['hostname'],':port'=>$ifname,':mac'=>$mac,':vendor'=>$vendor,':vlans'=>implode(',', $portvlans[$ifname][$mac])));
+				macwatch::add($db,$switch['hostname'],$ifname,$mac,$vendor,$portvlans[$ifname][$mac]);
 			}
 		}
 	}
