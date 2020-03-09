@@ -40,6 +40,7 @@ $switches = macwatch::get_switches($db);
 // Foreach switch
 foreach ($switches as $switch) {
 	echo "Switch: ".$switch['hostname']."\n";
+	$switch_obj = new network_switch($db,$switch['hostname']);
 	$portvlans = array();
 	//  Foreach VLAN
 	foreach ($vlans as $vlan) {
@@ -57,11 +58,11 @@ foreach ($switches as $switch) {
 		$ifnums = @$snmp->walk(macwatch::get_interface_oid());
 		$ifnames = @$snmp->walk(macwatch::get_interface_name_oid());
 		// Get ports to ignore
-		$ignoredports = macwatch::get_ignore_ports($db,$switch['hostname']);
+		$ignoredports = $switch_obj::get_ignore_ports();
 		// Reverse the array to make it easier to search
 		$ignore = array();
 		foreach ($ignoredports as $port) {
-			$ignore[$port['portname']] = 1;
+			$ignore[$port['port']] = 1;
 		}
 
 		// Parse the SNMP data

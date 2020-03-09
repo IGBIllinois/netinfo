@@ -67,7 +67,7 @@ if (isset($_POST['login'])) {
 <body style='padding-top: 70px; padding-bottom: 60px;' OnLoad="document.login.username.focus();">
 
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand py-0' href='#'>Network Information Database - <?php echo settings::get_title();  ?></a>
+        <a class='navbar-brand py-0' href='#'><img src='images/igb_small.png'>Network Information Database - <?php echo settings::get_title();  ?></a>
 	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
 	</span>
 
