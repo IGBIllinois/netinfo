@@ -101,7 +101,7 @@ if (count($aliases)) {
 		$alias_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?ipnumber=" . $device->get_ipnumber() . "'>";
 		$alias_html .= "<input type='hidden' name='alias' value='" . $alias . "'>";
 		$alias_html .= "<input type='hidden' name='ipnumber' value='" . $device->get_ipnumber() . "'>";
-		$alias_html .= "<button class='btn btn-danger btn-mini' name='delete_alias' ";
+		$alias_html .= "<button class='btn btn-danger btn-sm' name='delete_alias' ";
 		$alias_html .= "onClick='return confirm_remove_alias()'><i class='fas fa-trash'></i></button>";
 		$alias_html .= "</form></td>";
 		$alias_html .= "</tr>";
@@ -201,7 +201,7 @@ $os_html .= "</select>";
 			echo "<tr><td><input class='input' type='text' name='new_alias' value='";
 			if (isset($_POST['new_alias'])) { echo $_POST['new_alias']; }
 			echo "'></td>";
-			echo "<td><input class='btn btn-primary' type='submit' name='add_alias' value='Add' onClick='return confirm_alias()'></td></tr>";
+			echo "<td><input class='btn btn-primary btn-sm' type='submit' name='add_alias' value='Add' onClick='return confirm_alias()'></td></tr>";
 		}
 	?>
 	</table>

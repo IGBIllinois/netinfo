@@ -36,17 +36,17 @@ class macwatch {
 	}
 
 	public static function get_ignore_ports($db,$switch) {
-		$sql = "SELECT * from macwatch_ignored_ports ";
+		$sql = "SELECT * from ignored_ports ";
 		$sql .= "WHERE switch_hostname=:switch";
 		$params = array(':switch'=>$switch);
 		return $db->query($sql,$params);
 	}
 
 	public static function add($db,$hostname,$ifname,$mac,$vendor,$vlans) {
-		$sql = "INSET INTO macwatch(switch,port,mac,vendor,vlans) ";
-		$sql .= "VALUES (:switch,:port,:mac,:vendor,:vlans) ";
-		$sql .= "ON DUPLICATE KEY UPDATE date=NOW() vendor=:vendor, vlans=:vlans";
-		$params = array(':switch'=>$switch['hostname'],
+		$sql = "INSERT INTO macwatch(switch,port,mac,vendor,vlans) ";
+		$sql .= "VALUES(:switch,:port,:mac,:vendor,:vlans) ";
+		$sql .= "ON DUPLICATE KEY UPDATE date=NOW(), vendor=:vendor, vlans=:vlans";
+		$params = array(':switch'=>$hostname,
 				':port'=>$ifname,
 				':mac'=>$mac,
 				':vendor'=>$vendor,
