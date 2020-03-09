@@ -195,8 +195,8 @@ class device {
 		        $sql .= "room='" . $room . "',";
         		$sql .= "os='" . $os . "',";
                 	$sql .= "description='" . $description . "',";
-	                $sql .= "serial_number='" . $serial_number . "',";
-	                $sql .= "property_tag='" . $property_tag . "', ";
+	                $sql .= "serial_number='" . strtoupper($serial_number) . "',";
+	                $sql .= "property_tag='" . strtoupper($property_tag) . "', ";
 			$sql .= "modifiedby='" . $modified_by . "' ";
 	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
         	        $sql .= "LIMIT 1";

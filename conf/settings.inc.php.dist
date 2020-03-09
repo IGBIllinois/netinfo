@@ -10,32 +10,32 @@
 //
 ////////////////////////////////////
 
-define("__TITLE__","");
-define("__FOOTER__","");
-define("__SESSION_NAME__","netinfo");
-define("__SESSION_TIMEOUT__",3600);
-define("__COUNT__",30);
-define("__TIMEZONE__","America/Chicago");
+define("TITLE","");
+define("FOOTER","");
+define("SESSION_NAME","netinfo");
+define("SESSION_TIMEOUT",3600);
+define("COUNT",30);
+define("TIMEZONE","America/Chicago");
 //////////Mysql Settings//////////////
-define("__MYSQL_HOST__","");
-define("__MYSQL_USER__","");
-define("__MYSQL_PASSWORD__","");
-define("__MYSQL_DATABASE__","");
+define("MYSQL_HOST","");
+define("MYSQL_USER","");
+define("MYSQL_PASSWORD","");
+define("MYSQL_DATABASE","");
 
 //////////Authentication Settings///////////////
-define("__LDAP_HOST__","");
-define("__LDAP_BASE_DN__","");
-define("__LDAP_PEOPLE_OU__","");
-define("__LDAP_GROUP_OU__","");
-define("__LDAP_GROUP__","");
-define("__LDAP_BIND_USER__","");
-define("__LDAP_BIND_PASS__","");
-define("__LDAP_SSL__",FALSE);
-define("__LDAP_PORT__",389);
+define("LDAP_HOST","");
+define("LDAP_BASE_DN","");
+define("LDAP_PEOPLE_OU","");
+define("LDAP_GROUP_OU","");
+define("LDAP_GROUP","");
+define("LDAP_BIND_USER","");
+define("LDAP_BIND_PASS","");
+define("LDAP_SSL",FALSE);
+define("LDAP_PORT",389);
 
-define("__DEBUG__",FALSE);
+define("DEBUG",FALSE);
 
-define("__ENABLE_LOG__",TRUE);
-define("__LOG_FILE__","/var/log/netinfo.log");
-define("__SNMP_COMMUNITY__","");
+define("ENABLE_LOG",TRUE);
+define("LOG_FILE","/var/log/netinfo.log");
+define("SNMP_COMMUNITY","public");
 ?>

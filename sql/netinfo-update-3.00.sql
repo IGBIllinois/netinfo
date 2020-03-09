@@ -41,6 +41,8 @@ ALTER TABLE namespace
 	MODIFY aname VARCHAR(64) DEFAULT 'spare',
 	ADD PRIMARY KEY(id);
 
+UPDATE namespace SET modified=modified,property_tag=UPPER(property_tag),serial_number=UPPER(serial_number);
+
 ALTER TABLE domains
 	MODIFY serial INT DEFAULT 1;
 

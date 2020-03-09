@@ -71,7 +71,7 @@ if (isset($options['c'])) {
 	
 if (!$error) {
 
-	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+	$db = new db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
 	if ($network_name == 'ALL') {
 		$dhcp_enabled = 1;
 		$all_networks = functions::get_networks($db,$dhcp_enabled);

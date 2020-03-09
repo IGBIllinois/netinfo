@@ -13,8 +13,8 @@
 
 require_once 'includes/main.inc.php';
 
-$session = new session(__SESSION_NAME__);
-if (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
+$session = new session(SESSION_NAME);
+if (time() > $session->get_var('timeout') + SESSION_TIMEOUT) {
 	unset($_POST);
 	header('Location: logout.php');
 

@@ -29,7 +29,7 @@ if (settings::get_debug()) {
 if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+$db = new db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
 
 // Array of VLANS to watch
 $vlans = macwatch::get_vlans($db);
@@ -49,13 +49,13 @@ foreach ($switches as $switch) {
 		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'],settings::get_snmp_community() . "@" . $vlan['vlan'],1000000,5);
 		$snmp->valueretrieval = SNMP_VALUE_PLAIN;
 
-		$macs = $snmp->walk(macwatch::get_mac_oid());
+		$macs = @$snmp->walk(macwatch::get_mac_oid());
 		if($macs === false){
 			continue; // If there was an SNMP error on the first walk, skip the rest.
 		}
-		$bridges = $snmp->walk(macwatch::get_bridge_oid());
-		$ifnums = $snmp->walk(macwatch::get_interface_oid());
-		$ifnames = $snmp->walk(macwatch::get_interface_name_oid());
+		$bridges = @$snmp->walk(macwatch::get_bridge_oid());
+		$ifnums = @$snmp->walk(macwatch::get_interface_oid());
+		$ifnames = @$snmp->walk(macwatch::get_interface_name_oid());
 		// Get ports to ignore
 		$ignoredports = macwatch::get_ignore_ports($db,$switch['hostname']);
 		// Reverse the array to make it easier to search

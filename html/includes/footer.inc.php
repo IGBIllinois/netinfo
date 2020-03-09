@@ -20,7 +20,7 @@ echo "<div class='alert alert-danger'>DEBUG MODE ENABLED</div>";
 	<p class='text-center'>
 	<span class='text-muted'>
 		<br><em><a href='https://www.vpaa.uillinois.edu/resources/web_privacy' target='_blank'> University of Illinois System Web Privacy Notice</a></em>
-                <br><em>&copy;<?php echo date('Y') . "&nbsp;" . __FOOTER__; ?></em>
+                <br><em>&copy;<?php echo date('Y') . "&nbsp;" . FOOTER; ?></em>
         </span>
 	</p>
 

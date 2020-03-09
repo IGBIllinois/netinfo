@@ -27,10 +27,10 @@ if (isset($_POST['login'])) {
 		$message .= html::alert("Please enter your password",false);
 	}
 	if ($error == false) {
-		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-		$success = functions::authenticate($ldap,$username,$password,__LDAP_GROUP__);
+		$ldap = new ldap(LDAP_HOST,LDAP_SSL,LDAP_PORT,LDAP_BASE_DN);
+		$success = functions::authenticate($ldap,$username,$password,LDAP_GROUP);
 		if ($success == true) {
-			$session = new session(__SESSION_NAME__);
+			$session = new session(SESSION_NAME);
                         $session_vars = array('login'=>true,
                                         'username'=>$username,
                                         'timeout'=>time()
@@ -62,13 +62,13 @@ if (isset($_POST['login'])) {
 	href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/all.min.css" type="text/css" />
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-<title>Network Information Database - <?php echo __TITLE__; ?></title>
+<title>Network Information Database - <?php echo settings::get_title(); ?></title>
 </head>
 <body style='padding-top: 70px; padding-bottom: 60px;' OnLoad="document.login.username.focus();">
 
 <nav class="navbar fixed-top navbar-dark bg-dark">
-        <a class='navbar-brand py-0' href='#'>Network Information Database - <?php echo __TITLE__;  ?></a>
-	<span class='navbar-text py-0'>Version <?php echo __VERSION__; ?>&nbsp;
+        <a class='navbar-brand py-0' href='#'>Network Information Database - <?php echo settings::get_title();  ?></a>
+	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
 	</span>
 
 </nav>

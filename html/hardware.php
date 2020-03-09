@@ -2,7 +2,7 @@
 require_once 'includes/main.inc.php';
 require_once 'includes/header.inc.php';
 
-$count = __COUNT__;
+$count = COUNT;
 $start = 0;
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
