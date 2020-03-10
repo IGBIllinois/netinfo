@@ -1,0 +1,295 @@
+<style>
+	.status {
+		display: inline-block;
+		color: white;
+		font-family: sans-serif;
+		font-size: small;
+		margin: 0;
+		width: 2.083333333%;
+		height: 21px;
+		text-align: center;
+		line-height: 21px;
+		cursor: pointer;
+	}
+	@media (max-width: 991px){
+		.status {
+			width: 4.166666667%;
+		}
+	}
+	@media (max-width: 575px){
+		.status {
+			width: 6.25%;
+		}
+	}
+	.down, .searched .down.highlight {
+		background-color: #e26c6c;
+	}
+	.admindown, .searched .admindown.highlight {
+		background-color: #e2e21e;
+	}
+	.up, .searched .up.highlight {
+		background-color: #45c545;
+	}
+
+	.searched .down {
+		background-color: #d9c3c3;
+	}
+	.searched .admindown {
+		background-color: #d9d9c3;
+	}
+	.searched .up {
+		background-color: #C3D9C3;
+	}
+
+	.status-col {
+		padding-left: 0;
+	}
+
+	.collapse-col {
+		min-height: 0;
+	}
+	.mode {
+		text-align: right;
+	}
+
+	.close {
+		line-height: 1rem;
+	}
+
+	tr.old {
+		color: #999;
+	}
+</style>
+<div class='row'>
+	<div class='col-sm-6'>
+		<div class="form-group">
+			<input type="text" class="form-control statussearch" id="locationsearch" placeholder='Location' />
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control statussearch" id="vlansearch" placeholder='VLAN' />
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control statussearch" id="macsearch" placeholder='MAC' />
+		</div>
+	</div>
+	<div class='col-sm-6'>
+		<div class="form-group">
+			<select class="custom-select statussearch" id="modesearch">
+				<option value="">Port Mode</option>
+				<option value="access">Access</option>
+				<option value="trunk">Trunk</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control statussearch" id="anamesearch" placeholder='ANAME' />
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control statussearch" id="vendorsearch" placeholder='Vendor' />
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-primary" id="openfilteredbutton">Open Filtered</button>
+			<button type="button" class="btn btn-light" id="closeallbutton">Close All</button>
+		</div>
+	</div>
+</div>
+<div id="statuslights">
+{% for stacknum, switchstack in switches %}
+	<div id='switch-{{stacknum}}-accordion'>
+		<div class='row'>
+			<div class='col-12'>
+				<h3>{{switchstack.hostname}}</h3>
+			</div>
+		</div>
+		{% for switchnum, switch in switchstack.interfaces %}
+			<div class='row mb-1'><div class='col-sm-1'><h6 class="my-0">P{{switchnum}}</h6></div>
+				<div class="col-sm-11 status-col">
+					{% apply spaceless %}
+						{% for inum, interface in switch[0]|ksort %}
+							{% if interface.adminStatus == 1 and interface.operStatus == 0 %}
+								{% set status="down" %}
+							{% elseif interface.adminStatus == 1 and interface.operStatus == 1 %}
+								{% set status="up" %}
+							{% else %}
+								{% set status="admindown" %}
+							{% endif %}
+							<div class="status {{status}}" data-toggle='collapse' data-target='#collapse-{{stacknum}}-{{switchnum}}-{{loop.index}}' data-port='{{switchstack.hostname}}|{{ interface.descriptor }}'>{{inum}}</div>
+						{% endfor %}
+					{% endapply %}
+				</div>
+			</div>
+			{% for interface in switch[0]|ksort %}
+				{% if interface.adminStatus == 1 and interface.operStatus == 0 %}
+					{% set color="danger" %}
+					{% set state="DOWN" %}
+				{% elseif interface.adminStatus == 1 and interface.operStatus == 1 %}
+					{% set color="success" %}
+					{% set state="UP" %}
+				{% else %}
+					{% set color="warning" %}
+					{% set state="SHUT" %}
+				{% endif %}
+				<div class='row'>
+					<div class='col-sm-11 offset-sm-1 collapse-col'>
+						<div class='collapse' id='collapse-{{stacknum}}-{{switchnum}}-{{loop.index}}'>
+							<div class='my-1 border border-{{color}} rounded p-2'>
+								<button type="button" class="close" data-toggle='collapse' data-target='#collapse-{{stacknum}}-{{switchnum}}-{{loop.index}}'>
+									<span>&times;</span>
+								</button>
+								<div class='row'>
+									<div class='col-sm-6 px-0'>
+										<h5>{{interface.portname}} <small class="bg-{{color}} text-light p-1 rounded">{{state}}</small> </h5>
+									</div>
+									<div class='col-sm-6 text-sm-right'>
+										{% if interface.location %}
+											<span class="mr-2">Jack #: {{ interface.jackname }}</span>
+											Location: {{interface.location}}
+										{% endif %}
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-sm-8">
+										<h6>Switchport Info</h6>
+									</div>
+									<div class="col-sm-4 text-sm-right">
+										<small>Status Updated: {{interface.statusUpdated}}</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-8">
+										{{interface.descriptor}}
+									</div>
+									<div class="col-sm-4 text-sm-right">
+										<small>Config Updated: {{interface.configUpdated}}</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class='col-sm-12'>
+										{% if interface.mode == "access" %}
+											Access Mode
+										{% else %}
+											Trunk Mode
+										{% endif %}
+									</div>
+								</div>
+								<div class='row'>
+									{% if interface.mode == "access" %}
+									<div class='col-sm-12'>
+										VLAN:
+										{% if interface.vlan in vlans|keys %}
+											{{vlans[interface.vlan]}} ({{interface.vlan}})
+										{% else %}
+											{{interface.vlan}}
+										{% endif %}
+									</div>
+									{% else %}
+									<div class='col-sm-4'>
+										Native VLAN:
+										{% if interface.vlan in vlans|keys %}
+											{{vlans[interface.vlan]}} ({{interface.vlan}})
+										{% else %}
+											{{interface.vlan}}
+										{% endif %}
+									</div>
+									<div class='col-sm-4'>
+										Allowed VLANs: {{interface.allowedvlan}}
+									</div>
+									{% endif %}
+								</div>
+								{% if interface.printerfirewall %}
+									<div class='row'><div class='col-sm-12'>Printer Firewall On</div></div>
+								{% endif %}
+								{% if interface.macwatch %}
+									<hr>
+									<div class="row">
+										<div class="col-sm-8">
+											<h6>Macwatch Info</h6>
+										</div>
+									</div>
+									<table class="table table-sm">
+									{% for macwatch in interface.macwatch %}
+									{% if date().diff(date(macwatch.date)).days < 30 %}
+									<tr>
+									{% else %}
+									<tr class="old">
+									{% endif %}
+										<td>MAC: {{macwatch.mac}}</td>
+										<td>ANAME: {{macwatch.aname}}</td>
+										<td>IP: {{macwatch.ip}}</td>
+										<td>Vendor: {{macwatch.vendor}}</td>
+										<td class="text-sm-right"><small>Last Seen: {{macwatch.date|date("m/d/Y")}}</small></td>
+									</tr>
+									{% endfor %}
+									</table>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endfor %}
+	</div>
+{% endfor %}
+</div>
+
+<script type="text/javascript">
+    let current_seqnum = 0;
+
+    function highlight(sequence){
+        return function(data){
+            if(current_seqnum == sequence){
+                console.log(data);
+                results = JSON.parse(data);
+
+                var $statuscontainer = $('#statuslights');
+                $statuscontainer.find('.status').removeClass('highlight');
+
+                // Highlight the appropriate pips
+                for(var i=0; i<results.length; i++){
+                    $('*[data-port="'+results[i]+'"]').addClass('highlight');
+                }
+            }
+        }
+    }
+
+    $('.statussearch').on('input',function(e){
+        var location = $('#locationsearch').val();
+        var vlan = $('#vlansearch').val();
+        var mode = $('#modesearch').val();
+        var aname = $('#anamesearch').val();
+        var mac = $('#macsearch').val();
+        var vendor = $('#vendorsearch').val();
+        var search = location != '' || vlan != '' || mode != '' || aname != '' || mac != '' || vendor != '';
+
+        var $statuscontainer = $('#statuslights');
+
+        current_seqnum = current_seqnum + 1;
+
+        if(search){
+            // Figure out what the search results are
+            $.ajax('portstatussearch.php',{
+                data: {'location': location, 'vlan': vlan, 'mode': mode, 'aname': aname, 'mac': mac, 'vendor': vendor},
+                success: highlight(current_seqnum)
+            });
+            $statuscontainer.addClass('searched');
+        } else {
+            $statuscontainer.removeClass('searched');
+        }
+
+    });
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    $('#openfilteredbutton').on('click',function(){
+        $('.status.highlight').each(function(i){
+            $( $(this).data('target') ).collapse('show');
+        });
+    });
+
+    $('#closeallbutton').on('click',function(){
+        $('.collapse.show .close').trigger('click');
+    });
+
+</script>

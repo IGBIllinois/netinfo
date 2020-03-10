@@ -37,6 +37,7 @@ require_once __DIR__ . '/navbar.inc.php';
 				<span class="border-top my-2"></span>
 				<?php echo $nav_html; ?>
 					<span class="border-top my-2"></span>
+					<li class="nav-item"><a class="nav-link" href="portstatus.php">Port Status</a></li>
 					<li class='nav-item'><a class='nav-link' href='hardware.php'>Mac Addresses</a></li>
 					<li class='nav-item'><a class='nav-link' href='networks.php'>Networks</a></li>
 					<li class='nav-item'><a class='nav-link' href='domains.php'>Domains</a></li>

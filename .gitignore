@@ -10,3 +10,4 @@
 composer.lock
 /log/*
 !/log/.gitkeep
+switch_configs

@@ -16,6 +16,7 @@ class db {
 
 	////////////////Private Variables//////////
 
+	/** @var PDO $link */
 	private $link; //mysql database link
 	private $host;	//hostname for the database
 	private $database; //database name
