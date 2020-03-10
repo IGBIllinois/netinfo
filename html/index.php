@@ -76,9 +76,11 @@ foreach ($recent_devices as $device) {
 	<h1 class='display-4'><img src="images/imark_bw.gif">&nbsp;Network Information Database</h1>
 	<p class='lead'>View and Manage Devices on the network</p>
 </div>
+<div class='col-md-12 col-lg-12 col-xl-12'>
 <h4>Network Statistics</h4>
 <?php echo $network_stats_html; ?>
-<div class='row'>
+</div>
+<div class='col-md-12 col-lg-12 col-xl-12'>
 <h4>Recently Updated Devices</h4>
 <table class='table table-sm table-bordered table-striped'>
 	<thead class='thead-dark'>

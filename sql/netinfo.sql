@@ -107,7 +107,7 @@ CREATE TABLE `namespace` (
   `modified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `property_tag` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
   `serial_number` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `network_id` int(11) DEFAULT NULL,
+  `network_id` int(11) REFERENCES networks(id),
   PRIMARY KEY (`id`),
   KEY `ipnumber` (`ipnumber`),
   KEY `hardware` (`hardware`)
@@ -132,7 +132,7 @@ CREATE TABLE `operating_systems` (
 
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `switch_id` int(11) DEFAULT NULL,
+  `switch_id` int(11) REFERENCES switches(switch_id),
   `port` varchar(30) DEFAULT NULL,
   `jack_number` varchar(8) DEFAULT NULL,
   `room` varchar(20) DEFAULT NULL,

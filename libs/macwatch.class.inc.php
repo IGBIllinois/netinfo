@@ -35,13 +35,6 @@ class macwatch {
 
 	}
 
-	public static function get_ignore_ports($db,$switch) {
-		$sql = "SELECT * from ignored_ports ";
-		$sql .= "WHERE switch_hostname=:switch";
-		$params = array(':switch'=>$switch);
-		return $db->query($sql,$params);
-	}
-
 	public static function add($db,$hostname,$ifname,$mac,$vendor,$vlans) {
 		$sql = "INSERT INTO macwatch(switch,port,mac,vendor,vlans) ";
 		$sql .= "VALUES(:switch,:port,:mac,:vendor,:vlans) ";
