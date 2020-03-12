@@ -11,7 +11,7 @@
 		$configs[] = "/data/switch_configs/".$hostnames[$i]."/".$hostnames[$i].".cfg";
 	}
 	echo "Downloading configs...\n";
-	exec('scp switch_backup@phalanx.igb.illinois.edu:"'.implode(" ", $configs).'" ../switch_configs/');
+	exec('scp -T switch_backup@phalanx.igb.illinois.edu:"'.implode(" ", $configs).'" ../switch_configs/');
 	// Process configs
 	for($i=0; $i<count($stacks); $i++){
 		echo "Switch ".$stacks[$i]['hostname']."\n";
