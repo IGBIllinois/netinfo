@@ -8,7 +8,7 @@ require_once 'includes/main.inc.php';
 require_once 'includes/session.inc.php';
 require_once 'includes/header.inc.php';
 
-$switchResult = $db->query("select * from switches where type='building'");
+$switchResult = $db->query("select * from switches where type='building' order by hostname");
 $switches = [];
 foreach ($switchResult as $row){
     $switches[] = ['hostname'=>$row['hostname']];
