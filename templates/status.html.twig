@@ -215,7 +215,7 @@
 									{% endif %}
 										<td>MAC: {{macwatch.mac}}</td>
 										<td>ANAME: {{macwatch.aname}}</td>
-										<td>IP: {{macwatch.ip}}</td>
+										<td>IP: <a href="device.php?ipnumber={{ macwatch.ip }}">{{macwatch.ip}}</a></td>
 										<td>Vendor: {{macwatch.vendor}}</td>
 										<td class="text-sm-right"><small>Last Seen: {{macwatch.date|date("m/d/Y")}}</small></td>
 									</tr>
