@@ -224,5 +224,3 @@ FROM (`netinfo`.`macwatch` `m1` left join (select `netinfo`.`locations`.`port` A
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
-
-adfafasf
