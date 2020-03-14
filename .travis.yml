@@ -7,7 +7,7 @@ php:
     - 7.3
 
 before_install:
-    - mysql -e 'CREATE DATABASE netinfo CHARACTER SET utf8;
+    - mysql -e 'CREATE DATABASE netinfo CHARACTER SET utf8;'
     - mysql -u root --password="" netinfo < sql/netinfo.sql
 
 install:
