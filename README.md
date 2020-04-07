@@ -1,6 +1,6 @@
 # Netinfo Database
 
-![Travis](https://api.travis-ci.com/IGBIllinois/netinfo.svg?branch=master)
+[![Build Status](https://www.travis-ci.com/IGBIllinois/netinfo.svg?branch=master)](https://www.travis-ci.com/IGBIllinois/netinfo)
 
 Netinfo keeps track of dhcp reservations for multiple networks and can then autogenerate the dhcpd and bind configuration files
 
