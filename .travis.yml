@@ -11,7 +11,7 @@ php:
     - 7.3
 
 before_install:
-    - ls -la /home/travis/.phpenv/versions/7.2.15/lib/php/extensions/no-debug-zts-20170718/
+    - find /home/travis/.phpenv/versions/7.2.15/lib/php/extensions/
     - echo "extension=snmp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - echo "extension=pdo_mysql.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
