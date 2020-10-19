@@ -11,9 +11,9 @@ php:
     - 7.3
 
 before_install:
-    - echo "extension=snmp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - echo "extension=pdo_mysql.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "extension=snmp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - echo "extension=pdo_mysql.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - echo "extension=ldap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
     - mysql -e 'CREATE DATABASE netinfo CHARACTER SET utf8;'
     - mysql -u root --password="" netinfo < sql/netinfo.sql
