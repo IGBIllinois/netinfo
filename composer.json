@@ -11,5 +11,18 @@
 		"fortawesome/font-awesome": "5.15.1",
 		"tecnickcom/tcpdf": "6.3.5",
 		"twig/twig": "^3.0.5"
-    }
+	},
+	"scripts": {
+		"post-update-cmd": [
+			"mkdir -p html/vendor/twbs",
+			"mkdir -p html/vendor/components",
+			"mkdir -p html/vendor/fortawesome",
+			"cp -R vendor/twbs/bootstrap html/vendor/twbs/",
+			"cp -R vendor/components/jquery html/vendor/components/",
+			"cp -R vendor/components/jqueryui html/vendor/components/",
+			"cp -R vendor/fortawesome/font-awesome html/vendor/fortawesome/"
+
+		]
+
+	}
 }

@@ -50,11 +50,6 @@ Alias /netinfo /var/www/netinfo/html
 ```
 composer install
 ```
-* Create symlink to vendor folder from html folder
-```
-cd html
-ln -s ../vendor vendor
-```
 
 # Initial Setup
 * Copy conf/settings.inc.php.dist to conf/setttings.inc.php
