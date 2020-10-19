@@ -1,13 +1,15 @@
 {
 	"require": {
 		"php":	">=7.2",
-		"phpoffice/phpspreadsheet": "1.11.0",
-		"components/jquery": "3.4.1",
+		"ext-pdo": "*",
+		"ext-snmp": "*",
+		"ext-ldap": "*",
+		"phpoffice/phpspreadsheet": "1.15.0",
+		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
-		"twbs/bootstrap": "4.4.1",
-		"fortawesome/font-awesome": "5.12.1",
+		"twbs/bootstrap": "4.5.3",
+		"fortawesome/font-awesome": "5.15.1",
 		"tecnickcom/tcpdf": "6.3.5",
-      "ext-pdo": "*",
-		"twig/twig": "^3.0"
+		"twig/twig": "^3.0.5"
     }
 }

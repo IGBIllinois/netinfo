@@ -30,8 +30,8 @@ echo $extensions_string;
 		<th>Setting</th><th>Value</th>
 	</thead>
 	<tbody>
-		<tr><td>DEBUG</td><td><?php echo settings::get_debug(); ?></td></tr>
-		<tr><td>ENABLE_LOG</td><td><?php echo settings::log_enabled(); ?></td></tr>
+		<tr><td>DEBUG</td><td><?php if (settings::get_debug()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>ENABLE_LOG</td><td><?php if (settings::log_enabled()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LOG_FILE</td><td><?php echo settings::get_log_file(); ?></td></tr>
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
 		<tr><td>LDAP_HOST</td><td><?php echo LDAP_HOST; ?></td></tr>
@@ -39,7 +39,7 @@ echo $extensions_string;
 		<tr><td>LDAP_PEOPLE_OU</td><td><?php echo LDAP_PEOPLE_OU; ?></td></tr>
 		<tr><td>LDAP_GROUP_OU</td><td><?php echo LDAP_GROUP_OU; ?></td></tr>
 		<tr><td>LDAP_GROUP</td><td><?php echo LDAP_GROUP; ?></td></tr>	
-		<tr><td>LDAP_SSL</td><td><?php echo LDAP_SSL; ?></td></tr>
+		<tr><td>LDAP_SSL</td><td><?php if (LDAP_SSL) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LDAP_PORT</td><td><?php echo LDAP_PORT; ?></td></tr>
 		<tr><td>MYSQL_HOST</td><td><?php echo MYSQL_HOST; ?></td></tr>
 		<tr><td>MYSQL_DATABASE</td><td><?php echo MYSQL_DATABASE; ?></td></tr>
