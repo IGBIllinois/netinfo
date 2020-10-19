@@ -1,9 +1,6 @@
 {
 	"require": {
 		"php":	">=7.2",
-		"ext-pdo": "*",
-		"ext-snmp": "*",
-		"ext-ldap": "*",
 		"phpoffice/phpspreadsheet": "1.15.0",
 		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
