@@ -15,7 +15,7 @@ class PortStatSwitch
      * @param      $hostname
      * @param null $community
      */
-    public function __construct(db $db, $hostname, $community = null) {
+    public function __construct(\IGBIllinois\db $db, $hostname, $community = null) {
         $this->db = $db;
         $this->hostname = $hostname;
         $this->community = $community;

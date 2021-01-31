@@ -10,10 +10,8 @@
 ///////////////////////////////////
 
 require_once 'includes/main.inc.php';
-
 $message = "";
 if (isset($_POST['login'])) {
-
 	$username = trim(rtrim($_POST['username']));
 	$password = $_POST['password'];
 
@@ -27,19 +25,13 @@ if (isset($_POST['login'])) {
 		$message .= html::alert("Please enter your password",false);
 	}
 	if ($error == false) {
-		$success = false;
-		try {
-			$ldap = new \IGBIllinois\ldap(LDAP_HOST,LDAP_BASE_DN,LDAP_PORT,LDAP_SSL,LDAP_TLS);
-			if ((LDAP_BIND_USER != "") && (LDAP_BIND_PASS != "")) {
-				$ldap->bind(LDAP_BIND_USER,LDAP_BIND_PASS);
-			}
-			$success = $ldap->authenticate($username,$password,LDAP_GROUP);
+		$ldap = new \IGBIllinois\ldap(LDAP_HOST,LDAP_BASE_DN,LDAP_PORT,LDAP_SSL,LDAP_TLS);
+		if ((LDAP_BIND_USER != "") && (LDAP_BIND_PASS != "")) {
+			$ldap->bind(LDAP_BIND_USER,LDAP_BIND_PASS);
 		}
-		catch (Exception $e) {
-			echo "Error: " . $e->getMessage();
-		}
-
+		$success = $ldap->authenticate($username,$password,LDAP_GROUP);
 		if ($success == true) {
+			$log->send_log("User " . $username . " logged in");
 			$session = new \IGBIllinois\session(SESSION_NAME);
                         $session_vars = array('login'=>true,
                                         'username'=>$username,
@@ -55,6 +47,7 @@ if (isset($_POST['login'])) {
 			header("Location: " . $webpage);
 		}
 		else {
+			$log->send_log("User " . $username . " failed login");
 			$message = html::alert("Invalid Username or Password",false);
 		}
 	}

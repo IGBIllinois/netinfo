@@ -27,11 +27,11 @@ class settings {
 		return self::SNMP_COMMUNITY;
 	}
 
-	 public static function log_enabled() {
+	public static function log_enabled() {
                 return ENABLE_LOG;
         }
 
-	 public static function get_log_file() {
+	public static function get_logfile() {
                 if (self::log_enabled() && !file_exists(LOG_FILE)) {
                         touch(LOG_FILE);
                 }

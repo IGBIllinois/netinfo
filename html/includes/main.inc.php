@@ -1,5 +1,4 @@
 <?php
-
 set_include_path(get_include_path() . ':' . __DIR__ . '/../../libs');
 
 require_once __DIR__ . '/../../conf/app.inc.php';
@@ -37,5 +36,6 @@ if (settings::get_debug()) {
 date_default_timezone_set(settings::get_timezone());
 
 $db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
+$log = new \IGBIllinois\log(settings::log_enabled(),settings::get_logfile());
 
 ?>
