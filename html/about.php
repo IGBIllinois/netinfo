@@ -8,14 +8,14 @@ require_once 'includes/header.inc.php';
 <table class='table table-bordered table-sm'>
 <tr><td>Code Website</td></td><td><a href='<?php echo settings::get_website_url(); ?>' target='_blank'><?php echo settings::get_website_url(); ?></a></td></tr>
 <tr><td>App Version</td><td><?php echo settings::get_version(); ?></td></tr>
-<tr><td>Webserver Version</td><td><?php echo functions::get_webserver_version(); ?></td></tr>
+<tr><td>Webserver Version</td><td><?php echo \IGBIllinois\Helper\functions::get_webserver_version(); ?></td></tr>
 <tr><td>MySQL Version</td><td><?php echo $db->get_version(); ?></td>
 <tr><td>DHCPD Version</td><td><?php echo functions::get_dhcpd_version(); ?></td></tr>
 <tr><td>BIND Version</td><td><?php echo functions::get_bind_version(); ?></td></tr>
 <tr><td>PHP Version</td><td><?php echo phpversion(); ?></td></tr>
 <tr><td>PHP Extensions</td><td><?php 
 $extensions_string = "";
-foreach (functions::get_php_extensions() as $row) {
+foreach (\IGBIllinois\Helper\functions::get_php_extensions() as $row) {
 	$extensions_string .= implode(", ",$row) . "<br>";
 }
 echo $extensions_string;
@@ -36,8 +36,6 @@ echo $extensions_string;
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
 		<tr><td>LDAP_HOST</td><td><?php echo LDAP_HOST; ?></td></tr>
 		<tr><td>LDAP_BASE_DN</td><td><?php echo LDAP_BASE_DN; ?></td></tr>
-		<tr><td>LDAP_PEOPLE_OU</td><td><?php echo LDAP_PEOPLE_OU; ?></td></tr>
-		<tr><td>LDAP_GROUP_OU</td><td><?php echo LDAP_GROUP_OU; ?></td></tr>
 		<tr><td>LDAP_GROUP</td><td><?php echo LDAP_GROUP; ?></td></tr>	
 		<tr><td>LDAP_SSL</td><td><?php if (LDAP_SSL) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LDAP_PORT</td><td><?php echo LDAP_PORT; ?></td></tr>

@@ -7,8 +7,15 @@
 		"twbs/bootstrap": "4.5.3",
 		"fortawesome/font-awesome": "5.15.1",
 		"tecnickcom/tcpdf": "6.3.5",
-		"twig/twig": "^3.0.5"
+		"twig/twig": "^3.0.5",
+		"igbillinois/igbillinois-php": "dev-main"
 	},
+	"repositories" : [
+		{
+			"type": "vcs",
+			"url": "https://www.github.com/IGBIllinois/IGBIllinois-php"
+		}
+	],
 	"scripts": {
 		"post-update-cmd": [
 			"mkdir -p html/vendor/twbs",

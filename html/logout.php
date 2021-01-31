@@ -12,7 +12,7 @@
 
 require_once 'includes/main.inc.php';
 
-$session = new session(SESSION_NAME);
+$session = new \IGBIllinois\session(SESSION_NAME);
 log::send_log("User " . $session->get_var('username') . " logged out");
 
 //destroy session, this logs you out on our side.

@@ -35,5 +35,7 @@ if (settings::get_debug()) {
 }
 
 date_default_timezone_set(settings::get_timezone());
-$db = new db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
+
+$db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
+
 ?>

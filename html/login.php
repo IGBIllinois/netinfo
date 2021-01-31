@@ -27,10 +27,20 @@ if (isset($_POST['login'])) {
 		$message .= html::alert("Please enter your password",false);
 	}
 	if ($error == false) {
-		$ldap = new ldap(LDAP_HOST,LDAP_SSL,LDAP_PORT,LDAP_BASE_DN);
-		$success = functions::authenticate($ldap,$username,$password,LDAP_GROUP);
+		$success = false;
+		try {
+			$ldap = new \IGBIllinois\ldap(LDAP_HOST,LDAP_BASE_DN,LDAP_PORT,LDAP_SSL,LDAP_TLS);
+			if ((LDAP_BIND_USER != "") && (LDAP_BIND_PASS != "")) {
+				$ldap->bind(LDAP_BIND_USER,LDAP_BIND_PASS);
+			}
+			$success = $ldap->authenticate($username,$password,LDAP_GROUP);
+		}
+		catch (Exception $e) {
+			echo "Error: " . $e->getMessage();
+		}
+
 		if ($success == true) {
-			$session = new session(SESSION_NAME);
+			$session = new \IGBIllinois\session(SESSION_NAME);
                         $session_vars = array('login'=>true,
                                         'username'=>$username,
                                         'timeout'=>time()

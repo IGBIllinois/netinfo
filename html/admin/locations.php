@@ -14,7 +14,7 @@ if (isset($_POST['upload_csv'])) {
 	$file_ext=strtolower($file_ext);
 	if ($file_error) {
 		$error = true;
-		$message = html::alert("Error Uploading File: " . functions::get_php_upload_error($file_error),0);
+		$message = html::alert("Error Uploading File: " . \IGBIllinois\Helper\functions::get_php_upload_error($file_error),0);
 	}
 
 	elseif ($file_ext != location::get_iris_filetype()) {
@@ -34,7 +34,7 @@ if (isset($_POST['upload_csv'])) {
 
 <h5>Upload IRIS Location CSV</h5>
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' enctype='multipart/form-data'>
-<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo functions::get_max_upload(); ?>'>
+<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo \IGBIllinois\Helper\functions::get_max_upload(); ?>'>
 
 	<div class='form-group'>
 		<label for='iris_csv'>IRIS CSV: Max File Size: <?php echo ini_get('upload_max_filesize'); ?></label>

@@ -410,27 +410,6 @@ class functions {
 	}	
 
 
-	public static function authenticate($ldap,$username,$password,$group) {
-	        $result = false;
-        	$rdn = self::get_user_rdn($ldap,$username);
-	        if (($ldap->bind($rdn,$password)) && ($ldap->is_group_member($username,$group))) {
-        	        $result = true;
-			log::send_log("User " . $username . " successfully logged in");
-	        }
-        	return $result;
-	}
-
-	private static function get_user_rdn($ldap,$username) {
-                $filter = "(uid=" . $username . ")";
-                $attributes = array('dn');
-                $result = $ldap->search($filter,'',$attributes);
-                if (isset($result[0]['dn'])) {
-                        return $result[0]['dn'];
-                }
-                else {
-                        return false;
-                }
-        }
 
         //create_host_file()
         //$data - double array of data
@@ -486,62 +465,6 @@ class functions {
                 return "";
         }
 
-	public static function get_php_extensions() {
-		$chunk_size = 13;
-		$extensions = get_loaded_extensions(); 
-		natcasesort($extensions);
-		$extensions_chunk = array_chunk($extensions,$chunk_size);
-		return $extensions_chunk;
 
-	}
-	
-	public static function get_webserver_version() {
-		if (isset($_SERVER['SERVER_SOFTWARE'])) {
-			return $_SERVER['SERVER_SOFTWARE'];
-		}
-		return "";
-
-	}
-	public static function get_php_upload_error($index = null) {
-		if (!is_null($index)) {
-			return self::PHP_FILE_UPLOAD_ERRORS[$index];
-		}
-	}	
-
-	public static function convert_bytes($size) {
-
-		list($mem,$i) = preg_split('#(?<=\d)(?=[a-z])#i', strtolower($size));
-		$bytes =0;
-		switch ($i) {
-			case "b":
-				$bytes = $mem;
-				break;
-						
-			case "kb":
-				$bytes = $mem * 1024;
-				break;
-		
-			case "mb":
-				$bytes = $mem * 1048576;
-				break;
-			case "m":
-				$bytes = $mem * 1048576;
-				break;
-			case "gb":
-				$bytes = $mem * 1073741824;
-				break;
-			case "tb":
-				$bytes = $mem * 1099511627776;
-				break;
-			default:
-				$bytes =  0;
-				break;
-		}
-		return $bytes;
-	}
-	public static function get_max_upload() {
-		return self::convert_bytes(ini_get('upload_max_filesize'));
-
-	}
 }
 ?>

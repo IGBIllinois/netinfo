@@ -25,12 +25,11 @@ define("MYSQL_DATABASE","");
 //////////Authentication Settings///////////////
 define("LDAP_HOST","");
 define("LDAP_BASE_DN","");
-define("LDAP_PEOPLE_OU","");
-define("LDAP_GROUP_OU","");
 define("LDAP_GROUP","");
 define("LDAP_BIND_USER","");
 define("LDAP_BIND_PASS","");
 define("LDAP_SSL",FALSE);
+define("LDAP_TLS",FALSE);
 define("LDAP_PORT",389);
 
 define("DEBUG",FALSE);
