@@ -1,7 +1,6 @@
 {
 	"require": {
 		"php":	">=7.2",
-		"phpoffice/phpspreadsheet": "1.15.0",
 		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "4.5.3",
