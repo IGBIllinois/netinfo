@@ -1,12 +1,12 @@
 # Netinfo Database
 
-[![Build Status](https://www.travis-ci.com/IGBIllinois/netinfo.svg?branch=master)](https://www.travis-ci.com/IGBIllinois/netinfo)
+[![Build Status](https://github.com/IGBIllinois/netinfo/actions/workflows/main.yml/badge.svg)](https://github.com/IGBIllinois/netinfo/actions/workflows/main.yml)
 
 Netinfo keeps track of dhcp reservations for multiple networks and can then autogenerate the dhcpd and bind configuration files
 
 ## Requirements
 * MySQL/MariaDB
-* PHP >=7.1 with php-snmp,php-pdo,php-ldap,php-cli mdules
+* PHP >=7.2 with php-snmp,php-pdo,php-ldap,php-cli mdules
 * Composer
 * Apache
 * DHCPD
