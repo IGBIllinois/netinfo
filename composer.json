@@ -1,6 +1,6 @@
 {
 	"name": "igbillinois/netinfo",
-	"description": "Generates DHCPD and BIND server configuration files",
+	"description": "A web interface for BIND and DHCPD",
 	"license": "GPL-3.0-only",
 	"repositories" : [
 	{
