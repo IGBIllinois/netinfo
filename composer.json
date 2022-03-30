@@ -1,6 +1,20 @@
 {
+	"name": "igbillinois/netinfo",
+	"description": "Generates DHCPD and BIND server configuration files",
+	"license": "GPL-3.0-only",
+	"repositories" : [
+	{
+		"type": "vcs",
+		"url": "https://www.github.com/IGBIllinois/IGBIllinois-php"
+	}
+	],
+
 	"require": {
 		"php":	">=7.2",
+		"ext-pdo": "*",
+		"ext-ldap": "*",
+		"ext-mysqlnd": "*",
+		"ext-gd": "*",
 		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "4.5.3",
@@ -9,12 +23,6 @@
 		"twig/twig": "^3.0.5",
 		"igbillinois/igbillinois-php": "dev-main"
 	},
-	"repositories" : [
-		{
-			"type": "vcs",
-			"url": "https://www.github.com/IGBIllinois/IGBIllinois-php"
-		}
-	],
 	"scripts": {
 		"post-update-cmd": [
 			"mkdir -p html/vendor/twbs",
