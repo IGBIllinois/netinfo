@@ -15,9 +15,9 @@
 		"ext-ldap": "*",
 		"ext-mysqlnd": "*",
 		"ext-gd": "*",
-		"components/jquery": "3.6.0",
+		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
-		"twbs/bootstrap": "4.6.1",
+		"twbs/bootstrap": "v4.6.1",
 		"fortawesome/font-awesome": "5.15.4",
 		"twig/twig": "^3.3.9",
 		"igbillinois/igbillinois-php": "dev-main"

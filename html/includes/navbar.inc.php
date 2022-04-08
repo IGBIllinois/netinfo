@@ -35,4 +35,3 @@ $nav_js .= "});\n";
 $nav_js .= "</script>\n";
 
 ?>
-

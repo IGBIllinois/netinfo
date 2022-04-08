@@ -22,7 +22,10 @@ require_once __DIR__ . '/navbar.inc.php';
 <body style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class="navbar fixed-top navbar-dark bg-dark">
         <a class='navbar-brand py-0' href='#'><img src='../images/igb_small.png'>Network Information Database Admin - <?php echo settings::get_title(); ?></a>
-	<span class='navbar-text py-0'><a class='btn btn-sm btn-primary' href='../index.php'>User Section</a> Version <?php echo settings::get_version(); ?>&nbsp;</span>
+	<span class='navbar-text py-0'>
+		<a class='btn btn-sm btn-primary' href='../index.php'><i class='fas fa-user'></i> User Section</a> 
+		<a class='btn btn-sm btn-success' href='logout.php'><i class='fas fa-sign-out-alt'></i> Logout</a>
+	</span>
 
 </nav>
 
@@ -35,7 +38,6 @@ require_once __DIR__ . '/navbar.inc.php';
 				<li class='nav-item'><a class='nav-link' href='index.php'>Home</a></li>
 					<span class="border-top my-2"></span>
 					<li class='nav-item'><a class='nav-link' href='locations.php'>Locations</a></li>
-					<li class='nav-item'><a class='nav-link' href='../logout.php'>Logout</a></li>
 				</ul>
 				
 			</div>
