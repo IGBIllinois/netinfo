@@ -1,10 +1,21 @@
+#!/usr/bin/env php
 <?php
 chdir(dirname(__FILE__));
 
 set_include_path(get_include_path() . ':../libs');
-require_once '../conf/settings.inc.php';
+
+require_once __DIR__ . '/../conf/app.inc.php';
+require_once __DIR__ . '/../conf/settings.inc.php';
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+        require_once __DIR__ . '/../vendor/autoload.php';
+}
+else {
+        echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
+}
+
 function my_autoloader($class_name) {
-        if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
+        if(file_exists(__DIR__ . "/../libs/" . $class_name . ".class.inc.php")) {
                 require_once $class_name . '.class.inc.php';
         }
 }
@@ -74,7 +85,7 @@ if (isset($options['f'])) {
 }
 
 if (!$error) {
-	$db = new db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
+	$db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
 	if ($domain_name == 'ALL') {
 		$bind_enabled = 1;
 		$all_domains = functions::get_domains($db,$bind_enabled);

@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 	include_once("../html/includes/main.inc.php");
 	
