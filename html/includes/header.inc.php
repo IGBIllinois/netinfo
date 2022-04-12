@@ -21,9 +21,9 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
         <a class='navbar-brand py-0' href='#'><img src='images/igb_small.png'>Network Information Database - <?php echo settings::get_title(); ?></a>
 	<span class='navbar-text py-0'>
-		<a class='btn btn-sm btn-danger' href='admin/index.php' onClick='return confirm_admin();'><i class='fas fa-lock'></i> Admin</a>
-		<a class='btn btn-sm btn-success' href='logout.php'><i class='fas fa-sign-out-alt'></i> Logout</a>
 		<button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#aboutModal"><i class='fas fa-info-circle'></i> About</button>
+		<a class='btn btn-sm btn-danger' href='admin/index.php' onClick='return confirm_admin();'><i class='fas fa-lock'></i> Admin</a>
+		<a class='btn btn-sm btn-warning' href='logout.php'><i class='fas fa-sign-out-alt'></i> Logout</a>
 	</span>
 </nav>
 

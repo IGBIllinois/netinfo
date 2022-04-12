@@ -9,6 +9,7 @@
 
 <div class='modal-body'>
 	<table class='table table-bordered table-sm'>
+		<tbody>
 		<tr><td>Code Website</td></td><td><a href='<?php echo settings::get_website_url(); ?>' target='_blank'><?php echo settings::get_website_url(); ?></a></td></tr>
 		<tr><td>App Version</td><td><?php echo settings::get_version(); ?></td></tr>
 		<tr><td>Webserver Version</td><td><?php echo \IGBIllinois\Helper\functions::get_webserver_version(); ?></td></tr>
@@ -23,13 +24,12 @@
 			}
 			echo $extensions_string;
 		?></td></tr>
-
+		</tbody>
 	</table>
 
-<h5>Settings</h5>
 	<table class='table table-bordered table-sm'>
 	<thead>
-		<th>Setting</th><th>Value</th>
+		<tr><th>Setting</th><th>Value</th></tr>
 	</thead>
 	<tbody>
 		<tr><td>DEBUG</td><td><?php if (settings::get_debug()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
@@ -49,9 +49,6 @@
 	</tbody>
 	</table>
 
-</div>
-<div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 </div>
 
 </div>

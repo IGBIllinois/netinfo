@@ -23,9 +23,6 @@ if (isset($_POST['create_report_full'])) {
 		case 'xlsx':
 			\IGBIllinois\report::create_excel_2007_report($data,$filename);
 			break;
-		case 'pdf':
-			\IGBIllinois\report::create_pdf_report($data,$filename);
-			break;
 	}
 }
 
@@ -50,9 +47,6 @@ elseif (isset($_POST['create_report_no_spares'])) {
                         break;
                 case 'xlsx':
                         \IGBIllinois\report::create_excel_2007_report($data,$filename);
-                        break;
-		case 'pdf':
-                        \IGBIllinois\report::create_pdf_report($data,$filename);
                         break;
 
         }

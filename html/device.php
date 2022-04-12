@@ -165,31 +165,7 @@ $os_html .= "</select>";
 		</thead>
 		<?php echo $locations_html; ?>
 	</table>
-</div>
 
-<div class='col-md-6 col-lg-6 col-xl-6'>
-	<h4>Hardware (MAC) Address Formats</h4>
-	<table class='table table-bordered table-sm'>
-		<tr>
-			<td><?php echo $device->get_hardware(); ?>&nbsp;</td>
-			<td><?php echo $device->get_hardware(true); ?>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><?php echo $device->get_hardware_cisco(); ?>&nbsp;</td>
-			<td><?php echo $device->get_hardware_cisco(true); ?>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><?php echo $device->get_hardware_dashes(); ?>&nbsp;</td>
-			<td><?php echo $device->get_hardware_dashes(true); ?>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><?php echo $device->get_hardware_colon(); ?>&nbsp;</td>
-			<td><?php echo $device->get_hardware_colon(true); ?>&nbsp;</td>
-		</tr>
-	</table>
-
-</div>
-<div class='col-md-6 col-lg-6 col-xl-6'>
 	<h4>Aliases</h4>
 	<table class='table table-bordered table-sm table-striped '>
 		<thead>
@@ -207,10 +183,32 @@ $os_html .= "</select>";
 	</table>
 
 </div>
+<div class='col-md-6 col-lg-6 col-xl-6'>
+        <h4>Hardware (MAC) Address Formats</h4>
+        <table class='table table-bordered table-sm'>
+                <tr>
+                        <td><?php echo $device->get_hardware(); ?>&nbsp;</td>
+                        <td><?php echo $device->get_hardware(true); ?>&nbsp;</td>
+                </tr>
+                <tr>
+                        <td><?php echo $device->get_hardware_cisco(); ?>&nbsp;</td>
+                        <td><?php echo $device->get_hardware_cisco(true); ?>&nbsp;</td>
+                </tr>
+                <tr>
+                        <td><?php echo $device->get_hardware_dashes(); ?>&nbsp;</td>
+                        <td><?php echo $device->get_hardware_dashes(true); ?>&nbsp;</td>
+                </tr>
+                <tr>
+                        <td><?php echo $device->get_hardware_colon(); ?>&nbsp;</td>
+                        <td><?php echo $device->get_hardware_colon(true); ?>&nbsp;</td>
+                </tr>
+        </table>
+
+</div>
 </div>
 <div class='col-md-12 col-lg-12 col-xl-12'>
 <input class='btn btn-primary' type='submit' value='Update' name='update' onClick='return confirm_update()'>
-<input class='btn btn-warning' type='submit' value='Cancel' name='cancel'>
+<a class='btn btn-warning' href='<?php echo $_SERVER['HTTP_REFERER']; ?>'>Cancel</a>
 <?php if ($device->get_aname() != 'spare') {
 echo "<input class='btn btn-danger' type='submit' value='Delete' name='delete' onClick='return confirm_delete()'>";
 }
@@ -227,6 +225,5 @@ if (isset($result['MESSAGE'])) {
 </p>
 </div>
 <?php
-
 require_once 'includes/footer.inc.php';
 ?>

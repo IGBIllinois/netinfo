@@ -107,7 +107,7 @@ CREATE TABLE `portstatus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `vlans` (
-    `id` int(11) unsigned NOT NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

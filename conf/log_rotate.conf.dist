@@ -4,6 +4,7 @@
     notifempty
     missingok
     create 0660 apache apache
+    su apache apache
 }
 
 
