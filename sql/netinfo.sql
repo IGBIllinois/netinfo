@@ -136,5 +136,18 @@ CREATE TABLE `vlans` (
   PRIMARY KEY (`id`)
 )\p;
 
-CREATE VIEW `macwatch_latest` AS select `m1`.`switch` AS `switch`,`m1`.`port` AS `port`,`m1`.`mac` AS `mac`,`m1`.`vendor` AS `vendor`,`m1`.`vlans` AS `vlans`,`a`.`jack_number` AS `jack_number`,`a`.`room` AS `room`,`a`.`building` AS `building`,`m1`.`date` AS `date` from (`netinfo`.`macwatch` `m1` left join (select `netinfo`.`locations`.`port` AS `port`,`netinfo`.`locations`.`jack_number` AS `jack_number`,`netinfo`.`locations`.`room` AS `room`,`netinfo`.`locations`.`building` AS `building`,`netinfo`.`switches`.`hostname` AS `hostname` from (`netinfo`.`locations` left join `netinfo`.`switches` on(`netinfo`.`switches`.`switch_id` = `netinfo`.`locations`.`switch_id`))) `a` on(`a`.`port` = `m1`.`port` and `a`.`hostname` = `m1`.`switch`)) where `m1`.`date` = (select max(`netinfo`.`macwatch`.`date`) from `netinfo`.`macwatch` where `netinfo`.`macwatch`.`mac` = `m1`.`mac`)\p;
+CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
+AS SELECT m1.switch AS switch,
+        m1.port AS port,
+        m1.mac AS mac,
+        m1.vendor AS vendor,
+        m1.vlans AS vlans,
+        a.jack_number AS jack_number,
+        a.room AS room,
+        a.building AS building,
+        m1.date AS date FROM macwatch m1
+        LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations
+        LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
+        ON (a.port=m1.port AND a.hostname=m1.switch)
+        WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac)\p;
 
