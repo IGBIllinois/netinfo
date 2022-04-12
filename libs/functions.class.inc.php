@@ -3,7 +3,7 @@
 
 class functions {
 
-	private const RECENT_DEVICES_COUNT = 10;
+	private const RECENT_DEVICES_COUNT = 20;
 
 	private const PHP_FILE_UPLOAD_ERRORS = array(
 		0 => 'There is no error, the file uploaded with success',

@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 require_once 'includes/header.inc.php';
 
 $devicetypes = functions::get_operating_systems($db);

@@ -84,42 +84,6 @@ CREATE TABLE `operating_systems` (
   PRIMARY KEY (`id`)
 )\p;
 
-CREATE TABLE `portconfig` (
-  `switchstack` VARCHAR(32) NOT NULL DEFAULT '',
-  `descriptor` VARCHAR(64) NOT NULL DEFAULT '',
-  `mode` VARCHAR(16) DEFAULT 'access',
-  `vlan` INT DEFAULT 1,
-  `printerfirewall` BOOLEAN NOT NULL DEFAULT 0,
-  `allowedvlan` VARCHAR(64) DEFAULT NULL,
-  `lastUpdateTime` DATETIME NOT NULL,
-  PRIMARY KEY (`switchstack`,`descriptor`)
-)\p;
-
-
-CREATE TABLE `ports` (
-  `switchstack` varchar(32) NOT NULL DEFAULT '',
-  `descriptor` varchar(64) NOT NULL DEFAULT '',
-  `snmpindex` INT NOT NULL,
-  `desc1` INT DEFAULT NULL,
-  `desc2` INT DEFAULT NULL,
-  `desc3` INT DEFAULT NULL,
-  `name` VARCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (`switchstack`,`descriptor`),
-  KEY `descriptor` (`descriptor`),
-  KEY `desc1` (`desc1`,`desc2`,`desc3`),
-  KEY `name` (`name`)
-)\p;
-
-CREATE TABLE `portstatus` (
-  `switchstack` VARCHAR(32) NOT NULL DEFAULT '',
-  `descriptor` VARCHAR(64) NOT NULL DEFAULT '0',
-  `adminStatus` BOOLEAN DEFAULT NULL,
-  `operStatus` BOOLEAN DEFAULT NULL,
-  `lastUpdateTime` DATETIME NOT NULL,
-  PRIMARY KEY (`switchstack`,`descriptor`)
-);
-
-
 CREATE TABLE `switches` (
   `switch_id` INT NOT NULL AUTO_INCREMENT,
   `hostname` VARCHAR(255) NOT NULL DEFAULT '',

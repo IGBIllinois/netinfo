@@ -72,40 +72,6 @@ AS SELECT m1.switch AS switch,
 	ON (a.port=m1.port AND a.hostname=m1.switch)
         WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
 
-CREATE TABLE `portconfig` (
-    `switchstack` varchar(32) NOT NULL DEFAULT '',
-    `descriptor` varchar(64) NOT NULL DEFAULT '',
-    `mode` varchar(16) DEFAULT 'access',
-    `vlan` int(11) DEFAULT 1,
-    `printerfirewall` tinyint(1) NOT NULL DEFAULT 0,
-    `allowedvlan` varchar(64) DEFAULT NULL,
-    `lastUpdateTime` datetime NOT NULL,
-    PRIMARY KEY (`switchstack`,`descriptor`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `ports` (
-    `switchstack` varchar(32) NOT NULL DEFAULT '',
-    `descriptor` varchar(64) NOT NULL DEFAULT '',
-    `snmpindex` int(11) NOT NULL,
-    `desc1` int(11) DEFAULT NULL,
-    `desc2` int(11) DEFAULT NULL,
-    `desc3` int(11) DEFAULT NULL,
-    `name` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`switchstack`,`descriptor`),
-    KEY `descriptor` (`descriptor`),
-    KEY `desc1` (`desc1`,`desc2`,`desc3`),
-    KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `portstatus` (
-    `switchstack` varchar(32) NOT NULL DEFAULT '',
-    `descriptor` varchar(64) NOT NULL DEFAULT '0',
-    `adminStatus` tinyint(1) DEFAULT NULL,
-    `operStatus` tinyint(1) DEFAULT NULL,
-    `lastUpdateTime` datetime NOT NULL,
-    PRIMARY KEY (`switchstack`,`descriptor`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `vlans` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL DEFAULT '',

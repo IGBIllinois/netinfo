@@ -19,8 +19,7 @@
                 "components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "v4.6.1",
 		"fortawesome/font-awesome": "5.15.4",
-		"twig/twig": "^3.3.9",
-		"igbillinois/igbillinois-php": "dev-main"
+		"igbillinois/igbillinois-php": "1.2.1"
 	},
 	"scripts": {
 		"post-update-cmd": [
