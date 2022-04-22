@@ -31,7 +31,7 @@ CREATE TABLE locations (
         building VARCHAR(4),
         date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
-        KEY `switch_id` (`switch_id`,`port`)
+        UNIQUE KEY `switch_port` (`switch_id`,`port`)
 );
 
 ALTER TABLE operating_systems 

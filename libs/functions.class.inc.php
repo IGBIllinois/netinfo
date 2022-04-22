@@ -33,7 +33,7 @@ class functions {
 		if ($dhcp_enabled) {
 			$sql .= "WHERE networks.enabled='1' ";
 		}
-		$sql .= "ORDER BY vlan ASC ";
+		$sql .= "ORDER BY name ASC ";
 		return $db->query($sql);
 		
 	}

@@ -64,7 +64,9 @@ class location {
 		else {
 
 			$sql = "INSERT INTO locations(switch_id,port,jack_number,room,building) ";
-			$sql .= "VALUES((SELECT switch_id FROM switches WHERE hostname=:switch),:port,:jack_number,:room,:building)";
+			$sql .= "VALUES((SELECT switch_id FROM switches WHERE hostname=:switch),:port,:jack_number,:room,:building) ";
+			$sql .= "ON DUPLICATE KEY UPDATE jack_number=:jack_number,room=:room,building=:building";
+			
 			$params = array('switch'=>$switch,
 					'port'=>$port,
 					'jack_number'=>$jack_number,

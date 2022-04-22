@@ -27,7 +27,7 @@ CREATE TABLE `locations` (
   `building` VARCHAR(4) DEFAULT NULL,
   `date` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `switch_id` (`switch_id`,`port`)
+  UNIQUE KEY `switch_port` (`switch_id`,`port`)
 )\p;
 
 CREATE TABLE `macwatch` (
