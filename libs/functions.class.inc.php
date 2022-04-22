@@ -83,6 +83,17 @@ class functions {
 
 	}
 
+	public static function cidr2mask($cidr) {
+		$ta = substr ($cidr, strpos ($cidr, '/') + 1) * 1;
+		$netmask = str_split (str_pad (str_pad ('', $ta, '1'), 32, '0'), 8);
+
+		foreach ($netmask as &$element) {
+			$element = bindec ($element);
+		}
+
+		return join ('.', $netmask);
+
+	}
 	public static function get_recent_devices($db) {
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
                 $sql .= "LOWER(namespace.hardware) as hardware, namespace.name as user, ";

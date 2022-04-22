@@ -10,9 +10,12 @@ if (isset($_GET['start']) && is_numeric($_GET['start'])) {
 }
 
 $network = "";
+$network_name = "";
 if (isset($_GET['network'])) {
 	$network = $_GET['network'];
-}
+	$network_name = network::get_name_by_cidr($db,$network);
+}	
+
 
 $search = "";
 if (isset($_GET['search'])) {
@@ -85,7 +88,7 @@ for ($i=$start;$i<$start+$count;$i++) {
 	}
 }
 ?>
-<h3>Devices <?php if ($network != "") { echo " - " . $network; } ?></h3>
+<h3>Devices <?php if ($network != "") { echo " - " . $network . " - " . $network_name; } ?></h3>
 <form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
 		<input type='hidden' name='network' value='<?php echo $network; ?>'>
 		<input type='hidden' name='count' value='<?php echo $count; ?>'>

@@ -172,7 +172,18 @@ class network {
 
 	}
 
+	public static function get_name_by_cidr($db,$cidr) {
+		$network = substr($cidr,0,strpos($cidr,"/"));
+		$netmask = functions::cidr2mask($cidr);
+		$sql = "SELECT name FROM networks WHERE network=:network AND netmask=:netmask LIMIT 1";
+		$parameters = array(':network'=>$network,':netmask'=>$netmask);
+		$result = $db->query($sql,$parameters);
+		if (count($result)) {
+			return $result[0]['name'];
+		}
+		return false;
 
+	}
 
 }
 ?>
