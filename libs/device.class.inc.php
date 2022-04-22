@@ -115,7 +115,7 @@ class device {
 	}
 
 	public function get_locations() {
-		$sql = "SELECT macwatch.date,macwatch.mac, ";
+		$sql = "SELECT DATE_FORMAT(macwatch.date,'%Y-%m-%d %l:%i:%s %p') as last_seen,macwatch.mac, ";
 		$sql .= "SUBSTRING_INDEX(macwatch.switch,'.',1) AS switch, ";
 		$sql .= "macwatch.port, macwatch.vlans, ";
 		$sql .= "a.jack_number AS jack_number, ";
@@ -295,7 +295,7 @@ class device {
 		$sql .= "namespace.email, namespace.room, namespace.os, namespace.description, ";
 		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, namespace.modified, ";
 		$sql .= "namespace.property_tag,networks.name as network,domains.name as domain, ";
-		$sql .= "a.switch, a.port, a.vendor ";
+		$sql .= "DATE_FORMAT(a.last_seen,'%Y-%m-%d %h:%m:%s') as last_seen,a.switch, a.port, a.vendor ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
 		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";

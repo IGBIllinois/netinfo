@@ -79,7 +79,7 @@ $locations_html = "";
 if (count($locations)) {
 	foreach ($locations as $location) {
 		$locations_html .= "<tr>";
-		$locations_html .= "<td>" . $location['date'] . "</td>";
+		$locations_html .= "<td>" . $location['last_seen'] . "</td>";
 		$locations_html .= "<td>" . $location['switch'] . "</td>";
 		$locations_html .= "<td>" . $location['port'] . "</td>";
 		$locations_html .= "<td>" . $location['jack_number'] . "</td>";

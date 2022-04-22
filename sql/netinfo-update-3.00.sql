@@ -54,7 +54,8 @@ ALTER TABLE macwatch
 	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
 	ADD PRIMARY KEY (id),
 	ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, 
-	MODIFY `port` VARCHAR(30);
+	MODIFY `port` VARCHAR(30),
+	MODIFY `date` TIMESTAMP(3) NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp();
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
 AS SELECT m1.switch AS switch,

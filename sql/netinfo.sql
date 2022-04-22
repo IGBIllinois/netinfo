@@ -37,7 +37,7 @@ CREATE TABLE `macwatch` (
   `mac` VARCHAR(12) NOT NULL,
   `vendor` VARCHAR(50) NOT NULL,
   `vlans` VARCHAR(128) DEFAULT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `date` TIMESTAMP(3) NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `switch` (`switch`,`port`,`mac`),
   KEY `mac` (`mac`)

@@ -55,6 +55,7 @@ if (isset($options['h']) || isset($options['help'])) {
 }
 elseif (isset($options['dry-run'])) {
 	$dryrun = true;
+	echo "Dry Run enabled\n";
 }
 
 $db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
@@ -80,13 +81,13 @@ foreach ($switches as $switch) {
 		$snmp = new SNMP(SNMP::VERSION_2C, $switch['hostname'],settings::get_snmp_community() . "@" . $vlan['vlan'],1000000,5);
 		$snmp->valueretrieval = SNMP_VALUE_PLAIN;
 
-		$macs = @$snmp->walk(macwatch::get_mac_oid());
+		$macs = @$snmp->walk(macwatch::SNMP_MAC_OID);
 		if($macs === false){
 			continue; // If there was an SNMP error on the first walk, skip the rest.
 		}
-		$bridges = @$snmp->walk(macwatch::get_bridge_oid());
-		$ifnums = @$snmp->walk(macwatch::get_interface_oid());
-		$ifnames = @$snmp->walk(macwatch::get_interface_name_oid());
+		$bridges = @$snmp->walk(macwatch::SNMP_BRIDGE_OID);
+		$ifnums = @$snmp->walk(macwatch::SNMP_INTERFACE_OID);
+		$ifnames = @$snmp->walk(macwatch::SNMP_INTERFACE_NAME_OID);
 		// Reverse the array to make it easier to search
 		$ignore = array();
 		foreach ($ignoredports as $port) {
@@ -124,9 +125,8 @@ foreach ($switches as $switch) {
 			}
 			
 			// Get MAC vendor ONLY if it's not already in the database, to save time
-			$vendor = "";
-			$existingEntry = $db->query("select * from macwatch where switch=:switch and port=:port and mac=:mac order by date desc limit 1", array(':switch'=>$switch['hostname'],':port'=>$ifname,':mac'=>$mac));
-			if($existingEntry === FALSE || count($existingEntry) == 0 || $existingEntry[0]['vendor'] == "" || $existingEntry[0]['vendor'] == null){
+			$vendor = macwatch::get_vendor($db,$switch['hostname'],$ifname,$mac);
+			if(!$vendor){
 				$vendorjson = file_get_contents("http://macvendors.co/api/".$mac."/json");
 				if($vendorjson !== false){
 					$vendor = json_decode($vendorjson);
@@ -136,13 +136,10 @@ foreach ($switches as $switch) {
 						$vendor = $vendor->result->company;
 					}
 				}
-			} else {
-				$vendor = $existingEntry[0]['vendor'];
 			}
 
 			// Update the VLANs field
 			$portvlans[$ifname][$mac][] = $vlan['vlan'];
-			
 			echo "\t\t$mac: $ifname ($vendor)\n"; // For now, we just print
 			if(!$dryrun){
 				macwatch::add($db,$switch['hostname'],$ifname,$mac,$vendor,$portvlans[$ifname][$mac]);

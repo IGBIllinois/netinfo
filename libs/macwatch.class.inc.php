@@ -2,27 +2,13 @@
 
 class macwatch {
 
-	private CONST MAC_OID='.1.3.6.1.2.1.17.4.3.1.1';
-	private CONST BRIDGE_OID='.1.3.6.1.2.1.17.4.3.1.2';
-	private CONST INTERFACE_OID='.1.3.6.1.2.1.17.1.4.1.2';
-	private CONST INTERFACE_NAME_OID='.1.3.6.1.2.1.31.1.1.1.1';
+	public CONST SNMP_MAC_OID='.1.3.6.1.2.1.17.4.3.1.1';
+	public CONST SNMP_BRIDGE_OID='.1.3.6.1.2.1.17.4.3.1.2';
+	public CONST SNMP_INTERFACE_OID='.1.3.6.1.2.1.17.1.4.1.2';
+	public CONST SNMP_INTERFACE_NAME_OID='.1.3.6.1.2.1.31.1.1.1.1';
 
-	public static function get_mac_oid() {
-		return self::MAC_OID;
-	}
-	public static function get_bridge_oid() {
-		return self::BRIDGE_OID;
-
-	}
-	public static function get_interface_oid() {
-		return self::INTERFACE_OID;
-	}
-	public static function get_interface_name_oid() {
-		return self::INTERFACE_NAME_OID;
-
-	}
 	public static function get_vlans($db) {
-		$sql = "select vlan,name from vlans";
+		$sql = "select * from vlans";
 		return $db->query($sql);
 
 
@@ -35,17 +21,33 @@ class macwatch {
 
 	}
 
-	public static function add($db,$hostname,$ifname,$mac,$vendor,$vlans) {
+	public static function add($db,$hostname,$port,$mac,$vendor,$vlans) {
+		sort($vlans,SORT_NUMERIC);
 		$sql = "INSERT INTO macwatch(switch,port,mac,vendor,vlans) ";
 		$sql .= "VALUES(:switch,:port,:mac,:vendor,:vlans) ";
 		$sql .= "ON DUPLICATE KEY UPDATE date=NOW(), vendor=:vendor, vlans=:vlans";
 		$params = array(':switch'=>$hostname,
-				':port'=>$ifname,
+				':port'=>$port,
 				':mac'=>$mac,
 				':vendor'=>$vendor,
 				':vlans'=>implode(',', $vlans)
 			);
 		return $db->insert_query($sql,$params);
+
+
+	}
+
+	public static function get_vendor($db,$switch,$port,$mac) {
+		$sql = "SELECT vendor FROM macwatch where switch=:switch and port=:port and mac=:mac ";
+		$sql .= "ORDER BY date DESC LIMIT 1";
+		$parameters = array(':switch'=>$switch,
+				':port'=>$port,
+				':mac'=>$mac);
+		$result = $db->query($sql,$parameters);
+		if (count($result) && $result[0]['vendor'] != '') {
+			return $result[0]['vendor'];
+		}
+		return false;
 
 
 	}
