@@ -12,7 +12,7 @@ CREATE TABLE `domains` (
 
 CREATE TABLE `ignored_ports` (
   `ignored_ports_id` INT NOT NULL AUTO_INCREMENT,
-  `switch_hostname` VARCHAR(64) NOT NULL DEFAULT '',
+  `switch_id` INT REFERENCES switches(switch_id),
   `port` VARCHAR(30) NOT NULL DEFAULT '',
   `date` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`ignored_ports_id`)
@@ -88,7 +88,6 @@ CREATE TABLE `switches` (
   `switch_id` INT NOT NULL AUTO_INCREMENT,
   `hostname` VARCHAR(255) NOT NULL DEFAULT '',
   `enabled` BOOLEAN DEFAULT 1,
-  `type` ENUM('building','server','auxiliary','other') DEFAULT 'other',
   `date` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`switch_id`),
   KEY `hostname` (`hostname`)
@@ -97,6 +96,7 @@ CREATE TABLE `switches` (
 CREATE TABLE `vlans` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
+  'vlan' INT NOT NULL,
   PRIMARY KEY (`id`)
 )\p;
 

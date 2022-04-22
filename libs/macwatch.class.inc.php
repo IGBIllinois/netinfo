@@ -22,7 +22,7 @@ class macwatch {
 
 	}
 	public static function get_vlans($db) {
-		$sql = "select vlan,name from networks WHERE enabled='1'";
+		$sql = "select vlan,name from vlans";
 		return $db->query($sql);
 
 

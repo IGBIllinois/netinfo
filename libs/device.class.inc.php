@@ -300,8 +300,8 @@ class device {
 		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
 		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";
 		$sql .= "LEFT JOIN ( ";
-		$sql .= "SELECT MAX(macwatch.date) as last_seen, macwatch.switch as switch, macwatch.vendor as vendor, ";
-		$sql .= "macwatch.port as port,LOWER(macwatch.mac) as mac FROM macwatch GROUP BY mac) as a ";
+		$sql .= "SELECT macwatch_latest.date as last_seen, macwatch_latest.switch as switch, macwatch_latest.vendor as vendor, ";
+		$sql .= "macwatch_latest.port as port,LOWER(macwatch_latest.mac) as mac FROM macwatch_latest) as a ";
 		$sql .= "ON a.mac=LOWER(namespace.hardware) ";
 		$sql .= "WHERE ipnumber='" . $ipnumber . "' LIMIT 1";
 		$result = $this->db->query($sql);

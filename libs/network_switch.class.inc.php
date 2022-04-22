@@ -8,7 +8,6 @@ class network_switch {
 	private $hostname;
 	private $enabled;
 	private $ignore_ports = array();
-	private $type;
 	/////////////Public Functions//////////////
         public function __construct($db,$hostname) {
                 $this->db = $db;
@@ -35,9 +34,6 @@ class network_switch {
 		return $this->enabled;
 	}
 
-	public function get_type() {
-		return $this->type;
-	}
 	/////////////////Private Functions/////////////
 
 
@@ -49,19 +45,18 @@ class network_switch {
 			$this->id=$result[0]['switch_id'];
 			$this->hostname=$hostname;
 			$this->enabled=$result[0]['enabled'];
-			$this->type=$result[0]['type'];
 
 		}
 	}
 
 	private function load_ignore_ports() {
-		$sql = "SELECT * FROM ignored_ports WHERE switch_hostname=:hostname";
-		$params = array(':hostname'=>$this->get_hostname());
+		$sql = "SELECT * FROM ignored_ports WHERE switch_id=:switch_id";
+		$params = array(':switch_id'=>$this->get_id());
 		$result = $this->db->query($sql,$params);
 		if (count($result)) {
 			$ignore_ports = array();
 			foreach ($result as $data) {
-				$ignore_ports[] = $data['portname'];	
+				$ignore_ports[] = $data['port'];	
 
 
 			}

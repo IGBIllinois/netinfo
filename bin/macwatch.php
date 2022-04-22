@@ -1,15 +1,17 @@
 #!/usr/bin/env php
 <?php
 
-$dryrun = false;
-if($argc > 1 && $argv[1] == "dryrun"){
-	echo "Dryrun Mode\n";
-	$dryrun = true;
-}
-
 if (file_exists('../conf/settings.inc.php')) {
 	require_once '../conf/settings.inc.php';
 }
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+        require_once __DIR__ . '/../vendor/autoload.php';
+}
+else {
+        echo "<br>/vendor/autoload.php does not exist.  Please run 'composer install' to created vendor folder";
+}
+
 function my_autoloader($class_name) {
 	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
 		require_once "../libs/" . $class_name . '.class.inc.php';
@@ -26,11 +28,36 @@ if (settings::get_debug()) {
 
 }
 
+//Command parameters
+$output_command = "Usage: php macwatch.php \n";
+$output_command .= "   --dry-run Do dry run only\n";
+$output_command .= "   -h, --help Show help menu \n";
+
+//Parameters
+$shortopts = "h";
+
+$longopts = array(
+	'help',
+	'dry-run'
+);
+
 //If run from command line
 if (php_sapi_name() != 'cli') {
         exit("Error: This script can only be run from the command line.\n");
 }
-$db = new db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
+
+$options = getopt($shortopts,$longopts);
+
+$dryrun = false;
+if (isset($options['h']) || isset($options['help'])) {
+		echo $output_command;
+		exit;
+}
+elseif (isset($options['dry-run'])) {
+	$dryrun = true;
+}
+
+$db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
 
 // Array of VLANS to watch
 $vlans = macwatch::get_vlans($db);
@@ -42,6 +69,8 @@ $switches = macwatch::get_switches($db);
 foreach ($switches as $switch) {
 	echo "Switch: ".$switch['hostname']."\n";
 	$switch_obj = new network_switch($db,$switch['hostname']);
+	$ignoredports = $switch_obj->get_ignore_ports();
+
 	$portvlans = array();
 	//  Foreach VLAN
 	foreach ($vlans as $vlan) {
@@ -58,12 +87,10 @@ foreach ($switches as $switch) {
 		$bridges = @$snmp->walk(macwatch::get_bridge_oid());
 		$ifnums = @$snmp->walk(macwatch::get_interface_oid());
 		$ifnames = @$snmp->walk(macwatch::get_interface_name_oid());
-		// Get ports to ignore
-		$ignoredports = $switch_obj::get_ignore_ports();
 		// Reverse the array to make it easier to search
 		$ignore = array();
 		foreach ($ignoredports as $port) {
-			$ignore[$port['port']] = 1;
+			$ignore[$port] = 1;
 		}
 
 		// Parse the SNMP data
