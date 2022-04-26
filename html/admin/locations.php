@@ -1,5 +1,6 @@
 <?php
 require_once '../includes/main.inc.php';
+require_once '../includes/session.inc.php';
 require_once 'includes/header.inc.php';
 
 $error = false;
@@ -24,6 +25,7 @@ if (isset($_POST['upload_csv'])) {
 
 	else {
 		$result = location::import_iris($db,$file_tmp);
+		$log->send_log("User " . $session->get_var('username') . ": Imported locations from file " . $file_name . ". " . $result . " Locations imported");
 		$message = html::alert("Imported " . $file_name . " successfully. " . $result . " Locations imported",1);
 	}
 	

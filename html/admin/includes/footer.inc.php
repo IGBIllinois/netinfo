@@ -2,15 +2,6 @@
 </div>
 </div>
 <br>
-<?php 
-
-
-if (settings::get_debug()) {
-echo "<div class='alert alert-danger'>DEBUG MODE ENABLED</div>";
-
-}
-
-?>
 
 <footer class='footer'>
 <div class='container'>

@@ -11,7 +11,7 @@
 //
 //////////////////////////////////////////
 
-require_once 'includes/main.inc.php';
+require_once __DIR__ . '/main.inc.php';
 
 $session = new \IGBIllinois\session(SESSION_NAME);
 if (time() > $session->get_var('timeout') + SESSION_TIMEOUT) {

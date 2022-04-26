@@ -20,8 +20,6 @@ if (isset($_GET['network'])) {
 $search = "";
 if (isset($_GET['search'])) {
 	$search = $_GET['search'];
-	//unset($_GET['start_date']);
-	//unset($_GET['end_date']);
 }
 $exact = 0;
 if (isset($_GET['exact'])) {

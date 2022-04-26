@@ -4,6 +4,7 @@ class location {
 
 	////////////Class Variables/////////////////
 	private $db;
+	private $log;
 	private $id;
 	private $switch_id;
 	private $switch;
@@ -25,6 +26,7 @@ class location {
 	/////////////Public Functions//////////////
 	public function __construct($db,$id) {
         	$this->db = $db;
+		$this->log = $log;
 
 	}
         public function __destruct() {
@@ -108,9 +110,46 @@ class location {
 		return self::IRIS_FILETYPE;
 	}
 
-	public static function get_locations($db) {
-		$sql = "SELECT locations.*,switches.hostname as switch  FROM locations ";
-		$sql .= "LEFT JOIN switches ON switches.switch_id=locations.switch_id ";
+	public static function get_locations($db,$search = "") {
+		$search = strtolower(trim(rtrim($search)));
+                $where_sql = array();
+		$sql = "SELECT locations.id, locations.switch_id, locations.port, locations.jack_number, locations.room, ";
+		$sql .= "locations.building, switches.hostname as switch, ";
+		$sql .= "macwatch.date as last_seen, macwatch.mac as mac ";
+		$sql .= "FROM locations ";
+		$sql .= "INNER JOIN switches ON switches.switch_id=locations.switch_id ";
+		$sql .= "INNER JOIN macwatch ON (macwatch.switch=switches.hostname AND macwatch.port=locations.port) ";
+		if ($search != "") {
+			$terms = explode(" ",$search);
+			foreach ($terms as $term) {
+				$search_sql = "(LOWER(switches.hostname) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(locations.port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(locations.jack_number) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(locations.room) LIKE '%" . $term . "%') ";
+				array_push($where_sql,$search_sql);
+				
+			}
+			
+
+
+
+		}
+
+		$num_where = count($where_sql);
+		if ($num_where) {
+			$sql .= "WHERE ";
+                        $i = 0;
+                        foreach ($where_sql as $where) {
+                                $sql .= $where;
+                                if ($i<$num_where-1) {
+                                        $sql .= "AND ";
+                                }
+                                $i++;
+                        }
+
+		}
+		$sql .= "ORDER BY room ASC";
+		echo $sql;
 		$result = $db->query($sql);
 		return $result;
 	}

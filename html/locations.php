@@ -9,24 +9,34 @@ if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
 }
 
+$search = "";
+if (isset($_GET['search'])) {
+        $search = $_GET['search'];
+}
+
 $count = COUNT;
 
-$locations = location::get_locations($db);
+$locations = location::get_locations($db,$search);
 $num_locations = count($locations);
+$pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
 $pages_html = html::get_pages_html($pages_url,$num_locations,$start,$count);
 
 $locations_html = "";
-foreach ($locations as $location) {
-	$locations_html .= "<tr>";
-	$locations_html .= "<td>" . $location['switch'] . "</td>";
-	$locations_html .= "<td>" . $location['port'] . "</td>";
-	$locations_html .= "<td>" . $location['room'] . "</td>";
+for ($i=$start; $i<$start+$count; $i++) {
+	if (array_key_exists($i,$locations)) {
+		$locations_html .= "<tr>";
+		$locations_html .= "<td>" . $locations[$i]['room'] . "</td>";
+		$locations_html .= "<td>" . $locations[$i]['switch'] . "</td>";
+		$locations_html .= "<td>" . $locations[$i]['port'] . "</td>";
+		$locations_html .= "<td>" . $locations[$i]['mac'] . "</td>";
+		$locations_html .= "<td>" . $locations[$i]['last_seen'] . "</td>";
+		$locations_html .= "</tr>";
+	}
 
 }
 ?>
 
 <h4>Locations</h4>
-
 <form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <div class='input-group mb-4'>
                 <input type='text' name='search' class='form-control' value='<?php echo $search; ?>'>
@@ -42,9 +52,11 @@ foreach ($locations as $location) {
 <table class='table table-bordered table-sm table-striped table-hover'>
         <thead class='thead-dark'>
                 <tr>
+			<th>Room</th>
                         <th>Switch</th>
                         <th>Port</th>
-                        <th>Room</th>
+			<th>Hardware Address</th>
+			<th>Last Seen</th>
                 </tr>
         </thead>
         <tbody>

@@ -32,7 +32,6 @@
 		<tr><th>Setting</th><th>Value</th></tr>
 	</thead>
 	<tbody>
-		<tr><td>DEBUG</td><td><?php if (settings::get_debug()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>ENABLE_LOG</td><td><?php if (settings::log_enabled()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LOG_FILE</td><td><?php echo settings::get_logfile(); ?></td></tr>
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
