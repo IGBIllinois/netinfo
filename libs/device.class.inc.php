@@ -4,7 +4,9 @@ class device {
 
 ////////////////Private Variables//////////
 
+	private const DATE_FORMAT = "%Y-%m-%d %l:%i:%s %p";
         private $db; //mysql database object
+	private $log; //log object
 	private $aname;
 	private $ipnumber;
 	private $hardware;
@@ -27,8 +29,9 @@ class device {
 	private const HOSTNAME_LENGTH = 64;
         ////////////////Public Functions///////////
 
-        public function __construct($db,$ipnumber = 0) {
+        public function __construct($db,$log,$ipnumber = 0) {
                 $this->db = $db;
+		$this->log = $log;
         	if ($ipnumber != 0) {
 			$this->get_device($ipnumber);
 		}
@@ -110,12 +113,13 @@ class device {
 		$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
 		$sql .= "LIMIT 1";
 		$this->db->non_select_query($sql);
+		$this->log->send_log("User " . $modified_by . ": Deleted device " . $this->get_ipnumber() . " - " . $this->get_aname());
 		$this->get_device($this->get_ipnumber());
 		return array('RESULT'=>true);
 	}
 
 	public function get_locations() {
-		$sql = "SELECT DATE_FORMAT(macwatch.date,'%Y-%m-%d %l:%i:%s %p') as last_seen,macwatch.mac, ";
+		$sql = "SELECT DATE_FORMAT(macwatch.date,'" . self::DATE_FORMAT . "') as last_seen,macwatch.mac, ";
 		$sql .= "SUBSTRING_INDEX(macwatch.switch,'.',1) AS switch, ";
 		$sql .= "macwatch.port, macwatch.vlans, ";
 		$sql .= "a.jack_number AS jack_number, ";
@@ -203,7 +207,7 @@ class device {
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success'>Device Successfully Updated</div>";
-			log::send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
+			$this->log->send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
 			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
 		else {
@@ -256,7 +260,7 @@ class device {
 			$result = $this->db->non_select_query($sql);
 			if ($result) {
 				$message = "<div class='alert alert-success'>Alias " . $alias . " successfully added</div>";
-				 log::send_log("User " . $modified_by . ": Updated Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
+				 $this->log->send_log("User " . $modified_by . ": Updated Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
 				$this->get_device($this->get_ipnumber());
 			}
 			else {
@@ -279,6 +283,7 @@ class device {
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
 			$message = "<div class='alert alert-success'>Alias " . $alias . " successfully deleted</div>";
+			$this->log->send_log("User " . $modified_by . ": Deleted Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
 			$this->get_device($this->get_ipnumber());
 		}
 		else {
@@ -293,9 +298,9 @@ class device {
 		$sql = "SELECT namespace.aname, namespace.ipnumber, ";
 		$sql .= "LOWER(namespace.hardware) as hardware , namespace.name, ";
 		$sql .= "namespace.email, namespace.room, namespace.os, namespace.description, ";
-		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, namespace.modified, ";
+		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, DATE_FORMAT(namespace.modified,'" . self::DATE_FORMAT . "') as modified, ";
 		$sql .= "namespace.property_tag,networks.name as network,domains.name as domain, ";
-		$sql .= "DATE_FORMAT(a.last_seen,'%Y-%m-%d %h:%m:%s') as last_seen,a.switch, a.port, a.vendor ";
+		$sql .= "DATE_FORMAT(a.last_seen,'" . self::DATE_FORMAT . "') as last_seen,a.switch, a.port, a.vendor ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
 		$sql .= "LEFT JOIN domains ON networks.domain_id=domains.id ";

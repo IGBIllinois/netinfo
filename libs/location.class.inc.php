@@ -107,6 +107,13 @@ class location {
 	public static function get_iris_filetype() {
 		return self::IRIS_FILETYPE;
 	}
+
+	public static function get_locations($db) {
+		$sql = "SELECT locations.*,switches.hostname as switch  FROM locations ";
+		$sql .= "LEFT JOIN switches ON switches.switch_id=locations.switch_id ";
+		$result = $db->query($sql);
+		return $result;
+	}
 	///////////////Private Functions////////////////
 	private function get_location($id) {
 		$sql = "SELECT locations.*,switches.hostname as switch FROM locations ";

@@ -9,7 +9,7 @@ if (isset($_POST['ipnumber'])) {
         }
 
 	$ipnumber = $_POST['ipnumber'];
-	$device = new device($db,$ipnumber);
+	$device = new device($db,$log,$ipnumber);
         $aname = $_POST['aname'];
         $hardware = $_POST['hardware'];
         $user = $_POST['user'];
@@ -59,7 +59,7 @@ elseif (isset($_POST['update'])) {
 
 if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
 	$ipnumber = $_GET['ipnumber'];
-	$device = new device($db,$ipnumber);
+	$device = new device($db,$log,$ipnumber);
 	$aname = $device->get_aname();
         $hardware = $device->get_hardware();
         $user = $device->get_user();
@@ -208,7 +208,7 @@ $os_html .= "</select>";
 </div>
 <div class='col-md-12 col-lg-12 col-xl-12'>
 <input class='btn btn-primary' type='submit' value='Update' name='update' onClick='return confirm_update()'>
-<a class='btn btn-warning' href='<?php echo $_SERVER['HTTP_REFERER']; ?>'>Cancel</a>
+<a class='btn btn-warning' href='<?php if (isset($_SERVER['HTTP_REFERER'])) { echo $_SERVER['HTTP_REFERER']; } ?>'>Cancel</a>
 <?php if ($device->get_aname() != 'spare') {
 echo "<input class='btn btn-danger' type='submit' value='Delete' name='delete' onClick='return confirm_delete()'>";
 }
