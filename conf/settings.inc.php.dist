@@ -32,8 +32,6 @@ define("LDAP_SSL",FALSE);
 define("LDAP_TLS",FALSE);
 define("LDAP_PORT",389);
 
-define("DEBUG",FALSE);
-
 define("ENABLE_LOG",TRUE);
 define("LOG_FILE","/var/log/netinfo.log");
 define("SNMP_COMMUNITY","public");

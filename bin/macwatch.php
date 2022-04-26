@@ -20,14 +20,6 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-if (settings::get_debug()) {
-        ini_set("log_errors", 1);
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-
-}
-
 //Command parameters
 $output_command = "Usage: php macwatch.php \n";
 $output_command .= "   --dry-run Do dry run only\n";
