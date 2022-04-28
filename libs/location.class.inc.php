@@ -22,6 +22,7 @@ class location {
 	private const IRIS_FILETYPE = 'csv';
 	private const IRIS_DELIMITER = ",";
 	private const IRIS_ENCLOSURE = '"';
+	private const DATE_FORMAT = "%Y-%m-%d %l:%i:%s %p";
 
 	/////////////Public Functions//////////////
 	public function __construct($db,$id) {
@@ -115,7 +116,7 @@ class location {
                 $where_sql = array();
 		$sql = "SELECT locations.id, locations.switch_id, locations.port, locations.jack_number, locations.room, ";
 		$sql .= "locations.building, switches.hostname as switch, ";
-		$sql .= "macwatch.date as last_seen, macwatch.mac as mac ";
+		$sql .= "DATE_FORMAT(macwatch.date,'" . self::DATE_FORMAT . "') as last_seen, macwatch.mac as mac ";
 		$sql .= "FROM locations ";
 		$sql .= "INNER JOIN switches ON switches.switch_id=locations.switch_id ";
 		$sql .= "INNER JOIN macwatch ON (macwatch.switch=switches.hostname AND macwatch.port=locations.port) ";

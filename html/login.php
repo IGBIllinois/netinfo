@@ -25,14 +25,18 @@ if (isset($_POST['login'])) {
 		$message .= html::alert("Please enter your password",false);
 	}
 	if ($error == false) {
-		$ldap = new \IGBIllinois\ldap(LDAP_HOST,LDAP_BASE_DN,LDAP_PORT,LDAP_SSL,LDAP_TLS);
-		if ((LDAP_BIND_USER != "") && (LDAP_BIND_PASS != "")) {
-			$ldap->bind(LDAP_BIND_USER,LDAP_BIND_PASS);
+		$ldap = new \IGBIllinois\ldap(settings::get_ldap_host(),
+			settings::get_ldap_base_dn(),
+			settings::get_ldap_port(),
+			settings::get_ldap_ssl(),
+			settings::get_ldap_tls());
+		if (settings::get_ldap_bind_user() != "") {
+			$ldap->bind(settings::get_ldap_bind_user(),settings::get_ldap_bind_password());
 		}
-		$success = $ldap->authenticate($username,$password,LDAP_GROUP);
+		$success = $ldap->authenticate($username,$password,settings::get_ldap_group());
 		if ($success == true) {
 			$log->send_log("User " . $username . " logged in");
-			$session = new \IGBIllinois\session(SESSION_NAME);
+			$session = new \IGBIllinois\session(settings::get_session_name());
                         $session_vars = array('login'=>true,
                                         'username'=>$username,
                                         'timeout'=>time()

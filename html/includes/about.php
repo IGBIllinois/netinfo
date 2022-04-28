@@ -32,19 +32,20 @@
 		<tr><th>Setting</th><th>Value</th></tr>
 	</thead>
 	<tbody>
-		<tr><td>ENABLE_LOG</td><td><?php if (settings::log_enabled()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>ENABLE_LOG</td><td><?php if (settings::get_log_enabled()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LOG_FILE</td><td><?php echo settings::get_logfile(); ?></td></tr>
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
-		<tr><td>LDAP_HOST</td><td><?php echo LDAP_HOST; ?></td></tr>
-		<tr><td>LDAP_BASE_DN</td><td><?php echo LDAP_BASE_DN; ?></td></tr>
-		<tr><td>LDAP_GROUP</td><td><?php echo LDAP_GROUP; ?></td></tr>	
-		<tr><td>LDAP_SSL</td><td><?php if (LDAP_SSL) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
-		<tr><td>LDAP_PORT</td><td><?php echo LDAP_PORT; ?></td></tr>
+		<tr><td>LDAP_HOST</td><td><?php echo settings::get_ldap_host(); ?></td></tr>
+		<tr><td>LDAP_BASE_DN</td><td><?php echo settings::get_ldap_base_dn(); ?></td></tr>
+		<tr><td>LDAP_GROUP</td><td><?php echo settings::get_ldap_group(); ?></td></tr>	
+		<tr><td>LDAP_SSL</td><td><?php if (settings::get_ldap_ssl()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>LDAP_TLS</td><td><?php if (settings::get_ldap_tls()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>LDAP_PORT</td><td><?php echo settings::get_ldap_port(); ?></td></tr>
 		<tr><td>MYSQL_HOST</td><td><?php echo MYSQL_HOST; ?></td></tr>
 		<tr><td>MYSQL_DATABASE</td><td><?php echo MYSQL_DATABASE; ?></td></tr>
 		<tr><td>MYSQL_USER</td><td><?php echo MYSQL_USER; ?></td></tr>
-		<tr><td>SESSION_NAME</td><td><?php echo SESSION_NAME; ?></td></tr>
-		<tr><td>SESSION_TIMEOUT</td><td><?php echo SESSION_TIMEOUT; ?></td></tr>
+		<tr><td>SESSION_NAME</td><td><?php echo settings::get_session_name(); ?></td></tr>
+		<tr><td>SESSION_TIMEOUT</td><td><?php echo settings::get_session_timeout(); ?></td></tr>
 	</tbody>
 	</table>
 

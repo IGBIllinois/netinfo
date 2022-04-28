@@ -13,8 +13,8 @@
 
 require_once __DIR__ . '/main.inc.php';
 
-$session = new \IGBIllinois\session(SESSION_NAME);
-if (time() > $session->get_var('timeout') + SESSION_TIMEOUT) {
+$session = new \IGBIllinois\session(settings::get_session_name());
+if (time() > $session->get_var('timeout') + settings::get_session_timeout()) {
 	unset($_POST);
 	header('Location: logout.php');
 
