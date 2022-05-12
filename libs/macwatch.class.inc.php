@@ -14,19 +14,12 @@ class macwatch {
 
 	}
 
-	public static function get_switches($db) {
-		$sql = "select * from switches WHERE enabled='1'";
-		return $db->query($sql);
-
-
-	}
-
-	public static function add($db,$hostname,$port,$mac,$vendor,$vlans) {
+	public static function add($db,$switch_id,$port,$mac,$vendor,$vlans) {
 		sort($vlans,SORT_NUMERIC);
-		$sql = "INSERT INTO macwatch(switch,port,mac,vendor,vlans) ";
-		$sql .= "VALUES(:switch,:port,:mac,:vendor,:vlans) ";
+		$sql = "INSERT INTO macwatch(switch_id,port,mac,vendor,vlans) ";
+		$sql .= "VALUES(:switch_id,:port,:mac,:vendor,:vlans) ";
 		$sql .= "ON DUPLICATE KEY UPDATE date=NOW(), vendor=:vendor, vlans=:vlans";
-		$params = array(':switch'=>$hostname,
+		$params = array(':switch_id'=>$switch_id,
 				':port'=>$port,
 				':mac'=>$mac,
 				':vendor'=>$vendor,
@@ -37,10 +30,10 @@ class macwatch {
 
 	}
 
-	public static function get_vendor($db,$switch,$port,$mac) {
-		$sql = "SELECT vendor FROM macwatch where switch=:switch and port=:port and mac=:mac ";
+	public static function get_vendor($db,$switch_id,$port,$mac) {
+		$sql = "SELECT vendor FROM macwatch where switch-id=:switch_id and port=:port and mac=:mac ";
 		$sql .= "ORDER BY date DESC LIMIT 1";
-		$parameters = array(':switch'=>$switch,
+		$parameters = array(':switch_id'=>$switch_id,
 				':port'=>$port,
 				':mac'=>$mac);
 		$result = $db->query($sql,$parameters);

@@ -56,7 +56,7 @@ $db = new \IGBIllinois\db(MYSQL_HOST,MYSQL_DATABASE,MYSQL_USER,MYSQL_PASSWORD);
 $vlans = macwatch::get_vlans($db);
 echo "Community: " . settings::get_snmp_community() . "\n";
 // Array of switches to poll
-$switches = macwatch::get_switches($db);
+$switches = network_switch::get_switches($db);
 
 // Foreach switch
 foreach ($switches as $switch) {
@@ -117,7 +117,7 @@ foreach ($switches as $switch) {
 			}
 			
 			// Get MAC vendor ONLY if it's not already in the database, to save time
-			$vendor = macwatch::get_vendor($db,$switch['hostname'],$ifname,$mac);
+			$vendor = macwatch::get_vendor($db,$switch_obj->get_id(),$ifname,$mac);
 			if(!$vendor){
 				$vendorjson = file_get_contents("http://macvendors.co/api/".$mac."/json");
 				if($vendorjson !== false){
@@ -130,11 +130,11 @@ foreach ($switches as $switch) {
 				}
 			}
 
-			// Update the VLANs field
+			// Update macwatch table
 			$portvlans[$ifname][$mac][] = $vlan['vlan'];
 			echo "\t\t$mac: $ifname ($vendor)\n"; // For now, we just print
 			if(!$dryrun){
-				macwatch::add($db,$switch['hostname'],$ifname,$mac,$vendor,$portvlans[$ifname][$mac]);
+				macwatch::add($db,$switch_obj->get_id(),$ifname,$mac,$vendor,$portvlans[$ifname][$mac]);
 			}
 		}
 	}

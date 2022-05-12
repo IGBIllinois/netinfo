@@ -66,6 +66,15 @@ class network_switch {
 
 	}
 
+	//////////////////////Public Static Functions///////////////
+
+	public static function get_switches($db) {
+                $sql = "select * from switches WHERE enabled='1'";
+                return $db->query($sql);
+
+
+        }
+
 }
 
 ?>

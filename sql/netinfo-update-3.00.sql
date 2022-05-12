@@ -51,25 +51,31 @@ ALTER TABLE domains
 
 
 ALTER TABLE macwatch
-	ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+	ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT FIRST,
+	ADD COLUMN `switch_id` INT REFERENCES switches(switch_id) AFTER `id`,
 	ADD PRIMARY KEY (id),
 	ADD COLUMN `vlans` varchar(128) NULL DEFAULT NULL AFTER `vendor`, 
 	MODIFY `port` VARCHAR(30),
-	MODIFY `date` TIMESTAMP(3) NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp();
+	MODIFY `date` TIMESTAMP(3) NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	DROP INDEX `switch`,
+	ADD CONSTRAINT `switch` UNIQUE (`switch_id`,`port`,`mac`);
+
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
-AS SELECT m1.switch AS switch,
+AS SELECT m1.switch_id AS switch_id,
+        switches.hostname AS switch,
         m1.port AS port,
         m1.mac AS mac,
         m1.vendor AS vendor,
         m1.vlans AS vlans,
-	a.jack_number AS jack_number,
-	a.room AS room,
-	a.building AS building,
+        a.jack_number AS jack_number,
+        a.room AS room,
+        a.building AS building,
         m1.date AS date FROM macwatch m1
-	LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations 
-	LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
-	ON (a.port=m1.port AND a.hostname=m1.switch)
+	LEFT JOIN switches ON switches.switch_id=m1.switch_id
+        LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname,locations.switch_id FROM locations
+        LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
+        ON (a.port=m1.port AND a.switch_id=m1.switch_id)
         WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac);
 
 CREATE TABLE `vlans` (

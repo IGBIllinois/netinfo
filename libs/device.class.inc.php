@@ -120,18 +120,18 @@ class device {
 
 	public function get_locations() {
 		$sql = "SELECT DATE_FORMAT(macwatch.date,'" . self::DATE_FORMAT . "') as last_seen,macwatch.mac, ";
-		$sql .= "SUBSTRING_INDEX(macwatch.switch,'.',1) AS switch, ";
+		$sql .= "SUBSTRING_INDEX(switches.hostname,'.',1) AS switch, ";
 		$sql .= "macwatch.port, macwatch.vlans, ";
 		$sql .= "a.jack_number AS jack_number, ";
                 $sql .= "a.room AS room, ";
                 $sql .= "a.building AS building ";
 		$sql .= "FROM macwatch ";
-		$sql .= "LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations ";
+		$sql .= "LEFT JOIN switches ON switches.switch_id=macwatch.switch_id ";
+		$sql .= "LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname,switches.switch_id FROM locations ";
 		$sql .= "LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a ";
-		$sql .= "ON (a.port=macwatch.port AND a.hostname=macwatch.switch) ";
+		$sql .= "ON (a.port=macwatch.port AND a.switch_id=macwatch.switch_id) ";
 		$sql .= "WHERE LOWER(macwatch.mac)='" . $this->get_hardware() . "' ";
 		$sql .= "ORDER BY macwatch.date DESC LIMIT 10";
-		
 		return $this->db->query($sql);
 
 

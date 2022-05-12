@@ -32,6 +32,7 @@ CREATE TABLE `locations` (
 
 CREATE TABLE `macwatch` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `switch_id` INT REFERENCES switches(switch_id),
   `switch` VARCHAR(255) NOT NULL,
   `port` VARCHAR(30) DEFAULT NULL,
   `mac` VARCHAR(12) NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE `macwatch` (
   `vlans` VARCHAR(128) DEFAULT NULL,
   `date` TIMESTAMP(3) NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `switch` (`switch`,`port`,`mac`),
+  CONSTRAINT `switch` UNIQUE (`switch_id`,`port`,`mac`),
   KEY `mac` (`mac`)
 )\p;
 
@@ -96,12 +97,13 @@ CREATE TABLE `switches` (
 CREATE TABLE `vlans` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
-  'vlan' INT NOT NULL,
+  `vlan` INT NOT NULL,
   PRIMARY KEY (`id`)
 )\p;
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `macwatch_latest`
-AS SELECT m1.switch AS switch,
+AS SELECT m1.switch_id AS switch_id,
+        switches.hostname AS switch,
         m1.port AS port,
         m1.mac AS mac,
         m1.vendor AS vendor,
@@ -110,8 +112,9 @@ AS SELECT m1.switch AS switch,
         a.room AS room,
         a.building AS building,
         m1.date AS date FROM macwatch m1
-        LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname FROM locations
+		LEFT JOIN switches ON switches.switch_id=m1.switch_id
+        LEFT JOIN (SELECT locations.port,locations.jack_number,locations.room,locations.building,switches.hostname,locations.switch_id FROM locations
         LEFT JOIN switches ON switches.switch_id=locations.switch_id) AS a
-        ON (a.port=m1.port AND a.hostname=m1.switch)
+        ON (a.port=m1.port AND a.switch_id=m1.switch_id)
         WHERE m1.date = (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac = m1.mac)\p;
 
