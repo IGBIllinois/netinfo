@@ -114,19 +114,14 @@ class location {
 	public static function get_locations($db,$search = "") {
 		$search = strtolower(trim(rtrim($search)));
                 $where_sql = array();
-		$sql = "SELECT locations.id, locations.switch_id, locations.port, locations.jack_number, locations.room, ";
-		$sql .= "locations.building, switches.hostname as switch, ";
-		$sql .= "DATE_FORMAT(macwatch.date,'" . self::DATE_FORMAT . "') as last_seen, macwatch.mac as mac ";
-		$sql .= "FROM locations ";
-		$sql .= "INNER JOIN switches ON switches.switch_id=locations.switch_id ";
-		$sql .= "INNER JOIN macwatch ON (macwatch.switch=switches.hostname AND macwatch.port=locations.port) ";
+		$sql = "SELECT * FROM location_latest ";
 		if ($search != "") {
 			$terms = explode(" ",$search);
 			foreach ($terms as $term) {
-				$search_sql = "(LOWER(switches.hostname) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(locations.port) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(locations.jack_number) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(locations.room) LIKE '%" . $term . "%') ";
+				$search_sql = "(LOWER(switch) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(port) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(jack_number) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(room) LIKE '%" . $term . "%') ";
 				array_push($where_sql,$search_sql);
 				
 			}
@@ -150,7 +145,6 @@ class location {
 
 		}
 		$sql .= "ORDER BY room ASC";
-		echo $sql;
 		$result = $db->query($sql);
 		return $result;
 	}

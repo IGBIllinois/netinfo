@@ -31,7 +31,7 @@ class macwatch {
 	}
 
 	public static function get_vendor($db,$switch_id,$port,$mac) {
-		$sql = "SELECT vendor FROM macwatch where switch-id=:switch_id and port=:port and mac=:mac ";
+		$sql = "SELECT vendor FROM macwatch where switch_id=:switch_id and port=:port and mac=:mac ";
 		$sql .= "ORDER BY date DESC LIMIT 1";
 		$parameters = array(':switch_id'=>$switch_id,
 				':port'=>$port,

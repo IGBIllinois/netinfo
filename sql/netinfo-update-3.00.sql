@@ -84,3 +84,20 @@ CREATE TABLE `vlans` (
     `vlan` INT NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `location_latest`
+AS SELECT a.id, 
+	a.switch_id, 
+	a.port, 
+	a.jack_number, 
+	a.room, 
+	a.building,
+	b.mac,
+	b.date AS last_seen,
+	switches.hostname as switch 
+	FROM locations a
+	LEFT JOIN switches ON switches.switch_id=a.switch_id
+	LEFT JOIN (SELECT m1.switch_id,m1.port,m1.mac,m1.date FROM macwatch m1 WHERE m1.date= (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.mac=m1.mac )) AS b
+	ON (b.port=a.port AND b.switch_id=a.switch_id)	
+	ORDER BY room ASC;
+
