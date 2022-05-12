@@ -3,7 +3,6 @@
 /conf/cron
 /bin/updateDuplicity.sh
 /bin/updateNetsvc2.sh
-/bin/macfinder.pl
 /bin/netupdate.sh
 /vendor
 /html/vendor
