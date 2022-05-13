@@ -10,7 +10,7 @@ if (isset($_GET['start']) && is_numeric($_GET['start'])) {
 }
 
 $search = "";
-if (isset($_GET['search'])) {
+if (isset($_GET['search']) && !isset($_GET['clear'])) {
         $search = $_GET['search'];
 }
 
@@ -42,7 +42,7 @@ for ($i=$start; $i<$start+$count; $i++) {
                 <input type='text' name='search' class='form-control' value='<?php echo $search; ?>'>
                 <div class='input-group-append'>
                 <button type='submit' class='btn btn-primary'>Search</button>
-		<button type='submit' class='btn btn-secondary'>Clear</button>
+		<input type='submit' class='btn btn-secondary' name='clear' value='Clear'>
                 </div>
 
         </div>

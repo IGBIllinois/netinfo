@@ -67,8 +67,6 @@ foreach ($devices as $device) {
                 <input type='text' name='search' class='form-control' value='<?php echo $search; ?>'>
                 <div class='input-group-append'>
                 <button type='submit' class='btn btn-primary'>Search</button>
-                </div>
-		<div class='input-group-append'>
 		<input type='submit' class='btn btn-secondary' name='clear' value='Clear'>
 		</div>
         </div>
