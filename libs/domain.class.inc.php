@@ -108,11 +108,13 @@ class domain {
 				$valid = false;
 				$message .= "Failed writing file " . $filename . "\n";
 			}
-			
-			$verify = $this->verify_zone_file($domain_name,$filename);
-			if (!$verify) {
+			try {	
+				$verify = $this->verify_zone_file($domain_name,$filename);
+			}
+			catch (Exception $e) {
 				$valid = false;
-                                $message .= "Invalid zone file: " . $filename . "\n";
+				$message .= "Invalid zone file: " . $filename . "\n";
+				$message .= $e->getMessage() . "\n";
 			}
 
 			//Create conf for alternate domain names
@@ -301,7 +303,9 @@ class domain {
 		if (array_key_exists(1,$output_array) && ($output_array[1] == 'OK')) {
 			$valid = true;
 		}
-
+		else {
+			throw new Exception(implode("\n",$output_array));
+		}
 		return $valid;
 
 	}
