@@ -126,10 +126,11 @@ AS SELECT a.id,
         a.room,
         a.building,
         b.mac,
-        b.date AS last_seen,
+        DATE_FORMAT(b.date,'%Y-%m-%d %l:%i:%s %p') AS last_seen,
         switches.hostname as switch
         FROM locations a
         LEFT JOIN switches ON switches.switch_id=a.switch_id
         LEFT JOIN (SELECT m1.switch_id,m1.port,m1.mac,m1.date FROM macwatch m1 WHERE m1.date= (SELECT MAX(macwatch.date) FROM macwatch WHERE macwatch.port=m1.port AND macwatch.switch_id=m1.switch_id )) AS b
         ON (b.port=a.port AND b.switch_id=a.switch_id)
-        ORDER BY room ASC\p;
+        ORDER BY room ASC;
+

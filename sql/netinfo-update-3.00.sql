@@ -93,7 +93,7 @@ AS SELECT a.id,
 	a.room, 
 	a.building,
 	b.mac,
-	b.date AS last_seen,
+	DATE_FORMAT(b.date,'%Y-%m-%d %l:%i:%s %p') AS last_seen,
 	switches.hostname as switch 
 	FROM locations a
 	LEFT JOIN switches ON switches.switch_id=a.switch_id

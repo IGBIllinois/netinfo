@@ -4,11 +4,26 @@ require_once 'includes/session.inc.php';
 
 if (isset($_POST['create_report_full'])) {
 
-	$network = $_POST['network'];
-	$search = $_POST['search'];
-	$exact = $_POST['exact'];
-	$start_date = $_POST['start_date'];
-	$end_date = $_POST['end_date'];
+	$network = "";
+	$search = "";
+	$exact = 0;
+	$start_date = "";
+	$end_date = "";
+	if (isset($_POST['network'])) {
+		$network = $_POST['network'];
+	}
+	if (isset($_POST['search'])) {
+		$search = $_POST['search'];
+	}
+	if (isset($_POST['exact'])) {
+		$exact = $_POST['exact'];
+	}
+	if (isset($_POST['start_date'])) {
+		$start_date = $_POST['start_date'];
+	}
+	if (isset($_POST['end_date'])) {
+		$end_date = $_POST['end_date'];
+	}
 	$type = $_POST['report_type'];
 	$data = functions::get_devices($db,$network,$search,$exact,$start_date,$end_date);
 	$filename = "report." . $type; 
