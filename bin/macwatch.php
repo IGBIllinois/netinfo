@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
+chdir(dirname(__FILE__));
 
-if (file_exists('../conf/settings.inc.php')) {
-	require_once '../conf/settings.inc.php';
-}
+set_include_path(get_include_path() . ':../libs');
+
+require_once __DIR__ . '/../conf/app.inc.php';
+require_once __DIR__ . '/../conf/settings.inc.php';
 
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
         require_once __DIR__ . '/../vendor/autoload.php';
@@ -13,12 +15,13 @@ else {
 }
 
 function my_autoloader($class_name) {
-	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
-		require_once "../libs/" . $class_name . '.class.inc.php';
-	}
+        if(file_exists(__DIR__ . "/../libs/" . $class_name . ".class.inc.php")) {
+                require_once $class_name . '.class.inc.php';
+        }
 }
-
 spl_autoload_register('my_autoloader');
+date_default_timezone_set(settings::get_timezone());
+
 
 //Command parameters
 $output_command = "Usage: php macwatch.php \n";
