@@ -5,6 +5,12 @@ class device {
 ////////////////Private Variables//////////
 
 	private const DATE_FORMAT = "%Y-%m-%d %l:%i:%s %p";
+	private const DESCRIPTION_LENGTH = 64;
+	private const ROOM_LENGTH = 5;
+	private const HOSTNAME_LENGTH = 64;
+	private const PROPERTYTAG_LENGTH = 10;
+	private const SERIALNUMBER_LENGTH = 50;
+
         private $db; //mysql database object
 	private $log; //log object
 	private $aname;
@@ -26,7 +32,6 @@ class device {
 	private $domain;
 	private $network;
 
-	private const HOSTNAME_LENGTH = 64;
         ////////////////Public Functions///////////
 
         public function __construct($db,$log,$ipnumber = 0) {
@@ -146,47 +151,55 @@ class device {
 			($os == $this->get_os())) 
 		{
 			$error = 1;
-			$message .= "<div class='alert alert-primary'>No changes were made</div>";	
+			$message .= "<div class='alert alert-primary' role='alert'>No changes were made</div>";	
 
 		}
 		else {
 			if (!$this->verify_hostname($aname)) {
-				$message .= "<div class='alert alert-error'>Invalid hostname. ";
+				$message .= "<div class='alert alert-danger' role='alert'>Invalid hostname. ";
 				$message .= "Hostname can contain only lowercase letters, numbers, and hyphens. ";
-				$message .= "Maximum length is " . $this::HOSTNAME_LENGTH . " characters. It can not contain the word 'spare'.</div>";
+				$message .= "Maximum length is " . self::HOSTNAME_LENGTH . " characters. It can not contain the word 'spare'.</div>";
 				$error = 1;
 			}
 			elseif (!$this->unique_aname($aname)) {
-				$message .= "<div class='alert alert-error'>Hostname " . $aname . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
+				$message .= "<div class='alert alert-danger' role='alert'>Hostname " . $aname . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
 				$error = 1;
 		
 			}
 			if (!$this->verify_hardware($hardware)) {
-				$message .= "<div class='alert alert-error'>Invalid Hardware Address. ";
+				$message .= "<div class='alert alert-danger' role='alert'>Invalid Hardware Address. ";
 				$message .= "Hardware address can contain only numbers and lowercase letters from a-f. ";
 				$message .= "Must contain 12 characters.</div>";	
 				$error = 1;
 			}
 			elseif (!$this->unique_hardware($hardware)) {
-				$message .= "<div class='alert alert-error'>Hardware Address ";
+				$message .= "<div class='alert alert-danger' role='alert'>Hardware Address ";
 				$message .= $hardware . " already exists on network <strong>" . $this->get_network() . "</strong></div";
 				$error = 1;
 			}
 			if (!$this->verify_user($user)) {
-				$message .= "<div class='alert alert-error'>Please enter the user's full name</div>";
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter the user's full name</div>";
 				$error = 1;
 			}
 			if (!$this->verify_email($email)) {
-				$message .= "<div class='alert alert-error'>Please enter the user's email address</div>";
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter the user's email address</div>";
 				$error = 1;
 			}
 			if (!$this->verify_description($description)) {
-				$message .= "<div class='alert alert-error'>Please enter a description</div>";
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter a description.  Maximum length is " . self::DESCRIPTION_LENGTH . " characters</div>";
 				$error = 1;
 			}
 			if (!$this->verify_room($room)) {
-				$message .= "<div class='alert alert-error'>Please enter a room number.  Maximum of 5 characters (ie 2414a)</div>";
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter a room number.  Maximum of " . self::ROOM_LENGTH . " characters (ie 2414a)</div>";
 				$error = 1;
+			}
+			if (!$this->verify_propertytag($property_tag)) {
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter a valid property tag.  Maxiumum length is " . self::PROPERTYTAG_LENGTH . " characters</div>";
+				$error = 1;
+			}
+			if (!$this->verify_serialnumber($serial_number)) {
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter a valid serial number.  Maximum length is " . self::SERIALNUMBER_LENGTH . " charachters</div>";
+
 			}
 		}
 		if ($error == 0) {
@@ -206,7 +219,7 @@ class device {
         	        $sql .= "LIMIT 1";
 			$result = $this->db->non_select_query($sql);
 			$this->get_device($this->get_ipnumber());
-			$message = "<div class='alert alert-success'>Device Successfully Updated</div>";
+			$message = "<div class='alert alert-success' role='alert'>Device Successfully Updated</div>";
 			$this->log->send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
 			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
@@ -221,7 +234,7 @@ class device {
 		$result = true;
 		$number_periods = substr_count($alias,".");
 		if ($number_periods > 1) {
-                        $message = "<div class='alert alert-error'>Invalid Alias Name. ";
+                        $message = "<div class='alert alert-danger' role='alert'>Invalid Alias Name. ";
                         $message .= "Alias can contain only one subdomain.</div>";
                         $result = false;
 
@@ -230,7 +243,7 @@ class device {
 			$hostnames = explode(".",$alias);
 			foreach ($hostnames as $host) {
 				if (!$this->verify_hostname($host)) {
-		                        $message = "<div class='alert alert-error'>Invalid Alias Name. ";
+		                        $message = "<div class='alert alert-danger' role='alert'>Invalid Alias Name. ";
                 		        $message .= "Alias can contain only lowercase letters, numbers, and hyphens. here</div>";
 		                        $result = false;
 
@@ -240,13 +253,13 @@ class device {
 
 		}
 		elseif ((!$number_periods) && (!$this->verify_hostname($alias))) {
-			$message = "<div class='alert alert-error'>Invalid Alias Name. ";
+			$message = "<div class='alert alert-danger' role='alert'>Invalid Alias Name. ";
 			$message .= "Alias can contain only lowercase letters, numbers, and hyphens.</div>";
 			$result = false;
 		}
 		
 		if (!$this->unique_alias($alias)) {
-			$message = "<div class='alert alert-error'>Hostname " . $alias . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
+			$message = "<div class='alert alert-danger' role='alert'>Hostname " . $alias . " already exists on domain <strong>" . $this->get_domain() . "</strong></div>";
 			$result = false;
 
 		}
@@ -259,12 +272,12 @@ class device {
 			$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' LIMIT 1";
 			$result = $this->db->non_select_query($sql);
 			if ($result) {
-				$message = "<div class='alert alert-success'>Alias " . $alias . " successfully added</div>";
+				$message = "<div class='alert alert-success' role='alert'>Alias " . $alias . " successfully added</div>";
 				 $this->log->send_log("User " . $modified_by . ": Updated Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
 				$this->get_device($this->get_ipnumber());
 			}
 			else {
-				$message = "<div class='alert alert-error'>Error adding alias</div>";
+				$message = "<div class='alert alert-danger' role='alert'>Error adding alias</div>";
 			}
 			
 		}
@@ -282,12 +295,12 @@ class device {
 		$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
-			$message = "<div class='alert alert-success'>Alias " . $alias . " successfully deleted</div>";
+			$message = "<div class='alert alert-success' role='alert'>Alias " . $alias . " successfully deleted</div>";
 			$this->log->send_log("User " . $modified_by . ": Deleted Alias for device " . $this->get_ipnumber() . " - Alias " . $alias_string);
 			$this->get_device($this->get_ipnumber());
 		}
 		else {
-			$message = "<div class='alert alert-error'>Error removing alias</div>";
+			$message = "<div class='alert alert-danger' role='alert'>Error removing alias</div>";
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message);
 
@@ -451,8 +464,10 @@ class device {
 		$valid = 1;
 		if ($description == "") {
 			$valid = 0;
-
 		}
+		elseif (strlen($description) > self::DESCRIPTION_LENGTH) {
+			$valid = 0;
+		}	
 		return $valid;
 	}
 
@@ -462,10 +477,31 @@ class device {
 		if ($room == "") {
 			$valid = 0;
 		}
-		elseif (strlen($room) > 5) {
+		elseif (strlen($room) > self::ROOM_LENGTH) {
 			$valid = 0;
 		}
 		return $valid;
+
+	}
+
+	private function verify_propertytag($tag) {
+		$tag = trim($tag);
+		$valid = 1;
+		if (($tag != "") && (strlen($tag) > self::PROPERTYTAG_LENGTH)) {
+			$valid = 0;
+		}
+		return $valid;
+
+	}
+
+	private function verify_serialnumber($serial_number) {
+		$serial_number = trim($serial_number);
+		$valid = 1;
+		if (($serial_number != "") && (strlen($serial_number) > self::SERIALNUMBER_LENGTH)) {
+			$valid = 0;
+		}
+		return $valid;
+
 
 	}
 }
