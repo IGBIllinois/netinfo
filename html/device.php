@@ -136,7 +136,7 @@ $os_html .= "</select>";
 	<h4>Device Information</h4>
 	<table class='table table-bordered table-sm table-striped '>
 	<tr><td>IP Address</td><td><?php echo $device->get_ipnumber(); ?></td></tr>
-	<tr><td>Name (ANAME)</td><td><input class='form-control' type='text' name='aname' maxlength='20' value='<?php echo $aname; ?>'></td></tr>
+	<tr><td>Name (ANAME)</td><td><input class='form-control' type='text' name='aname' maxlength='64' value='<?php echo $aname; ?>'></td></tr>
 	<tr><td>Domain</td><td><?php echo $device->get_domain(); ?></td></tr>
 	<tr><td>Hardware (MAC) Address</td><td><input class='form-control' type='text' name='hardware' maxlength='12' value='<?php echo $hardware; ?>'></td></tr>
 	<tr><td>User</td><td><input class='form-control' type='text' name='user' value='<?php echo $user; ?>'></td></tr>
