@@ -28,6 +28,7 @@ for ($i=$start; $i<$start+$count; $i++) {
 		$locations_html .= "<td>" . $locations[$i]['room'] . "</td>";
 		$locations_html .= "<td>" . $locations[$i]['switch'] . "</td>";
 		$locations_html .= "<td>" . $locations[$i]['port'] . "</td>";
+		$locations_html .= "<td>" . $locations[$i]['jack_number'] . "</td>";
 		$locations_html .= "<td>" . $locations[$i]['mac'] . "</td>";
 		$locations_html .= "<td>" . $locations[$i]['last_seen'] . "</td>";
 		$locations_html .= "</tr>";
@@ -54,7 +55,8 @@ for ($i=$start; $i<$start+$count; $i++) {
                 <tr>
 			<th>Room</th>
                         <th>Switch</th>
-                        <th>Port</th>
+			<th>Port</th>
+			<th>Jack Number</th>
 			<th>Hardware Address</th>
 			<th>Last Seen</th>
                 </tr>
