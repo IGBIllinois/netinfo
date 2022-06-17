@@ -1,0 +1,3 @@
+ALTER TABLE namespace ADD COLUMN advanced JSON DEFAULT '{}' AFTER alias, ADD CONSTRAINT CHECK(JSON_VALID(advanced));
+
+

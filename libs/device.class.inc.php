@@ -31,6 +31,7 @@ class device {
 	private $port;
 	private $domain;
 	private $network;
+	private $advanced = null;
 
         ////////////////Public Functions///////////
 
@@ -102,6 +103,25 @@ class device {
 	public function get_domain() { return $this->domain; }
 	public function get_network() { return $this->network; }
 
+	public function get_url() { 
+		if (isset($this->advanced['url'])) {
+			return $this->advanced['url'];
+		}
+		return false;
+	
+	}
+	public function get_username() {
+		if (isset($this->advanced['username'])) {
+			return $this->advanced['username'];
+		}
+		return false;
+	}
+	public function get_password() {
+		if (isset($this->advanced['password'])) {
+			return $this->advanced['password'];
+		}
+		return false;
+	}
 	public function delete($modified_by) {
 		$sql = "UPDATE namespace ";
 		$sql .= "SET aname='spare',";
@@ -312,7 +332,7 @@ class device {
 		$sql .= "LOWER(namespace.hardware) as hardware , namespace.name, ";
 		$sql .= "namespace.email, namespace.room, namespace.os, namespace.description, ";
 		$sql .= "namespace.serial_number, namespace.alias, namespace.modifiedby, DATE_FORMAT(namespace.modified,'" . self::DATE_FORMAT . "') as modified, ";
-		$sql .= "namespace.property_tag,networks.name as network,domains.name as domain, ";
+		$sql .= "namespace.property_tag,networks.name as network,domains.name as domain, namespace.advanced as advanced, ";
 		$sql .= "DATE_FORMAT(a.last_seen,'" . self::DATE_FORMAT . "') as last_seen,a.switch, a.port, a.vendor ";
 		$sql .= "FROM namespace ";
 		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
@@ -347,6 +367,7 @@ class device {
 			$this->port = $result[0]['port'];
 			$this->domain = $result[0]['domain'];
 			$this->network = $result[0]['network'];
+			$this->advanced = json_decode($result[0]['advanced'],true);
 
 		}
 	}

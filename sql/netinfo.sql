@@ -53,8 +53,9 @@ CREATE TABLE `namespace` (
   `email` VARCHAR(30) DEFAULT NULL,
   `room` VARCHAR(5) DEFAULT NULL,
   `os` VARCHAR(20) DEFAULT NULL,
-  `description` VARCHAR(30) DEFAULT NULL,
+  `description` VARCHAR(64) DEFAULT NULL,
   `alias` TEXT DEFAULT NULL,
+  `advanced` JSON DEFAULT '{}',
   `modifiedby` VARCHAR(8) DEFAULT NULL,
   `modified` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `property_tag` VARCHAR(10) DEFAULT NULL,
@@ -62,7 +63,8 @@ CREATE TABLE `namespace` (
   `network_id` INT REFERENCES networks(id),
   PRIMARY KEY (`id`),
   KEY `ipnumber` (`ipnumber`),
-  KEY `hardware` (`hardware`)
+  KEY `hardware` (`hardware`),
+  CONSTRAINT CHECK(JSON_VALID(`advanced`))
 )\p;
 
 CREATE TABLE `networks` (

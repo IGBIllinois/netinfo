@@ -143,7 +143,7 @@ $os_html .= "</select>";
 	<tr><td>Email</td><td><input class='form-control' type='text' name='email' value='<?php echo $email; ?>'></td></tr>
 	<tr><td>Room</td><td><input class='form-control' type='text' name='room' value='<?php echo $room; ?>'></td></tr>
 	<tr><td>Device Type/OS</td><td><?php echo $os_html; ?></td></tr>
-	<tr><td>Description</td><td><input class='form-control' type='text' name='description' value='<?php echo $description; ?>'></td></tr>
+	<tr><td>Description</td><td><textarea class='form-control' name='description'><?php echo $description; ?></textarea></td></tr>
 	<tr><td>Serial Number</td><td><input class='form-control' type='text' name='serial_number' value='<?php echo $serial_number; ?>'></td></tr>
 	<tr><td>Property Tag</td><td><input class='form-control' type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
 	<tr><td>Last Modified By</td><td><?php echo $device->get_modifiedby(); ?></td></tr>
