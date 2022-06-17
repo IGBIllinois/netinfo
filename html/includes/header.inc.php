@@ -16,7 +16,7 @@
 </head>
 
 <body style='padding-top: 70px; padding-bottom: 60px;'>
-<?php require_once __DIR__ . '/about.php'; ?>
+<?php require_once __DIR__ . '/about.inc.php'; ?>
 
 <nav class="navbar fixed-top navbar-dark bg-dark">
         <a class='navbar-brand py-0' href='#'><img src='images/igb_small.png'>Network Information Database - <?php echo settings::get_title(); ?></a>
