@@ -220,10 +220,12 @@ class device {
 			}
 			if (!$this->verify_serialnumber($serial_number)) {
 				$message .= "<div class='alert alert-danger' role='alert'>Please enter a valid serial number.  Maximum length is " . self::SERIALNUMBER_LENGTH . " charachters</div>";
+				$error = 1;
 
 			}
 			if (!$this->verify_advanced($advanced)) {
 				$message .= "<div class='alert alert-danger' role='alert'>Please enter valid URL</div>";
+				$error = 1;
 			}
 		}
 		if ($error == 0) {
@@ -539,11 +541,10 @@ class device {
 	private function verify_advanced($advanced) {
 		$valid = 1;
 		$json = json_decode($advanced,true);
-		print_r($json);
 		if (json_last_error() != 'JSON_ERROR_NONE') {
 			$valid = 0;
 		}
-		if (isset($json['url']) && filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
+		if (filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
 			$valid = 0;
 		}
 		return $valid;	
