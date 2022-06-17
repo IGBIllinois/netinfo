@@ -18,7 +18,10 @@ if (isset($_POST['ipnumber'])) {
         $description = $_POST['description'];
         $serial_number = $_POST['serial_number'];
         $property_tag = $_POST['property_tag'];
-        $device_os = $_POST['os'];
+	$device_os = $_POST['os'];
+	$url = $_POST['url'];
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 }
 
 if (isset($_POST['delete'])) {
@@ -48,10 +51,12 @@ elseif (isset($_POST['delete_alias'])) {
 elseif (isset($_POST['update'])) {
         foreach ($_POST as $var) {
                 $var = trim(rtrim($var));
-        }
+	}
+	$advanced = array('url'=>$url,'username'=>$username,'password'=>$password);
+	$advanced_json = json_encode($advanced);
         $result = $device->update($aname,$hardware,$user,
                         $email,$room,$description,
-                        $serial_number,$property_tag,$device_os,$session->get_var('username'));
+                        $serial_number,$property_tag,$device_os,$session->get_var('username'),$advanced_json);
 	if ($result['RESULT']) {
 	        unset($_POST);
 	}
@@ -69,7 +74,10 @@ if (isset($_GET['ipnumber']) && !(isset($_POST['ipnumber']))) {
         $serial_number = $device->get_serial_number();
         $property_tag = $device->get_property_tag();
         $domain = $device->get_domain();
-        $device_os = $device->get_os();
+	$device_os = $device->get_os();
+	$url = $device->get_url();
+	$username = $device->get_username();
+	$password = $device->get_password();
 
 }
 
@@ -146,6 +154,17 @@ $os_html .= "</select>";
 	<tr><td>Description</td><td><textarea class='form-control' name='description'><?php echo $description; ?></textarea></td></tr>
 	<tr><td>Serial Number</td><td><input class='form-control' type='text' name='serial_number' value='<?php echo $serial_number; ?>'></td></tr>
 	<tr><td>Property Tag</td><td><input class='form-control' type='text' name='property_tag' value='<?php echo $property_tag; ?>'></td></tr>
+	<tr><td colspan='2'><b>Advanced</b></td></tr>
+	<tr><td>URL</td><td><div class='input-group'>
+		<input class='form-control' type='text' name='url' value='<?php echo $url; ?>'>
+		<div class='input-group-append'>
+		<a class='btn btn-primary btn-sm <?php echo ($url == "") ? "disabled": "" ?>' role='button' target='_blank' href='<?php echo ($url != "") ? $url : "#" ?>'>
+			<i class='fas fa-link'></i></a>
+		</div></div>
+		
+	</td></tr>
+	<tr><td>Username</td><td><input class='form-control' type='text' name='username' value='<?php echo $username; ?>'></td></tr>
+	<tr><td>Password</td><td><input class='form-control' type='text' name='password' value='<?php echo $password; ?>'></td></tr>
 	<tr><td>Last Modified By</td><td><?php echo $device->get_modifiedby(); ?></td></tr>
 	<tr><td>Last Modified</td><td><?php echo $device->get_modified(); ?></td></tr>
 	<tr><td>Network Card Vendor</td><td><?php echo $device->get_vendor(); ?></td></tr>

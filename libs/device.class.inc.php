@@ -134,6 +134,7 @@ class device {
 		$sql .= "serial_number='',";
 		$sql .= "alias='',";
 		$sql .= "property_tag='', ";
+		$sql .= "advanced='{}', ";
 		$sql .= "modifiedby='" . $modified_by . "' ";
 		$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
 		$sql .= "LIMIT 1";
@@ -162,13 +163,13 @@ class device {
 
 	}
 	
-	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$modified_by) {
+	public function update($aname,$hardware,$user,$email,$room,$description,$serial_number,$property_tag,$os,$modified_by,$advanced) {
 		$message = "";
 		$error = 0;
 		if (($aname == $this->get_aname()) && ($hardware == $this->get_hardware()) && ($user == $this->get_user()) &&
 			($email == $this->get_email()) && ($room == $this->get_room()) && ($description == $this->get_description()) &&
 			($serial_number == $this->get_serial_number()) && ($property_tag == $this->get_property_tag()) &&
-			($os == $this->get_os())) 
+			($os == $this->get_os()) && ($advanced == $this->advanced)) 
 		{
 			$error = 1;
 			$message .= "<div class='alert alert-primary' role='alert'>No changes were made</div>";	
@@ -221,23 +222,32 @@ class device {
 				$message .= "<div class='alert alert-danger' role='alert'>Please enter a valid serial number.  Maximum length is " . self::SERIALNUMBER_LENGTH . " charachters</div>";
 
 			}
+			if (!$this->verify_advanced($advanced)) {
+				$message .= "<div class='alert alert-danger' role='alert'>Please enter valid URL</div>";
+			}
 		}
 		if ($error == 0) {
 			
 			$sql = "UPDATE namespace SET ";
-			$sql .= "aname='" . $aname . "',";
-			$sql .= "hardware='" . $hardware . "',";
-        	        $sql .= "name='" . $user . "',";
-                	$sql .= "email='" . $email . "',";
-		        $sql .= "room='" . $room . "',";
-        		$sql .= "os='" . $os . "',";
-                	$sql .= "description='" . $description . "',";
-	                $sql .= "serial_number='" . strtoupper($serial_number) . "',";
-	                $sql .= "property_tag='" . strtoupper($property_tag) . "', ";
-			$sql .= "modifiedby='" . $modified_by . "' ";
-	        	$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
-        	        $sql .= "LIMIT 1";
-			$result = $this->db->non_select_query($sql);
+			$sql .= "aname=:aname, hardware=:hardware,name=:user,email=:email,";
+		        $sql .= "room=:room,os=:os,description=:description,serial_number=:serial_number,";
+	                $sql .= "property_tag=:property_tag,modifiedby=:modified_by,advanced=:advanced ";
+	        	$sql .= "WHERE ipnumber=:ipnumber LIMIT 1";
+			$parameters = array(':aname'=>$aname,
+					':hardware'=>$hardware,
+					':user'=>$user,
+					':email'=>$email,
+					':room'=>$room,
+					':os'=>$os,
+					':description'=>$description,
+					':serial_number'=>strtoupper($serial_number),
+					':property_tag'=>strtoupper($property_tag),
+					':modified_by'=>$modified_by,
+					':advanced'=>$advanced,
+					':ipnumber'=>$this->get_ipnumber()
+					);
+
+			$result = $this->db->non_select_query($sql,$parameters);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success' role='alert'>Device Successfully Updated</div>";
 			$this->log->send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
@@ -524,6 +534,19 @@ class device {
 		return $valid;
 
 
+	}
+
+	private function verify_advanced($advanced) {
+		$valid = 1;
+		$json = json_decode($advanced,true);
+		print_r($json);
+		if (json_last_error() != 'JSON_ERROR_NONE') {
+			$valid = 0;
+		}
+		if (isset($json['url']) && filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
+			$valid = 0;
+		}
+		return $valid;	
 	}
 }
 

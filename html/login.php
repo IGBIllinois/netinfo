@@ -91,7 +91,7 @@ if (isset($_POST['login'])) {
 				name='username' tabindex='1' placeholder='Username'
 				value='<?php if (isset($username)) { echo $username; } ?>'>
 			<div class="input-group-append">
-			<span class='input-group-text'> <span class='fa fa-user'></span></span>
+			<span class='input-group-text'> <i class='fa fa-user'></i></span>
 			</div>
 			</div>
 	</div>
@@ -101,7 +101,7 @@ if (isset($_POST['login'])) {
 			<input class='form-control' type='password' name='password' 
 			placeholder='Password' tabindex='2'>		
 			<div class='input-group-append'>
-				<span class='input-group-text'><span class='fa fa-lock'></span></span>
+				<span class='input-group-text'><i class='fa fa-lock'></i></span>
 			</div>
 			</div>
 
