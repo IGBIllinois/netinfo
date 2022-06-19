@@ -60,7 +60,6 @@ $vlans = macwatch::get_vlans($db);
 echo "Community: " . settings::get_snmp_community() . "\n";
 // Array of switches to poll
 $switches = network_switch::get_switches($db);
-print_r($switches);
 // Foreach switch
 foreach ($switches as $switch) {
 	echo "Switch: ".$switch['hostname']."\n";
