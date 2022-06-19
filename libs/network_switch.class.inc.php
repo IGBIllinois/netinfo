@@ -69,7 +69,10 @@ class network_switch {
 	//////////////////////Public Static Functions///////////////
 
 	public static function get_switches($db) {
-                $sql = "select * from switches WHERE enabled='1'";
+		$sql = "select switches.*,p.num_ignore_ports from switches ";
+		$sql .= "LEFT JOIN (select count(*) as num_ignore_ports,switch_id FROM ignored_ports ";
+		$sql .= "GROUP BY switch_id) as p ON p.switch_id=switches.switch_id ";
+		$sql .= "WHERE switches.enabled='1'";
                 return $db->query($sql);
 
 

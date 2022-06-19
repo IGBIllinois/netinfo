@@ -286,14 +286,6 @@ class functions {
 
 	}
 
-	//get_switches()
-	//$db - database object
-	//returns array of switches in database
-	public static function get_switches($db) {
-		$sql = "SELECT * FROM switches";
-		return $db->query($sql);
-	}
-
 
 	//get_locations()
 	//$db - database object
