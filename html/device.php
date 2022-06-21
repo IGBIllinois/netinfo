@@ -193,7 +193,7 @@ $os_html .= "</select>";
 	<?php 
 		echo $alias_html;
 		if ($device->get_aname() != "spare") { 
-			echo "<tr><td><input class='input' type='text' name='new_alias' value='";
+			echo "<tr><td><input class='form-control' type='text' name='new_alias' value='";
 			if (isset($_POST['new_alias'])) { echo $_POST['new_alias']; }
 			echo "'></td>";
 			echo "<td><input class='btn btn-primary btn-sm' type='submit' name='add_alias' value='Add' onClick='return confirm_alias()'></td></tr>";

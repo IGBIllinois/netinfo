@@ -544,7 +544,7 @@ class device {
 		if (json_last_error() != 'JSON_ERROR_NONE') {
 			$valid = 0;
 		}
-		if (filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
+		if (($json['url'] != "") && filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
 			$valid = 0;
 		}
 		return $valid;	
