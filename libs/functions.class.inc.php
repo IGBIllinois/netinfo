@@ -156,6 +156,7 @@ class functions {
 		if (($search != "" )  && ($exact == 0)){
 			$terms = explode(" ",$search);
 			foreach ($terms as $term) {
+				$term = str_replace("+"," ",$term);
 				$search_sql = "(LOWER(namespace.aname) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "namespace.ipnumber LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(namespace.hardware) LIKE '%" . $term . "%' OR ";
