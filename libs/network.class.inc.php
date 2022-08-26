@@ -124,15 +124,17 @@ class network {
 
         private function get_reservations() {
                 $valid = false;
-		$sql = "SELECT aname,ipnumber,hardware FROM namespace ";
-                $sql .= "WHERE network_id='" . $this->get_id() . "' ";
-                $sql .= "AND aname<>'spare' AND hardware<>'000000000000'";
-		$reservations = $this->db->query($sql);
+		$sql = "SELECT aname,ipnumber,hardware,domains.name AS domain_name FROM namespace ";
+		$sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
+		$sql .= "LEFT JOIN domains ON domains.id=networks.domain_id ";
+                $sql .= "WHERE network_id=:network_id ";
+		$sql .= "AND aname<>'spare' AND hardware<>'000000000000'";
+		$reservations = $this->db->query($sql,array(":network_id"=>$this->get_id()));
                 
                 $reservation_txt = "";
                 if (count($reservations)) {
                         foreach ($reservations as $reservation) {
-                                $reservation_txt .= "\thost " . $reservation['aname'] . " {\n";
+                                $reservation_txt .= "\thost " . $reservation['aname'] . "." . $reservation['domain_name'] . " {\n";
 				$reservation_txt .= "\t\toption host-name \"" . $reservation['aname'] . "\";\n";
                                 $reservation_txt .= "\t\thardware ethernet " . $this->format_hardware_address($reservation['hardware']) . ";\n";
                                 $reservation_txt .= "\t\tfixed-address " . $reservation['ipnumber'] . ";\n";
