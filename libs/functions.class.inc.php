@@ -131,6 +131,8 @@ class functions {
 		if ($network != "") {
 			if (strpos($network,"/")) {  //Use network/subnet format, 128.174.124.0/22
 				list($low,$high) = self::get_ip_range($network);
+				$low = ip2long($low);
+				$high = ip2long($high);
 			}
 			elseif (strpos($network,"-")) { //Use startip-endip format, 128.174.124.1-128.174.124.100
 				list($low,$high) = explode("-",$network);
@@ -270,24 +272,25 @@ class functions {
 	//calcuates the start and end range of ips from given cidr
 	public static function get_ip_range($cidr) {
 
-		list($ip, $mask) = explode('/', $cidr);
- 
-		$maskBinStr =str_repeat("1", $mask ) . str_repeat("0", 32-$mask );      //net mask binary string
-		$inverseMaskBinStr = str_repeat("0", $mask ) . str_repeat("1",  32-$mask ); //inverse mask
-  	
-		$ipLong = ip2long( $ip );
-		$ipMaskLong = bindec( $maskBinStr );
-		$inverseIpMaskLong = bindec( $inverseMaskBinStr );
-		$netWork = $ipLong & $ipMaskLong; 
-		$start = $netWork+1;//ignore network ID(eg: 192.168.1.0)
- 	
-		$end = ($netWork | $inverseIpMaskLong) - 1; //ignore brocast IP(eg: 192.168.1.255)
+		list($network, $mask) = explode('/', $cidr);
+		$start = long2ip((ip2long($network)) & ((-1 << (32 - (int)$mask))));
+		$end = long2ip((ip2long($network)) + pow(2, (32 - (int)$mask)) - 1);
 		return array($start,$end );
 
 
 	}
 
+	public static function ip_in_range($ip,$cidr) {
+		list($low,$high) = self::get_ip_range($network);
+		$low = ip2long($low);
+		$high = ip2long($high);
+		if ($ip >= $low && $ip <= $high) {
+			return true;
+		}
+		return false;
 
+
+	}
 	//get_locations()
 	//$db - database object
 	//$search - search term - optional

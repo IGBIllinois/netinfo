@@ -236,20 +236,22 @@ class domain {
 
 	}
 
-        private function get_reverse_zones() {
+	private function get_reverse_zones() {
+
+		$reverse_networks = $this->get_reverse_networks();
+		$networks = array();
+		foreach ($reverse_networks as $reverse_network) {
+			$networks[$reverse_network] = "\n";
+		}
                 $sql = "SELECT aname,ipnumber,network,netmask FROM namespace ";
                 $sql .= "LEFT JOIN networks ON namespace.network_id=networks.id ";
                 $sql .= "WHERE domain_id='" . $this->get_id() . "' ";
                 $sql .= "AND aname<>'spare' ORDER BY INET_ATON(ipnumber) ASC";
-                $result = $this->db->query($sql);
+		$result = $this->db->query($sql);
                 $reverse_txt = "";
-		$networks = array();
                 if (count($result)) {
                         foreach ($result as $record) {
 				$class_c_network = substr($record['ipnumber'],0,strrpos($record['ipnumber'],".")) . ".0";
-				if (!array_key_exists($class_c_network,$networks)) {
-					$networks[$class_c_network] = "";
-				}
 				//chops up ip address into array
 				$parts = explode('.',$record['ipnumber']);
 				//reverses the ip address
@@ -258,8 +260,7 @@ class domain {
                                 $aname_fqdn =$record['aname'] . "." . $this->get_name() . ".";
                                 $networks[$class_c_network] .= array_pop($parts) . "\t\tIN PTR\t" . $aname_fqdn . "\n";
                         }
-                }
-
+		}
                 return $networks;
 
 
@@ -310,6 +311,22 @@ class domain {
 
 	}
 
+	private function get_reverse_networks() {
+		$reverse_networks = array();
+		$sql = "SELECT * FROM networks WHERE domain_id=:domain_id";
+		$result = $this->db->query($sql,array(':domain_id'=>$this->get_id()));
+		foreach ($result as $network) {
+			$cidr = functions::mask2cidr($network['netmask']);
+			$range = functions::get_ip_range($network['network'] . "/" . $cidr);
+			$start = explode(".",$range[0]);
+			$end = explode(".",$range[1]);
+			$c_networks = range($start[2],$end[2]);
+			foreach ($c_networks as $c_network) {
+				array_push($reverse_networks,$start[0] . "." . $start[1] . "." . $c_network . ".0");				
+			}
+		}
+		return $reverse_networks;	
 
+	}
 }
 ?>
