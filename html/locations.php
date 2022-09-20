@@ -18,7 +18,9 @@ $count = COUNT;
 
 $locations = location::get_locations($db,$search);
 $num_locations = count($locations);
-$pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search;
+$url_array = array('search'=>$search);
+$pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($url_array);
+
 $pages_html = html::get_pages_html($pages_url,$num_locations,$start,$count);
 
 $locations_html = "";

@@ -35,7 +35,10 @@ if ((isset($_GET['start_date'])) && (isset($_GET['end_date']))) {
 $count = COUNT;
 $devices = functions::get_devices($db,$network,$search,$exact,$start_date,$end_date);
 $num_devices = count($devices);
-$pages_url = $_SERVER['PHP_SELF'] . "?search=" . $search . "&exact=" . $exact;
+$url_array = array('search'=>$search,
+        'exact'=>$exact);
+$pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($url_array);
+
 if ($network != "") {
 	$pages_url .= "&network=" . $network;
 }
