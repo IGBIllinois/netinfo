@@ -62,10 +62,7 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 ```
 INSERT INTO domains(name,alt_names) VALUES('example.com','example.net');
 ```
-* Create networks in the networks table manual.
-```
-INSERT INTO networks(name,network,netmask,vlan,enabled,domain_id) VALUES('public','192.168.1.0','255.255.255.0',100,1,1);
-```
+* Create networks by following  guide at [docs/network.md](docs/network.md)
 * Add IP addresses to namespace table.  Use the spare for the aname.  This then becomes an available ip address
 ```
 INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
