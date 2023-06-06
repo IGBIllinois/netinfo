@@ -53,7 +53,7 @@ INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
 #!/bin/bash
 for i in {1...254}
 do
-	mysql -u root -p netinfo < "INSERT INTO namespace(ipnumber,name,etwork_id) VALUES('192.168.1.$i','spare',1);
+	mysql -u root -p netinfo -e "INSERT INTO namespace(ipnumber,name,etwork_id) VALUES('192.168.1.$i','spare',1);"
 
 done
 ```
