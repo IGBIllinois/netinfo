@@ -3,6 +3,7 @@
 * name - name of the domain (ie example.com)
 * alt_names - alternatives names, optional (ie example.net)
 * serial - 1
+* enabled - boolean enables or disables the creation of bind config file
 * header - THe [SERIAL] is a placeholder which will be replaced by the serial number when the bind config gets generated 
 ```
 $TTL 3h
@@ -19,7 +20,7 @@ $TTL 3h
 ```
 * enabled - 1
 ```
-INSERT INTO domains(name,serial,header) VALUES('example.com','1','
+INSERT INTO domains(name,serial,enabled,header) VALUES('example.com','1','1','
 $TTL 3h
 
 @ IN SOA netsvc.igb.illinois.edu. duplicity.igb.illinois.edu. (
