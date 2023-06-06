@@ -1,12 +1,12 @@
 # Create Network
 
 * Currently we have to create a network manually using an SQL query.  Below are table columns that need populating
-** domain_id - ID of domain for the network.  This is from the domains table
-** name - Name of the network
-** network - IP network (ie 192.168.1.0)
-** netmask - Subnet mask of network (ie 255.255.255.0)
-** vlan - VLAN of the network
-** options - default dhcp options 
+* domain_id - ID of domain for the network.  This is from the domains table
+* name - Name of the network
+* network - IP network (ie 192.168.1.0)
+* netmask - Subnet mask of network (ie 255.255.255.0)
+* vlan - VLAN of the network
+* options - default dhcp options 
 ```
 authoritative;
 default-lease-time 7200;
@@ -19,7 +19,7 @@ option time-offset -21600;
 option routers 172.16.40.1;
 option domain-name-servers 128.174.124.16, 128.174.124.17, 130.126.2.131;
 ```
-** enabled - enable or disable dhcp
+* enabled - enable or disable dhcp
 
 * Build SQL query
 ```

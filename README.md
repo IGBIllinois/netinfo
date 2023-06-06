@@ -63,10 +63,7 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 INSERT INTO domains(name,alt_names) VALUES('example.com','example.net');
 ```
 * Create networks by following  guide at [docs/network.md](docs/network.md)
-* Add IP addresses to namespace table.  Use the spare for the aname.  This then becomes an available ip address
-```
-INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
-```
+
 * For cron jobs, copy conf/cron.dist to conf/cron
 ```
 cp conf/cron.dist to conf/cron
