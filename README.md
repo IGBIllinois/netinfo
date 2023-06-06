@@ -58,11 +58,8 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 ```
 * Edit conf/settings.inc.php for your environment
 
-* Create domains in the domains table manual.
-```
-INSERT INTO domains(name,alt_names) VALUES('example.com','example.net');
-```
-* Create networks by following  guide at [docs/network.md](docs/network.md)
+* Create domains bu following guide at [docs/domains.md](docs/domains.md)
+* Create networks by following guide at [docs/network.md](docs/network.md)
 
 * For cron jobs, copy conf/cron.dist to conf/cron
 ```
