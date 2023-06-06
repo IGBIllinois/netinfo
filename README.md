@@ -58,7 +58,7 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 ```
 * Edit conf/settings.inc.php for your environment
 
-* Create domains bu following guide at [docs/domains.md](docs/domains.md)
+* Create domains bu following guide at [docs/domain.md](docs/domain.md)
 * Create networks by following guide at [docs/network.md](docs/network.md)
 
 * For cron jobs, copy conf/cron.dist to conf/cron
