@@ -57,9 +57,33 @@ composer install
 cp conf/settings.inc.php.dist conf/settings.inc.php
 ```
 * Edit conf/settings.inc.php for your environment
-
-* Create domains bu following guide at [docs/domain.md](docs/domain.md)
-* Create networks by following guide at [docs/network.md](docs/network.md)
+```
+define("TITLE","Network Information Database");
+define("FOOTER","");
+define("SESSION_NAME","netinfo");
+define("SESSION_TIMEOUT",14400);
+define("COUNT",30);
+define("TIMEZONE","America/Chicago");
+//////////Mysql Settings//////////////
+define("MYSQL_HOST","localhost");
+define("MYSQL_USER","netinfo");
+define("MYSQL_PASSWORD","XXXXXXXXXXXXXXXX");
+define("MYSQL_DATABASE","netinfo");
+define("MYSQL_PORT",3306);
+define("MYSQL_SSL",false);
+//////////Authentication Settings///////////////
+define("LDAP_HOST","ldap.example.net");
+define("LDAP_BASE_DN","dc=ldap,dc=example,dc=net");
+define("LDAP_GROUP","group");
+define("LDAP_BIND_USER","");
+define("LDAP_BIND_PASS","");
+define("LDAP_SSL",FALSE);
+define("LDAP_TLS",TRUE);
+define("LDAP_PORT",389);
+define("ENABLE_LOG",TRUE);
+define("LOG_FILE","/var/www/netinfo/log/netinfo.log");
+define("SNMP_COMMUNITY","public");
+```
 
 * For cron jobs, copy conf/cron.dist to conf/cron
 ```
@@ -80,6 +104,8 @@ cp conf/log_rotate.conf.dist conf/log_rorate.conf
 ln -s /var/www/netinfo/conf/log_rotate.conf /etc/logrotate.d/netinfo
 ```
 
-* Done
+# Adding Networks and Domains
+* Create domains by following guide at [docs/domain.md](docs/domain.md)
+* Create networks by following guide at [docs/network.md](docs/network.md)
 
 
