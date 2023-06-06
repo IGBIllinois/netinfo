@@ -23,7 +23,7 @@ option domain-name-servers 128.174.124.16, 128.174.124.17, 130.126.2.131;
 
 * Build SQL query
 ```
-INSERT INTO networks(domain_id,name,network,netmask,vlan,enabled,options,enabled) 
+INSERT INTO networks(domain_id,name,network,netmask,vlan,enabled,options) 
 VALUES('1','example','192.168.1.0','255.255.255.0','10','1','
 authoritative;
 default-lease-time 7200;

@@ -20,8 +20,8 @@ $TTL 3h
 ```
 * enabled - 1
 ```
-INSERT INTO domains(name,serial,enabled,header) VALUES('example.com','1','1','
-$TTL 3h
+mysql -u root -p netinfo -e "INSERT INTO domains(name,serial,enabled,header) VALUES('example.com','1','1','
+/$TTL 3h
 
 @ IN SOA netsvc.igb.illinois.edu. duplicity.igb.illinois.edu. (
         [SERIAL]      ;serial
@@ -32,6 +32,6 @@ $TTL 3h
 
         IN NS   netsvc.igb.illinois.edu.
         IN NS   duplicity.igb.illinois.edu.
-`);
+');"
 ```
 
