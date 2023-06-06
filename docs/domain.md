@@ -18,7 +18,7 @@ $TTL 3h
         IN NS   duplicity.igb.illinois.edu.
 ```
 * enabled - 1
-``
+```
 INSERT INTO domains(name,serial,header) VALUES('example.com','1','
 $TTL 3h
 
