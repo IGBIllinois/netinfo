@@ -120,14 +120,14 @@ foreach ($switches as $switch) {
 			
 			// Get MAC vendor ONLY if it's not already in the database, to save time
 			$vendor = macwatch::get_vendor($db,$switch_obj->get_id(),$ifname,$mac);
-			if(!$vendor){
-				$vendorjson = file_get_contents("http://macvendors.co/api/".$mac."/json");
+			if(!strlen($vendor)){
+				$vendorjson = file_get_contents("https://www.macvendorlookup.com/api/v2/" . $mac);
 				if($vendorjson !== false){
-					$vendor = json_decode($vendorjson);
-					if(!isset($vendor->result) || !isset($vendor->result->company)){
+					$vendor_decode = json_decode($vendorjson,true);
+					if(!isset($vendor_decode[0]) || !isset($vendor_decode[0]['company'])){
 						$vendor = "";
 					} else {
-						$vendor = $vendor->result->company;
+						$vendor = $vendor_decode[0]['company'];
 					}
 				}
 			}
