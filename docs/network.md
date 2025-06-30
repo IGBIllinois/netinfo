@@ -46,14 +46,14 @@ include "/etc/dhcp/static/example.conf"
 * To add spare IP addresses, get the network_id from networks table of the correct network
 * Create SQL query
 ```
-INSERT INTO namespace(ipnumber,network_id) VALUES('192.168.1.1',1);
+INSERT INTO namespace(ipnumber,aname,network_id) VALUES('192.168.1.1',1);
 ```
 * To add a bunch, you can make a bash script
 ```
 #!/bin/bash
 for i in {1..254}
 do
-	mysql -u root -p netinfo -e "INSERT INTO namespace(ipnumber,name,network_id) VALUES('192.168.1.$i','spare',1);"
+	mysql -u root -p netinfo -e "INSERT INTO namespace(ipnumber,aname,network_id) VALUES('192.168.1.$i','spare',1);"
 
 done
 ```
