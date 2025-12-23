@@ -15,6 +15,7 @@
 		"ext-ldap": "*",
 		"ext-mysqlnd": "*",
 		"ext-gd": "*",
+		"ext-snmp": "*",
 		"components/jquery": "3.5.1",
                 "components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "v4.6.1",
