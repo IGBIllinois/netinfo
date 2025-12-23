@@ -6,7 +6,6 @@
 /bin/netupdate.sh
 /vendor
 /html/vendor
-composer.lock
 /log/*
 !/log/.gitkeep
 switch_configs
