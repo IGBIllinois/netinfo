@@ -15,9 +15,9 @@ Netinfo keeps track of dhcp reservations for multiple networks and can then auto
 
 ## Installation
 
-* For Redhat/CentOS 8
+* For Rocky 8/9
 ```
-yum install php php-cli php-pdo php-snmp php-ldap mariadb bind bind-chroot dhcp-server
+dnf -y install php php-cli php-pdo php-snmp php-ldap mariadb-server bind bind-chroot dhcp-server
 ```
 * git clone https://github.com/IGB-UIUC/netinfo or download tagged tar.gz
 ```
