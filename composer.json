@@ -16,9 +16,9 @@
 		"ext-mysqlnd": "*",
 		"ext-gd": "*",
 		"ext-snmp": "*",
-		"components/jquery": "3.5.1",
+		"components/jquery": "v3.7.1",
                 "components/jqueryui": "1.12.1",
-		"twbs/bootstrap": "v4.6.1",
+		"twbs/bootstrap": "v4.6.2",
 		"fortawesome/font-awesome": "5.15.4",
 		"igbillinois/igbillinois-php": "1.4.6"
 	},
