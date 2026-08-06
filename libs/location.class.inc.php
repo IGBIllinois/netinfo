@@ -121,7 +121,7 @@ class location {
 				$search_sql = "(LOWER(switch) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(port) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(jack_number) LIKE '%" . $term . "%' OR ";
-				$search_sql .= "LOWER(mac" LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(mac) LIKE '%" . $term . "%' OR ";
 				$search_sql .= "LOWER(room) LIKE '%" . $term . "%') ";
 				array_push($where_sql,$search_sql);
 				
