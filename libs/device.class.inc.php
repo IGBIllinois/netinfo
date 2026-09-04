@@ -139,7 +139,7 @@ class device {
 		$sql .= "WHERE ipnumber='" . $this->get_ipnumber() . "' ";
 		$sql .= "LIMIT 1";
 		$this->db->non_select_query($sql);
-		$this->log->send_log("User " . $modified_by . ": Deleted device " . $this->get_ipnumber() . " - " . $this->get_aname());
+		$this->log->send_log("User " . $modified_by . ": Deleted device " . $this->get_ipnumber() . " - " . $this->get_hardware() . " - " . $this->get_aname());
 		$this->get_device($this->get_ipnumber());
 		return array('RESULT'=>true);
 	}
@@ -252,7 +252,7 @@ class device {
 			$result = $this->db->non_select_query($sql,$parameters);
 			$this->get_device($this->get_ipnumber());
 			$message = "<div class='alert alert-success' role='alert'>Device Successfully Updated</div>";
-			$this->log->send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $aname);
+			$this->log->send_log("User " . $modified_by . ": Updated device " . $this->get_ipnumber() . " - " . $hardware . " - " . $aname);
 			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
 		else {
