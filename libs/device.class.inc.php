@@ -541,7 +541,7 @@ class device {
 	private function verify_advanced($advanced) {
 		$valid = 1;
 		$json = json_decode($advanced,true);
-		if (json_last_error() != 'JSON_ERROR_NONE') {
+		if (json_last_error() != JSON_ERROR_NONE) {
 			$valid = 0;
 		}
 		if (($json['url'] != "") && filter_var($json['url'],FILTER_VALIDATE_URL) === FALSE) {
